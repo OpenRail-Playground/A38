@@ -136,13 +136,79 @@ Prüfung gegen `taxonomy.yaml`:
 
 **Ergebnis: Taxonomie-valide ✓**
 
+---
+
+## Iteration 2: Vollständiger Text (23.06.2026, 11:34)
+
+### Änderungen gegenüber Iteration 1
+- **Input:** Vollständiger markitdown-Output bis S.14 (880 Zeilen, Bauwerksplan abgeschnitten)
+- **Pre-Processing:** `grep -n "Seite 14/14"` → Zeile 874 → `head -880` als Cutoff
+- **Erwartung:** Betriebskosten 45% SBB / 55% ASTRA müssen extrahiert werden (Ziff. 17)
+- **Erwartung:** Vertragsbeginn bleibt `fehlend` (Handschrift)
+- **Erwartung:** Vertragsende = 100 Jahre feste Laufzeit (Ziff. 30)
+- **Erwartung:** Vorgängervertrag 90005733 erkannt (Ziff. 32)
+
+### Ergebnis: `results/90051045_v2.json`
+
+| Feld | Qualität | Extrahierter Wert | Korrekt? | Diff zu v1 |
+|------|----------|-------------------|----------|------------|
+| 1. Vertragsnummer | ✅ eindeutig | 90051045 | ✓ | = |
+| 2. Vertragstyp | ⚠️ abgeleitet | Zusammenarbeit › V3&4 › Brücke | ✓ | = |
+| 3. Anlage | ✅ eindeutig | Bahnbrücke «U N20 (A51)» ... | ✓ | = |
+| 4. Bahnlinie | ✅ eindeutig | Linie 752 | ✓ | = |
+| 5. km von | ✅ eindeutig | 8.68 | ✓ | = |
+| 6. km bis | ✅ eindeutig | 8.68 | ✓ | = |
+| 7. Vertragspartner | ✅ eindeutig | ASTRA | ✓ | = |
+| 8. Vertragsbeginn | ❌ fehlend | null (handschriftlich) | ✓ erwartet | = |
+| 9. Vertragsende | ✅ eindeutig | 100 Jahre feste Laufzeit | ✓ **NEU** | ⬆️ war `abgeleitet` |
+| 10. Period. Einnahmen | ✅ eindeutig | CHF 7.8M (Invest) + 55% (Betrieb) | ✓ **NEU** | ⬆️ Betrieb hinzu |
+| 11. Period. Ausgaben | ✅/⚠️ | CHF 8M (Invest) + 45% (Betrieb) + Inspektion | ✓ **NEU** | ⬆️ Betrieb hinzu |
+| 12. Gemeinde | ✅/⚠️ | Kloten + Opfikon | ✓ | = |
+| 13. Quellenangaben | ✅ | Konsistent | ✓ | ⬆️ erweitert |
+
+### Neue Erkenntnisse (Iteration 2)
+
+| Was | Iteration 1 | Iteration 2 | Korrekt? |
+|-----|-------------|-------------|----------|
+| Betriebskosten-Teiler | ❌ nicht extrahiert | ✅ 45% SBB / 55% ASTRA | ✓ |
+| Vertragsende | ⚠️ "100 Jahre (aus Nutzungsdauer)" | ✅ "100 Jahre feste Laufzeit (Ziff. 30)" | ✓ |
+| Vorgängervertrag | nicht erkannt | ✅ 90005733 / 0600-2003-0730 (aufgehoben) | ✓ |
+| Flächen-Herleitung | nicht vorhanden | ✅ 245m² SBB / 295m² ASTRA = 540m² Total | ✓ |
+| Inspektion alle 5 Jahre | nicht erkannt | ✅ als qualitative Ausgabe erfasst | ✓ |
+| Kostenteiler-Struktur | 1 Eintrag (nur Invest) | ✅ 2 Einträge (Invest + Betrieb) | ✓ |
+
+### Qualitätskennzeichen (Vergleich)
+
+| Metrik | Iteration 1 | Iteration 2 |
+|--------|------------|-------------|
+| Eindeutig | 6 | 8 |
+| Abgeleitet | 4 | 3 |
+| Fehlend | 1 | 1 |
+| Manuelle Prüfung | Ja | Ja (Handschrift) |
+
+### Fazit Iteration 2
+
+**Root Cause bestätigt:** Das Fehlen der Betriebskosten in Iteration 1 lag ausschließlich am abgeschnittenen Input (380 statt 880 Zeilen). Mit vollständigem Vertragstext werden alle Kostenregelungen korrekt extrahiert.
+
+**Verbleibende Limitierung:** Handschriftliche Unterschriftsdaten (Vertragsbeginn) sind für die rein textbasierte Pipeline nicht extrahierbar. Hierfür braucht es entweder:
+- Vision-basierte OCR (Handschrifterkennung)
+- Human-in-the-Loop (manuelles Nachtragen)
+- Abgleich mit SAP-System (falls dort bereits erfasst)
+
+### Learnings für die Pipeline
+
+1. **Pre-Processing:** Bauwerksplan-Anhänge abschneiden (Erkennung via "Seite N/N" + nachfolgende Zeichnungsdaten)
+2. **Volltext:** Immer den kompletten Vertragstext übergeben (bis letzte nummerierte Seite)
+3. **Iteratives Feedback:** Verifikation nach Iteration 1 verbessert Iteration 2 signifikant
+4. **Taxonomie-Validierung:** Pfad weiterhin gültig (V3&4 + Brücke aus Pool A)
+
 ## Nächste Schritte
 
-1. [ ] Test mit **vollständigem Text** (alle 2727 Zeilen) wiederholen
-2. [ ] Zweiten Vertrag testen (anderer Typ, z.B. Grundstücknutzung oder FinVer)
-3. [ ] Gegen Masterdatei abgleichen
-4. [ ] Französisches/Italienisches PDF testen
+- [ ] Zweiten Vertrag testen (anderer Typ, z.B. Grundstücknutzung oder FinVer)
+- [ ] Gegen Masterdatei abgleichen (Vertrag 90051045)
+- [ ] Französisches/Italienisches PDF testen
+- [ ] Pre-Processing-Logik (Plan-Seiten abschneiden) automatisieren
 
 ---
 
-*Erstellt: 23.06.2026, 11:01*
+*Erstellt: 23.06.2026, 11:01 | Iteration 2: 11:34*

@@ -1,0 +1,299 @@
+{
+  "schema_version": "1.0",
+  "dokument": {
+    "dokumenttyp": "Vertrag",
+    "verbindlichkeitsgrad": "verbindlich",
+    "massnahmenzweck": "Bau",
+    "nutzungsrichtung": "nicht_anwendbar",
+    "ist_ocr": true,
+    "enthaelt_handschrift": true
+  },
+  "vertragsbeziehungen": {
+    "uebergeordneter_vertrag": null,
+    "untergeordnete_vertraege": [],
+    "vorgaengervertrag": {
+      "referenz": "90005733 / 0600-2003-0730",
+      "bezeichnung": "Vertrag über den Bau der Eisenbahnbrücke über die N 1b bei km 8.686 der Strecke Zürich Oerlikon - Kloten - Bassersdorf",
+      "datum": "22.01.1968",
+      "status": "aufgehoben mit Inkrafttreten des vorliegenden Vertrags"
+    },
+    "nachfolgervertrag": null,
+    "querverweise": [
+      {
+        "referenz": "Separate Finanzierungsvereinbarung Mehrkosten Glattalautobahn (Absenkung Autobahnnivelette)",
+        "art": "Folgevertrag",
+        "im_bestand": false
+      }
+    ]
+  },
+  "versionskette": [],
+  "felder": {
+    "vertragsnummer": {
+      "primaer": "90051045",
+      "weitere": [],
+      "alt_systemnummern": [],
+      "qualitaet": "eindeutig",
+      "quelle": "S. 1, Kopf (Vertrag Nr.: 90051045)",
+      "hinweis": null
+    },
+    "vertragstyp": {
+      "ebene_1": "Infrastrukturverträge",
+      "ebene_2": "Zusammenarbeit bei Anlagen",
+      "ebene_3": "Ausführung Projekt mit Betrieb und Unterhalt",
+      "ebene_4": "Kreuzungsbauwerk (Brücke)",
+      "pfad": "Zusammenarbeit bei Anlagen › Ausführung Projekt mit Betrieb und Unterhalt (Vertrag 3&4) › Kreuzungsbauwerk (Brücke)",
+      "vertrag_phase_code": "Vertrag 3&4",
+      "qualitaet": "abgeleitet",
+      "quelle": "abgeleitet aus Titel ('Bau und Bauwerkserhaltung') + Ziff. 3 (Realisierung + Erhalt) + Ziff. 4 (Bahnbrücke) + Ziff. 17 (Erhaltung/Betrieb)",
+      "hinweis": "Vertrag regelt Ausführung (Ziff. 8-16) UND Betrieb/Unterhalt (Ziff. 17-18)"
+    },
+    "anlage": {
+      "wert": "Bahnbrücke «U N20 (A51)» / Überführung UEF SBB Balsberg, Opfikon-Kloten (Stahl-Beton-Verbundtragwerk, Doppelspur, 70m Länge, ca. 16m Breite, Nutzungsdauer 100 Jahre)",
+      "qualitaet": "eindeutig",
+      "quelle": "S. 1, Titel + Ziff. 4 (Gegenstand der Vereinbarung)",
+      "hinweis": null
+    },
+    "bahnlinie": [
+      {
+        "wert": "Linie 752 (Opfikon - Kloten Balsberg)",
+        "qualitaet": "eindeutig",
+        "quelle": "S. 1, Kopf (Strecke: Opfikon - Kloten Balsberg; Linie Nr. / km: 752/8.68)",
+        "hinweis": null
+      }
+    ],
+    "km_von": {
+      "wert": 8.68,
+      "qualitaet": "eindeutig",
+      "quelle": "S. 1, Kopf (752/8.68)",
+      "hinweis": "Punktobjekt"
+    },
+    "km_bis": {
+      "wert": 8.68,
+      "qualitaet": "eindeutig",
+      "quelle": "S. 1, Kopf (752/8.68)",
+      "hinweis": "Punktobjekt"
+    },
+    "vertragspartner": [
+      {
+        "name": "Schweizerische Eidgenossenschaft, vertreten durch Bundesamt für Strassen ASTRA, Strasseninfrastruktur Ost, Filiale Winterthur",
+        "adresse": "Grüzefeldstrasse 41, 8404 Winterthur",
+        "parteityp": "Bund/ASTRA",
+        "qualitaet": "eindeutig",
+        "quelle": "S. 1, Parteienbezeichnung",
+        "hinweis": null
+      }
+    ],
+    "vertragsbeginn": {
+      "wert": null,
+      "qualitaet": "fehlend",
+      "quelle": null,
+      "hinweis": "Unterschriftsdaten handschriftlich (S. 13); Ziff. 29: 'tritt mit der Unterzeichnung durch alle Parteien in Kraft'; Unterzeichnungsorte: Zürich (SBB), Bern (SBB), Winterthur (ASTRA/Otto Noger) – Daten nicht im OCR lesbar"
+    },
+    "vertragsende": {
+      "wert": "100 Jahre (feste Laufzeit)",
+      "art": "Laufzeit_Jahre",
+      "laufzeit_unbestimmt": false,
+      "referenzierter_vertrag": null,
+      "qualitaet": "eindeutig",
+      "quelle": "Ziff. 30 ('Diese Vereinbarung wird für eine feste Laufzeit von 100 Jahren abgeschlossen.')",
+      "hinweis": "Bei Überschreitung: Weiterführung bis neue Vereinbarung; Rückbaukosten nach Erhaltungs-Verteilschlüssel (45/55)"
+    },
+    "periodische_einnahmen": [
+      {
+        "betrag": 7800000,
+        "waehrung": "CHF",
+        "mwst": "exkl. (exkl. WGK 2%; exkl. Vorsteuerkürzung 6.0%/6.3%)",
+        "frequenz": "einmalig",
+        "art": "kostenteiler_anteil",
+        "status": "bedingt",
+        "trigger": "nach Bauvollendung, gegen Vorlage einer Rechnung",
+        "gueltig_ab": null,
+        "gueltig_bis": null,
+        "bedingung": "Vorbehalt SoFi-Mittel + Finanzierungsentscheid ASTRA; bei Projektabbruch trägt verursachende Partei die Kosten (Ziff. 23)",
+        "qualitaet": "eindeutig",
+        "quelle": "Ziff. 15 (Globalbetrag CHF 7.8 Mio., Vorteilsanrechnung EBG Art. 27 + Art. 26 Abs. 2) + Ziff. 16 (Zahlungsfrist 30 Tage)",
+        "hinweis": "Investitionskosten-Anteil ASTRA"
+      },
+      {
+        "betrag": null,
+        "waehrung": "CHF",
+        "mwst": null,
+        "frequenz": "periodisch",
+        "art": "kostenteiler_anteil",
+        "status": "aktiv",
+        "trigger": "ab Inbetriebnahme Bauwerk",
+        "gueltig_ab": null,
+        "gueltig_bis": null,
+        "bedingung": null,
+        "qualitaet": "eindeutig",
+        "quelle": "Ziff. 17 (Investitionsfolgekosten: 55% ASTRA, Zahlungsfrist 30 Tage)",
+        "hinweis": "55% der Instandsetzungs-/Erneuerungskosten durch ASTRA; kein fixer CHF-Betrag, %-Anteil an effektiven Kosten; Zuschläge: 1% Einkaufs-GK + 2% VV-GK + Vorsteuerkürzung"
+      }
+    ],
+    "periodische_ausgaben": [
+      {
+        "betrag": 8000000,
+        "waehrung": "CHF",
+        "mwst": "exkl.",
+        "frequenz": "einmalig",
+        "art": "kostenteiler_anteil",
+        "status": "aktiv",
+        "qualitativ": false,
+        "beschreibung": "SBB-Eigenanteil Investitionskosten (Gesamtkosten CHF 15.8 Mio. ±10% minus ASTRA CHF 7.8 Mio.)",
+        "trigger": null,
+        "gueltig_ab": null,
+        "gueltig_bis": null,
+        "bedingung": null,
+        "qualitaet": "abgeleitet",
+        "quelle": "Ziff. 15 (CHF 15.8 Mio. Gesamtkosten minus CHF 7.8 Mio. ASTRA = CHF 8.0 Mio. SBB)",
+        "hinweis": "interner Eigenanteil – keine Zahlung an Gegenpartei"
+      },
+      {
+        "betrag": null,
+        "waehrung": "CHF",
+        "mwst": null,
+        "frequenz": "periodisch",
+        "art": "kostenteiler_anteil",
+        "status": "aktiv",
+        "qualitativ": false,
+        "beschreibung": "SBB-Anteil 45% der Instandsetzungs-/Erneuerungskosten Bauwerk",
+        "trigger": "ab Inbetriebnahme Bauwerk",
+        "gueltig_ab": null,
+        "gueltig_bis": null,
+        "bedingung": null,
+        "qualitaet": "eindeutig",
+        "quelle": "Ziff. 17 (Verteilschlüssel: SBB 45%, ASTRA 55%; basierend auf Flächenaufteilung 245m² SBB / 295m² ASTRA von 540m² Total)",
+        "hinweis": "interner Eigenanteil – keine Zahlung an Gegenpartei; Anlageteile mit * (Geländer, Kabelkanäle) vollständig SBB"
+      },
+      {
+        "betrag": null,
+        "waehrung": "CHF",
+        "mwst": null,
+        "frequenz": "periodisch (alle 5 Jahre)",
+        "art": "periodisch",
+        "status": "aktiv",
+        "qualitativ": true,
+        "beschreibung": "Inspektion Bauwerk (alle 5 Jahre, zu Lasten des Eigentümers des betreffenden Anlagenteils)",
+        "trigger": "ab Inbetriebnahme",
+        "gueltig_ab": null,
+        "gueltig_bis": null,
+        "bedingung": null,
+        "qualitaet": "eindeutig",
+        "quelle": "Ziff. 17 ('periodisch (alle 5 Jahre) zu inspizieren')",
+        "hinweis": "kein CHF-Betrag; SBB als Eigentümerin (Ziff. 6) trägt Inspektionskosten"
+      }
+    ],
+    "gemeinde": [
+      {
+        "gemeinde": "Kloten",
+        "kanton": "ZH",
+        "ist_vertragspartei": false,
+        "qualitaet": "eindeutig",
+        "quelle": "S. 1, Kopf (Gemeinde: Kloten)",
+        "hinweis": null
+      },
+      {
+        "gemeinde": "Opfikon",
+        "kanton": "ZH",
+        "ist_vertragspartei": false,
+        "qualitaet": "abgeleitet",
+        "quelle": "S. 1, Kopf (Strecke: Opfikon - Kloten Balsberg) + Situationsplan (Gemeinden: Opfikon, Kloten, Zürich)",
+        "hinweis": null
+      }
+    ],
+    "quellenangaben": {
+      "VN": "S. 1, Kopf (90051045)",
+      "An": "S. 1, Titel + Ziff. 4",
+      "BL": "S. 1, Kopf (Linie 752)",
+      "km": "S. 1, Kopf (8.68; Punktobjekt)",
+      "VP": "S. 1, Parteienbezeichnung (ASTRA)",
+      "VB": "nicht lesbar (handschriftlich, S. 13)",
+      "VE": "Ziff. 30 (100 Jahre feste Laufzeit)",
+      "Ein": "Ziff. 15/16 (Invest CHF 7.8 Mio.) + Ziff. 17 (Betrieb 55% ASTRA)",
+      "Aus": "Ziff. 15 (Invest SBB CHF 8.0 Mio.) + Ziff. 17 (Betrieb 45% SBB + Inspektion)",
+      "Gem": "S. 1, Kopf (Kloten) + Strecke (Opfikon)"
+    }
+  },
+  "kostenteiler": [
+    {
+      "bezeichnung": "Investitionskosten Neubau Bahnbrücke U N20 (A51)",
+      "projektphase": "V3_Ausführung",
+      "gesamtkosten": 15800000,
+      "waehrung": "CHF",
+      "kostenbasis": "±10%, exkl. WGK 2%, exkl. MwSt, Preisbasis März 2022, KV vom 08.02.2023",
+      "anteile": [
+        {
+          "traeger": "SBB",
+          "ist_vertragspartei": false,
+          "prozent": null,
+          "betrag": 8000000,
+          "zahlungsrichtung": "SBB_intern",
+          "modus": "einmalig",
+          "trigger": null,
+          "status": "fix"
+        },
+        {
+          "traeger": "ASTRA",
+          "ist_vertragspartei": true,
+          "prozent": null,
+          "betrag": 7800000,
+          "zahlungsrichtung": "an_SBB",
+          "modus": "einmalig",
+          "trigger": "nach Bauvollendung, gegen Rechnung (30 Tage)",
+          "status": "bedingt"
+        }
+      ],
+      "veranlasser_prinzip": true,
+      "beilage_referenz": null,
+      "beilage_fehlt": false,
+      "quelle": "Ziff. 15 + Ziff. 16"
+    },
+    {
+      "bezeichnung": "Investitionsfolgekosten (Instandsetzung/Erneuerung Bauwerk)",
+      "projektphase": "V4_Betrieb",
+      "gesamtkosten": null,
+      "waehrung": "CHF",
+      "kostenbasis": "effektiv, nach Aufwand",
+      "anteile": [
+        {
+          "traeger": "SBB",
+          "ist_vertragspartei": false,
+          "prozent": 45,
+          "betrag": null,
+          "zahlungsrichtung": "SBB_intern",
+          "modus": "periodisch_folgekosten",
+          "trigger": "ab Inbetriebnahme Bauwerk",
+          "status": "fix"
+        },
+        {
+          "traeger": "ASTRA",
+          "ist_vertragspartei": true,
+          "prozent": 55,
+          "betrag": null,
+          "zahlungsrichtung": "an_SBB",
+          "modus": "periodisch_folgekosten",
+          "trigger": "ab Inbetriebnahme Bauwerk, gegen Rechnung (30 Tage)",
+          "status": "fix"
+        }
+      ],
+      "veranlasser_prinzip": true,
+      "beilage_referenz": null,
+      "beilage_fehlt": false,
+      "quelle": "Ziff. 17 (Verteilschlüssel basierend auf Flächenaufteilung: SBB 245m² / ASTRA 295m² von Total 540m²)"
+    }
+  ],
+  "qualitaet": {
+    "anzahl_eindeutig": 8,
+    "anzahl_abgeleitet": 3,
+    "anzahl_fehlend": 1,
+    "anzahl_nicht_anwendbar": 0,
+    "warnungen": [
+      "Vertragsbeginn nicht extrahierbar (Unterschriftsdaten handschriftlich auf S. 13)",
+      "ASTRA-Investitionsanteil unter Vorbehalt SoFi-Mittel und Finanzierungsentscheid",
+      "Anlageteile mit kürzerer Lebensdauer (Geländer*, Kabelkanäle*) vollständig SBB – nicht im 45/55-Teiler",
+      "Separate Finanzierungsvereinbarung Glattalautobahn referenziert, nicht beigefügt",
+      "Vorgängervertrag 90005733 (1968) wird aufgehoben"
+    ],
+    "manuelle_pruefung_empfohlen": true
+  }
+}
