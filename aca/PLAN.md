@@ -93,7 +93,9 @@ Ebene 1: Infrastrukturverträge (fix)
 - [x] Iteration 2: vollständig (880 Zeilen) → alle Kosten korrekt
 - [x] Taxonomie-Validierung bestanden
 - [x] Manuelle Verifikation durch Team → Betriebskosten-Fehler in v1 identifiziert, in v2 behoben
-- [ ] **Ergebnis gegen Masterdatei `Masterdatei H4R.xlsx` prüfen** (Vertrag 90051045 suchen)
+- [x] **Ergebnis gegen Masterdatei geprüft** → 7/10 Match, 1x Extraktion besser als Masterdatei (Brücke vs. Bahnübergang)
+- [x] Masterdatei-Spalten auf JSON-Felder gemappt (33 Spalten → 13 Felder)
+- [ ] **Verprobing gegen 2. LLM: Cortex (SBB-intern)** → Ergebnisse kommen ins Git
 
 ### Phase 3: Weitere Vertragstypen testen (offen)
 - [ ] **Grundstücknutzung** – z.B. aus `PDF Dateien/KBW/DE/90051158` (Wandbemalung/Graffiti)
@@ -185,10 +187,11 @@ aca/
 
 ### Getestete Verträge
 
-| Nr. | Vertrag | Typ | Iteration | Ergebnis |
-|-----|---------|-----|-----------|----------|
-| 1 | 90051045 (ASTRA/SBB Brücke Balsberg) | Zusammenarbeit › V3&4 › KBW Brücke | v1 (gekürzt) | 6 eindeutig, Betriebskosten fehlen |
-| 1 | 90051045 | | v2 (vollständig) | **8 eindeutig**, alle Kosten korrekt |
+| Nr. | Vertrag | Typ | Iteration | LLM | Ergebnis |
+|-----|---------|-----|-----------|-----|----------|
+| 1 | 90051045 (ASTRA/SBB Brücke Balsberg) | Zusammenarbeit › V3&4 › KBW Brücke | v1 (gekürzt) | Claude Sonnet 4 | 6 eindeutig, Betriebskosten fehlen |
+| 1 | 90051045 | | v2 (vollständig) | Claude Sonnet 4 | **8 eindeutig**, alle Kosten korrekt |
+| 1 | 90051045 | | cortex | Cortex (SBB) | ausstehend |
 
 ### Learnings (Pipeline)
 
@@ -196,6 +199,18 @@ aca/
 2. **Volltext:** Immer kompletten Vertragstext übergeben (nie willkürlich kürzen)
 3. **Handschrift:** Vertragsbeginn (Unterschriftsdatum) bleibt `fehlend` – ist erwartetes Verhalten
 4. **Iteratives Feedback:** Verifikation nach Iteration 1 führt zu gezielter Verbesserung
+5. **Datenqualität:** KI-Extraktion kann Fehler in manuell gepflegten Stammdaten finden (Ebene 4: Brücke vs. Bahnübergang)
+
+### Multi-LLM Verprobing
+
+Der gleiche Vertrag (90051045) wird parallel mit einem zweiten LLM extrahiert:
+
+| LLM | Anbieter | Einsatzort | Ergebnis |
+|-----|----------|-----------|----------|
+| Claude Sonnet 4 | Anthropic | Kiro (lokal) | `results/90051045_v2.json` ✅ |
+| Cortex | SBB-intern | SBB-Infrastruktur | `results/90051045_cortex.json` (ausstehend) |
+
+Ziel: Vergleich der Extraktionsqualität zwischen zwei Modellen mit identischem System-Prompt und Input.
 
 ## Offene Entscheidungen
 
