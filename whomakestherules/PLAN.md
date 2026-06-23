@@ -124,22 +124,25 @@ print('✅ Valid OSCAL Catalog')
 ## Arbeitsschritte
 
 ### Phase 1: Matrix parsen (deterministisch)
-- [ ] Excel-Sheet "Bewertungsmatrix" → JSON/YAML mit allen Regeln + Verbindlichkeiten
-- [ ] Mapping: Zeilen → Regel-IDs, Spalten → Kanäle/Transportmittel
-- [ ] Ergebnis: `matrix.json` als Ground Truth
+- [x] Excel-Sheet "Bewertungsmatrix" → Struktur analysiert (48 Zeilen × 26 Spalten)
+- [x] Mapping: Zeilen → Regel-IDs, Spalten → Kanäle/Transportmittel identifiziert
+- [ ] Vollständige `matrix.json` als Ground Truth generieren
 
 ### Phase 2: PDF-Texte extrahieren (deterministisch)
-- [ ] BS-KI_DE.pdf kapitelweise extrahieren (markitdown/pdfplumber)
-- [ ] Kapitel-Nummern den Matrix-Zeilen zuordnen
-- [ ] Pro Regel: wörtliches Zitat aus dem PDF isolieren
+- [x] BS-KI_DE.pdf mit markitdown extrahierbar (3474 Zeilen)
+- [x] Kapitelstruktur identifiziert (Kapitel 2.x = Allgemein, 3.x = Fahrtbezogen)
+- [x] Erstes Kapitel (2.1 Aktuelle Uhrzeit) wörtlich extrahiert und verifiziert
+- [ ] Alle Kapitel systematisch extrahieren
 
-### Phase 3: Rules-Dateien erzeugen
-- [ ] Matrix + PDF-Zitate zusammenführen → eine YAML-Datei pro Regel
-- [ ] Schema validieren
-- [ ] Deterministisch: gleiches Input → gleiches Output (kein LLM nötig für die Extraktion!)
+### Phase 3: OSCAL4Rail Catalog erzeugen
+- [x] OSCAL4Rail-Konzept dokumentiert
+- [x] NIST JSON-Schema v1.1.3 heruntergeladen
+- [x] Erster Control (bs-ki-2.1) als OSCAL Catalog erzeugt
+- [x] Validierung gegen Schema: ✅ bestanden
+- [ ] Alle Controls aus Matrix + PDF zusammenführen
 
 ### Phase 4: Verifikation
-- [ ] Jede Rule-Datei gegen Matrix prüfen (Verbindlichkeiten stimmen)
+- [ ] Jede Rule gegen Matrix prüfen (Verbindlichkeiten stimmen)
 - [ ] Stichproben: Zitate gegen PDF-Original manuell prüfen
 
 ## Offene Entscheidungen (Team)
