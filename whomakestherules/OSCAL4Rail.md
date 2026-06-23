@@ -4,6 +4,8 @@
 
 ## What is OSCAL4Rail?
 
+> Inspired by Arpad Vasarhelyi (Arpad.Vasarhelyi@deutschebahn.com)
+
 OSCAL4Rail is a lightweight profile of the [NIST OSCAL](https://pages.nist.gov/OSCAL/) (Open Security Controls Assessment Language) standard, adapted for railway governance and regulations.
 
 It enables:
