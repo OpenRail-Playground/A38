@@ -131,19 +131,25 @@ print('✅ Valid OSCAL Catalog')
 ### Phase 2: PDF-Texte extrahieren (deterministisch)
 - [x] BS-KI_DE.pdf mit markitdown extrahierbar (3474 Zeilen)
 - [x] Kapitelstruktur identifiziert (Kapitel 2.x = Allgemein, 3.x = Fahrtbezogen)
-- [x] Erstes Kapitel (2.1 Aktuelle Uhrzeit) wörtlich extrahiert und verifiziert
+- [x] 4 Kapitel wörtlich extrahiert und als OSCAL4Rail Controls umgesetzt:
+  - bs-ki-2.1 (Aktuelle Uhrzeit) – Haltestelle + Fahrzeug Innen
+  - bs-ki-2.2 (Name der Haltestelle) – Haltestelle + Daten
+  - bs-ki-2.5 (Ereignisinformationen) – Haltestelle + Fahrzeug Innen + Daten
+  - bs-ki-3.6 (Liniennummer) – alle Kanäle inkl. Fahrzeug Aussen
 - [ ] Alle Kapitel systematisch extrahieren
 
 ### Phase 3: OSCAL4Rail Catalog erzeugen
-- [x] OSCAL4Rail-Konzept dokumentiert
+- [x] OSCAL4Rail-Konzept dokumentiert + benannt
 - [x] NIST JSON-Schema v1.1.3 heruntergeladen
-- [x] Erster Control (bs-ki-2.1) als OSCAL Catalog erzeugt
+- [x] 4 Controls als OSCAL Catalog erzeugt
 - [x] Validierung gegen Schema: ✅ bestanden
+- [x] Versioning & Diff-Strategie definiert (Kapitel-ID = stabiler Anker, nicht Seitenzahl)
 - [ ] Alle Controls aus Matrix + PDF zusammenführen
+- [ ] Nach manueller Verifikation: Automatisierungsscript bauen
 
 ### Phase 4: Verifikation
-- [ ] Jede Rule gegen Matrix prüfen (Verbindlichkeiten stimmen)
-- [ ] Stichproben: Zitate gegen PDF-Original manuell prüfen
+- [ ] 4 Testcases manuell gegen PDF + Matrix prüfen
+- [ ] Erst nach Verifikation → automatisierte Extraktion aller Regeln
 
 ## Offene Entscheidungen (Team)
 
