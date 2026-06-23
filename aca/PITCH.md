@@ -90,22 +90,33 @@ PDF → markitdown (text extraction) → LLM + System Prompt → validated JSON
 
 ## 5. Ausblick / Zukunft (60s)
 
-**Folie:** Zukunftsvision
+**Folie:** Roadmap – von manuell zu automatisch
 
-**Kurzfristig:**
-- Batch-Verarbeitung aller 5.000 Verträge
-- Human-in-the-Loop für unsichere Felder
-- SAP/ContrAct Prefill
+> "Today: one contract, manually verified. Tomorrow:"
 
-**Mittelfristig:**
-- **Asset-Zuordnung:** Verträge automatisch den physischen Bauwerken zuordnen (UUID aus Brücken-Inventar → Vertragsnummer)
-- Vertragsbeziehungsgraph (Dach → Objekt → Nachtrag)
-- Anomalie-Erkennung (fehlende Laufzeiten, widersprüchliche Daten)
+```
+┌─────────────┐     ┌─────────────────┐     ┌──────────────────┐
+│   TODAY     │     │   NEXT          │     │   FUTURE         │
+│             │     │                 │     │                  │
+│ 1 Contract  │ ──► │ Batch 5.000     │ ──► │ Fully automated  │
+│ Manual QA   │     │ Human-in-Loop   │     │ Continuous sync  │
+│ 2 LLMs      │     │ SAP Prefill     │     │ Cross-railway    │
+└─────────────┘     └─────────────────┘     └──────────────────┘
+```
 
-**Langfristig:**
-- Cross-Bahn-Interoperabilität (DB/ÖBB/SBB)
-- **Brücke zu Challenge 1:** Verträge gegen OSCAL4Rail-Regelwerke prüfen
-- Automatische Vertragsentwürfe aus Templates
+**Next (3–6 Monate):**
+- Batch: alle 5.000 Verträge durchlaufen lassen
+- Human-in-the-Loop: nur `abgeleitet`/`fehlend` Felder manuell prüfen
+- SAP/ContrAct Prefill: Eingabemasken vorab befüllen
+
+**Future (>6 Monate):**
+- **Asset-Zuordnung:** Vertrag → physisches Bauwerk (UUID aus Brücken-Inventar)
+- **Automatischer Vertragsbeziehungsgraph:** Dachvertrag → Objektverträge → Nachträge
+- **Neue Verträge:** direkt beim Scan klassifizieren und einpflegen
+- **Cross-Bahn:** gleiches Schema für DB / ÖBB / SBB
+- **Brücke zu Challenge 1:** Verträge gegen OSCAL4Rail-Regelwerke auf Compliance prüfen
+
+> "The goal: every new contract that arrives is automatically classified, extracted, and linked – before a human even opens it."
 
 ---
 
