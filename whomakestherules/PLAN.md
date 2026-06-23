@@ -13,74 +13,112 @@ Jede Regel wird **wörtlich zitiert** aus dem PDF. Die Matrix liefert die Strukt
 | `Matrix_BS-KI_DE.xlsx` (Sheet "Bewertungsmatrix") | Regeln × Kanäle × Transportmittel → v/e/– | **Struktur & Ground Truth** |
 | `BS-KI_DE.pdf` (64 Seiten) | Detaillierte Regeltexte, Definitionen, Beispiele | **Inhalt (wörtlich zitieren)** |
 
-## Output-Struktur (Vorschlag)
+## Output-Struktur
 
 ```
 whomakestherules/
 └── rules/
-    ├── 01-allgemeine-informationen/
-    │   ├── aktuelle-uhrzeit.yaml
-    │   ├── name-haltestelle.yaml
-    │   ├── beschriftung-haltekante.yaml
-    │   ├── wegweisung.yaml
-    │   ├── ereignisinformationen.yaml
-    │   ├── linien-tarifzonen.yaml
-    │   ├── billettbezug.yaml
-    │   ├── kontakt-tu.yaml
-    │   └── passagierrechte.yaml
-    ├── 02-fahrtbezogene-informationen/
-    │   ├── uebersicht-fahrten/
-    │   │   ├── fahrplanzeit.yaml
-    │   │   ├── verkehrsmittelkategorie.yaml
-    │   │   ├── liniennummer.yaml
-    │   │   ├── ziel.yaml
-    │   │   ├── via.yaml
-    │   │   ├── abfahrtsort.yaml
-    │   │   ├── befoerderungshinweise.yaml
-    │   │   ├── angebotshinweise.yaml
-    │   │   ├── infotexte.yaml
-    │   │   └── marketingname.yaml
-    │   ├── informationen-zur-fahrt/
-    │   │   └── ...
-    │   ├── echtzeit/
-    │   │   ├── verspaetung.yaml
-    │   │   ├── ausfaelle-betriebszustandsaenderungen.yaml
-    │   │   ├── zusatzinformationen.yaml
-    │   │   └── reisendenlenkung.yaml
-    │   └── anschluesse/
-    │       └── ...
-    └── schema.yaml          # Schema-Definition für alle Rules
+    ├── bs-ki-de.yaml           # Gesamter Catalog als eine Datei
+    ├── bs-ki-fr.yaml           # Französische Version (optional)
+    └── schema/
+        └── oscal-catalog.json  # NIST JSON-Schema zur Validierung
 ```
 
-## Rule-Format (je Datei)
+**Hinweis:** Ein OSCAL Catalog ist eine Datei mit verschachtelten Groups/Controls. Wir splitten NICHT in eine Datei pro Regel, sondern halten alles in einem Catalog – das ist OSCAL-konform und validierbar.
+
+## Format-Entscheidung: Leichtgewichtiges OSCAL
+
+**Entscheidung:** Wir nutzen ein OSCAL-kompatibles Catalog-Format, halten es aber leichtgewichtig und erweiterbar für weitere Regelwerke (TSI, Ril 420, etc.).
+
+**Warum OSCAL:**
+- Offizielles JSON-Schema von NIST zur Validierung (YAML validierbar über JSON-Schema)
+- Standardisiert → interoperabel mit anderen Tools/Bahnen
+- Erweiterbar über `props` und `parts` ohne Schema-Bruch
+
+**Warum leichtgewichtig:**
+- Nur Catalog-Layer (kein Profile/Assessment für den Hackathon)
+- Minimale Pflichtfelder, Rest optional
+- Ein Catalog pro Regelwerk, ein Control pro Regel
+
+### Catalog-Struktur (1 Datei = 1 Regelwerk)
 
 ```yaml
-id: bs-ki-2.1
-title: "Aktuelle Uhrzeit"
-source:
-  document: "BS-KI_DE.pdf"
-  version: "1.0"
-  chapter: "2.1"
-  page: 16
-quote: |
-  «Wörtliches Zitat aus dem PDF – der vollständige Regeltext»
-applicability:
-  haltestelle:
-    bahn: verbindlich
-    bus_tram_metro: empfohlen
-    schiff: empfohlen
-    seilbahn: empfohlen
-  fahrzeug_aussen:
-    front: null
-    seite: null
-    heck: null
-  fahrzeug_innen:
-    bahn: verbindlich
-    bus_tram_metro: verbindlich
-    schiff: verbindlich
-    seilbahn: null
-  daten:
-    einlieferung: null
+catalog:
+  uuid: "<UUIDv4>"
+  metadata:
+    title: "Branchenstandard Kundeninformation (BS-KI)"
+    published: "2026-01-01T00:00:00Z"
+    last-modified: "2026-06-23T10:00:00Z"
+    version: "1.0"
+    oscal-version: "1.1.3"
+    props:
+      - name: country
+        value: "CH"
+      - name: language
+        value: "de"
+      - name: source-url
+        value: "https://www.oev-info.ch/de/branchenstandard/nationaler-branchenstandard-kundeninformation"
+  groups:
+    - id: bs-ki-2
+      title: "Allgemeine Informationsinhalte der Kundeninformation"
+      controls:
+        - id: bs-ki-2.1
+          title: "Aktuelle Uhrzeit"
+          parts:
+            - name: statement
+              prose: |
+                «Wörtliches Zitat aus dem PDF – vollständiger Regeltext»
+            - name: guidance
+              prose: "Ergänzende Hinweise aus dem PDF (wenn vorhanden)"
+          props:
+            - name: source-chapter
+              value: "2.1"
+            - name: source-page
+              value: "16"
+            # Applicability als Props – je Kombination Kanal×Transportmittel
+            - name: applicability
+              value: "verbindlich"
+              class: "haltestelle.bahn"
+            - name: applicability
+              value: "empfohlen"
+              class: "haltestelle.bus-tram-metro"
+            - name: applicability
+              value: "verbindlich"
+              class: "fahrzeug-innen.bahn"
+```
+
+### Erweiterbarkeit
+
+Weitere Regelwerke werden als eigene Catalogs angelegt:
+
+```
+rules/
+├── bs-ki-de.yaml           # Schweizer Branchenstandard KI
+├── bs-ki-fr.yaml           # Gleicher Standard, Französisch
+├── tsi-tat.yaml            # EU TSI Telematics (Zukunft)
+└── schema/
+    └── oscal-catalog.json  # NIST JSON-Schema zur Validierung
+```
+
+Cross-Referenzen zwischen Catalogs → später über OSCAL Control Mapping.
+
+### Validierung
+
+```bash
+# OSCAL JSON-Schema von NIST herunterladen
+curl -o rules/schema/oscal-catalog.json \
+  https://raw.githubusercontent.com/usnistgov/OSCAL/main/json/schema/oscal_catalog_schema.json
+
+# Validieren (Python jsonschema oder ajv)
+python3 -c "
+import yaml, jsonschema, json
+with open('rules/bs-ki-de.yaml') as f:
+    catalog = yaml.safe_load(f)
+with open('rules/schema/oscal-catalog.json') as f:
+    schema = json.load(f)
+jsonschema.validate(catalog, schema)
+print('✅ Valid OSCAL Catalog')
+"
 ```
 
 ## Arbeitsschritte
@@ -106,11 +144,11 @@ applicability:
 
 ## Offene Entscheidungen (Team)
 
-- [ ] **Format:** YAML vs. OSCAL-YAML vs. JSON? → Vorschlag: erst YAML, dann OSCAL-Mapping
-- [ ] **Granularität:** Eine Datei pro Matrix-Zeile? Oder pro Kapitel?
+- [x] **Format:** Leichtgewichtiges OSCAL Catalog (YAML, validierbar gegen NIST JSON-Schema)
+- [x] **Granularität:** Ein Catalog pro Regelwerk, ein Control pro Regel (Matrix-Zeile)
 - [ ] **Sprachen:** Nur DE oder auch FR/IT parallel?
 - [ ] **Tooling:** Python-Script oder Pipeline?
-- [ ] **Wo leben die Rules?** `rules/` im Repo-Root oder unter `whomakestherules/rules/`?
+- [x] **Wo leben die Rules?** `whomakestherules/rules/`
 
 ## Aufgabenverteilung (Vorschlag)
 
