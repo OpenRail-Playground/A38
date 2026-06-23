@@ -38,7 +38,7 @@
 
 ## 2. Problem (30s)
 
-- 5.000+ Infrastrukturverträge (PDF, Scans, handschriftlich)
+- 10.000+ Infrastrukturverträge (PDF, Scans, handschriftlich)
 - Manuelle Erfassung in SAP/ContrAct
 - 13 Felder pro Vertrag + Kostenteiler + Abhängigkeiten
 - Fehleranfällig: wir haben im Test einen Fehler in der Masterdatei gefunden
