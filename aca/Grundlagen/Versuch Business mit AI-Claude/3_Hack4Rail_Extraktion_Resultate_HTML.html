@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Hack4Rail – KI-Vertragsextraktion | Batch 1–5</title>
+<style>
+* { box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; font-size: 13px; background: #f0f0f0; color: #1a1a1a; margin: 0; padding: 20px; }
+.container { max-width: 2400px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,.12); padding: 30px; }
+h1 { margin: 0 0 4px; color: #c00; font-size: 22px; }
+.subtitle { color: #666; margin: 0 0 16px; font-size: 13px; }
+.stats { display: flex; gap: 12px; flex-wrap: wrap; margin: 0 0 18px; }
+.stat { background: #f8f8f8; border: 1px solid #e0e0e0; border-radius: 6px; padding: 9px 14px; min-width: 90px; }
+.stat strong { display: block; font-size: 19px; }
+.stat span { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: .4px; }
+.legrow { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; font-size: 12px; margin: 0 0 10px; }
+.badge { display: inline-block; width: 13px; height: 13px; border-radius: 3px; vertical-align: middle; }
+.b-ok { background: #c8e6c9; border: 1px solid #81c784; }
+.b-warn { background: #fff9c4; border: 1px solid #f9a825; }
+.b-miss { background: #ffcdd2; border: 1px solid #e57373; }
+.li { display: flex; align-items: center; gap: 5px; }
+.akey { background: #fffde7; border: 1px solid #ffe082; border-radius: 5px; padding: 9px 14px; margin: 0 0 16px; font-size: 11px; display: flex; flex-wrap: wrap; gap: 5px 18px; line-height: 1.8; }
+.akey strong { color: #e65100; display: block; margin-bottom: 2px; }
+.akey span b { color: #555; }
+.tw { overflow-x: auto; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 22px; }
+table { border-collapse: collapse; width: 100%; min-width: 2200px; font-size: 11.5px; }
+th { background: #b71c1c; color: #fff; padding: 9px 10px; text-align: left; white-space: nowrap; border-right: 1px solid rgba(255,255,255,.2); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; vertical-align: bottom; }
+th small { display: block; font-weight: 400; text-transform: none; letter-spacing: 0; color: rgba(255,255,255,.75); }
+th:last-child { border-right: none; }
+td { padding: 7px 10px; border: 1px solid #e8e8e8; vertical-align: top; line-height: 1.45; }
+tr:nth-child(even) td { background: #fafafa; }
+tr:hover td { background: #fff3e0 !important; }
+.batch-header td { background: #37474f !important; color: white !important; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; padding: 5px 10px; }
+.rn { background: white !important; font-weight: 700; color: #b71c1c; text-align: center; font-size: 13px; }
+.ok { background: #e8f5e9 !important; }
+.wn { background: #fffde7 !important; border-left: 3px solid #f9a825; }
+.ms { background: #ffebee !important; color: #bbb; font-style: italic; font-size: 11px; }
+.vn { font-family: 'Courier New', monospace; font-size: 11px; background: #e8eaf6; padding: 2px 6px; border-radius: 3px; color: #283593; display: inline-block; }
+.vt-za { background: #e8f4fd !important; }
+.vt-gn { background: #edf7ed !important; }
+.vt-gb { background: #fef3e8 !important; }
+.tb { display: inline-block; padding: 2px 7px; border-radius: 3px; font-size: 10.5px; font-weight: 700; white-space: nowrap; }
+.tb-za { background: #bbdefb; color: #0d47a1; }
+.tb-gn { background: #c8e6c9; color: #1b5e20; }
+.tb-gb { background: #ffe0b2; color: #bf360c; }
+.vtpath { display: block; font-size: 10px; color: #777; margin-top: 3px; line-height: 1.4; }
+.vtpath strong { color: #444; }
+.src { font-size: 10.5px; line-height: 1.7; background: #f7f7f7 !important; color: #444; min-width: 220px; }
+.src b { color: #666; font-size: 10px; min-width: 28px; display: inline-block; }
+.src .inf { color: #e65100; font-style: italic; }
+.src .nd { color: #ccc; }
+.obs { background: #e3f2fd; border-left: 4px solid #1565c0; padding: 22px; border-radius: 0 6px 6px 0; margin-top: 10px; }
+.obs h2 { margin: 0 0 14px; color: #1565c0; font-size: 15px; }
+.og { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.os h3 { font-size: 12.5px; margin: 0 0 8px; color: #1a1a1a; border-bottom: 1px solid #bbdefb; padding-bottom: 4px; }
+.os h3.b3 { color: #b71c1c; border-bottom-color: #ef9a9a; margin-top: 18px; }
+.os ul { margin: 0; padding-left: 16px; }
+.os li { margin: 5px 0; }
+.chip { display: inline-block; padding: 1px 6px; border-radius: 10px; font-size: 9.5px; font-weight: 700; margin-left: 4px; vertical-align: middle; }
+.cn { background: #4caf50; color: #fff; }
+.cc { background: #ff9800; color: #fff; }
+.ca { background: #f44336; color: #fff; }
+.fn { font-size: 11px; color: #666; }
+.footer { margin-top: 16px; color: #aaa; font-size: 10.5px; border-top: 1px solid #eee; padding-top: 10px; }
+.alert { background: #e8f5e9; border-left: 4px solid #43a047; padding: 10px 16px; border-radius: 0 5px 5px 0; font-size: 12px; margin: 0 0 18px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>🚂 Hack4Rail – KI-Vertragsextraktion</h1>
+<p class="subtitle">Batch 1–5 · 28 Verträge · 13 Felder (inkl. Vertragstyp + Quellenangaben) · Beträge aus Sicht SBB</p>
+
+<div class="alert">✅ <strong>Batch 5 ergänzt:</strong> 4 Vereinbarungen 2025 (Zeilen 25–28): Bahnbrücke «Unterführung Usterstrasse» Wetzikon, Ersatzneubau Brücke über die Steinach, Rückbau 15kV-Speiseleitung «Sedel» (ASTRA/Bypass Luzern), Leitungsverlegung MSZW Abschnitt 3 (wwb). Neu: <strong>Bahntechnik/Fahrstrom</strong> (Speiseleitung) als 12. Ebene-4-Typ · <strong>Rückbau als Vertragszweck</strong> · <strong>Bund/ASTRA</strong>-Partei · <strong>Kostenträger ≠ Vertragspartei</strong> · <strong>Kostenteiler in (fehlender) Beilage</strong>. <strong>28 / 53</strong> Verträge erfasst.</div>
+
+<div class="stats">
+  <div class="stat"><strong style="color:#388e3c">192</strong><span>✅ Eindeutig (62%)</span></div>
+  <div class="stat"><strong style="color:#f57f17">62</strong><span>⚠️ Abgeleitet (20%)</span></div>
+  <div class="stat"><strong style="color:#c62828">54</strong><span>❌ Fehlend/n.a. (18%)</span></div>
+  <div class="stat"><strong>28</strong><span>Verträge</span></div>
+  <div class="stat"><strong>12</strong><span>Typen (Ebene 4)</span></div>
+  <div class="stat"><strong>1926–2025</strong><span>Zeitraum</span></div>
+</div>
+
+<div class="legrow">
+  <strong>Extraktionsqualität:</strong>
+  <div class="li"><span class="badge b-ok"></span> Eindeutig</div>
+  <div class="li"><span class="badge b-warn"></span> Abgeleitet</div>
+  <div class="li"><span class="badge b-miss"></span> Nicht im Dokument</div>
+  &nbsp;|&nbsp;
+  <strong>Vertragstyp:</strong>
+  <span class="tb tb-za">Zusammenarbeit bei Anlagen</span>
+  <span class="tb tb-gn">Grundstücknutzung › Nutzungsvertrag</span>
+  <span class="tb tb-gb">Grundstücknutzung › Bauten Dritter</span>
+  &nbsp;<em style="font-size:11px;color:#999">(Ebene 1 = «Infrastrukturverträge» für alle)</em>
+</div>
+
+<div class="akey">
+  <strong>Abkürzungen Quellenangaben:</strong>
+  <span><b>VN</b> Vertragsnummer</span><span><b>An</b> Anlage</span><span><b>BL</b> Bahnlinie</span><span><b>km</b> km von/bis</span><span><b>VP</b> Vertragspartner</span><span><b>VB</b> Vertragsbeginn</span><span><b>VE</b> Vertragsende</span><span><b>Ein</b> Period. Einnahmen</span><span><b>Aus</b> Period. Ausgaben</span><span><b>Gem</b> Gemeinde</span>
+  &nbsp;·&nbsp;<span style="color:#e65100"><em>Orange Kursiv = erschlossen/abgeleitet</em></span>
+</div>
+
+<div class="tw">
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>Vertragsnummer</th>
+  <th>Vertragstyp <small>Ebene 2 › 3 › 4</small></th>
+  <th>Anlage</th>
+  <th>Bahnlinie</th>
+  <th>km von</th>
+  <th>km bis</th>
+  <th>Vertragspartner (extern)</th>
+  <th>Vertragsbeginn</th>
+  <th>Vertragsende / -dauer</th>
+  <th>Period. Einnahmen (SBB)</th>
+  <th>Period. Ausgaben (SBB)</th>
+  <th>Gemeinde</th>
+  <th>Quellenangaben <small>je Feld</small></th>
+</tr>
+</thead>
+<tbody>
+
+<!-- ===== BATCH 1 ===== -->
+<tr class="batch-header"><td colspan="14">BATCH 1 — 10 Verträge (Docs 1–10)</td></tr>
+
+<tr>
+  <td class="rn">1</td>
+  <td class="ok"><span class="vn">0400-2008-0044</span></td>
+  <td class="vt-gb"><span class="tb tb-gb">Bauten Dritter</span><span class="vtpath">Grundstücknutzung › Bauten Dritter › <strong>Anker</strong></span></td>
+  <td class="ok">Erdanker Baugrubensicherung «Wanne West» Tunnel Hausmatt, Olten</td>
+  <td class="wn">Strecke 410 ¹</td>
+  <td class="wn">40.320 ²</td>
+  <td class="wn">40.445 ²</td>
+  <td class="ok">Kanton Solothurn, Bau- und Justizdepartement, 4509 Solothurn</td>
+  <td class="ok">03.06.2008</td>
+  <td class="ms">Nicht angegeben</td>
+  <td class="wn">Fr. 5'000.– <em>einmalig</em> ³</td>
+  <td class="ms">—</td>
+  <td class="ok">Olten SO</td>
+  <td class="src"><b>VN:</b> Deckblatt, ContrAct-Box (handschr.)<br><b>An:</b> S. 1, Titel<br><b>BL:</b> <span class="inf">nicht im Dok.; aus Paralleldok. erschlossen ¹</span><br><b>km:</b> <span class="inf">Situationsplan Beilage S. 5 ²</span><br><b>VP:</b> S. 1, Parteienbezeichnung<br><b>VB:</b> S. 4, Ziff. 12 Unterzeichnung<br><b>VE:</b> <span class="nd">nicht vorhanden</span><br><b>Ein:</b> S. 2, Ziff. 4 «Vergütung»<br><b>Gem:</b> S. 1 + Ziff. 8 (GB Olten Nr. 4223)</td>
+</tr>
+
+<tr>
+  <td class="rn">2</td>
+  <td class="ok"><span class="vn">0400-2010-0080</span></td>
+  <td class="vt-gb"><span class="tb tb-gb">Bauten Dritter</span><span class="vtpath">Grundstücknutzung › Bauten Dritter › <strong>Anker</strong></span></td>
+  <td class="ok">Erdanker Baugrubensicherung ERO Kantonsstr. H5b, Trassee Olten Ost</td>
+  <td class="ok">Strecke 410</td>
+  <td class="ok">40.585</td>
+  <td class="ok">40.795</td>
+  <td class="ok">Kanton Solothurn, Bau- und Justizdepartement, 4509 Solothurn</td>
+  <td class="ok">15.11.2010</td>
+  <td class="ms">Nicht angegeben</td>
+  <td class="wn">CHF 2'320.– + MWST <em>einmalig</em> ³</td>
+  <td class="ms">—</td>
+  <td class="ok">Olten SO</td>
+  <td class="src"><b>VN:</b> S. 1, Kopfzeile<br><b>An:</b> S. 1, Titel<br><b>BL:</b> S. 1, Kopfzeile (DfA-Strecke: 410)<br><b>km:</b> S. 1, Kopfzeile (Bahn-km: 40.585–40.795)<br><b>VP:</b> S. 1, Parteienbezeichnung<br><b>VB:</b> S. 1, Kopfzeile (gültig ab: 15.11.2010)<br><b>VE:</b> <span class="nd">nicht vorhanden</span><br><b>Ein:</b> S. 2, Ziff. 4 «Vergütung»<br><b>Gem:</b> S. 1, Kopfzeile (Gemeinde: Olten)</td>
+</tr>
+
+<tr>
+  <td class="rn">3</td>
+  <td class="ok"><span class="vn">0400-1926-0003</span></td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Ausführung Projekt mit B+U (3&amp;4) › <strong>Bahnhof</strong></span></td>
+  <td class="ok">Haltestelle Algetshausen-Henau (Errichtung + Betrieb)</td>
+  <td class="ok">Linie St. Gallen–Winterthur</td>
+  <td class="ok">103.4</td>
+  <td class="ms">— (Punkt)</td>
+  <td class="ok">Gemeinderat Henau, Kanton SG (für DV Henau, Algetshausen, Oberstetten)</td>
+  <td class="ok">15.09.1926</td>
+  <td class="ok">Kündbar: 4 Monate auf Schluss Fahrplanperiode</td>
+  <td class="ms">—</td>
+  <td class="ms">—</td>
+  <td class="ok">Henau (heute Uzwil) SG</td>
+  <td class="src"><b>VN:</b> S. 1, oben rechts (handschr.)<br><b>An:</b> S. 1, Titel («betreffend die Errichtung...»)<br><b>BL:</b> Art. 1 (Linie St. Gallen – Winterthur)<br><b>km:</b> Art. 1 («bei km 103,4»)<br><b>VP:</b> S. 1, Parteienbezeichnung<br><b>VB:</b> S. 1, Datum («Vom 15. September 1926»)<br><b>VE:</b> Art. 7 (Kündigung)<br><b>Ein/Aus:</b> <span class="nd">nicht vorhanden</span><br><b>Gem:</b> S. 1, Parteienbezeichnung</td>
+</tr>
+
+<tr>
+  <td class="rn">4</td>
+  <td class="ok"><span class="vn">0400-1949-0001</span></td>
+  <td class="vt-gn"><span class="tb tb-gn">Nutzungsvertrag</span><span class="vtpath">Grundstücknutzung › Nutzungsverträge › <strong>Flächennutzung</strong></span></td>
+  <td class="ok">Pflanzbeschränkung / Waldbewirtschaftungsbeschränkung, Grundstück I.R. Nr. 875</td>
+  <td class="ok">Strecke Villnachern–Schinznach Dorf</td>
+  <td class="ok">36.540</td>
+  <td class="ok">36.600</td>
+  <td class="ok">Ortsbürgergemeinde Villnachern, Kanton AG</td>
+  <td class="ok">08.12.1949</td>
+  <td class="ok">Unbestimmte Zeit</td>
+  <td class="ms">—</td>
+  <td class="wn">Fr. 158.80 <em>einmalig</em> ³</td>
+  <td class="ok">Villnachern AG</td>
+  <td class="src"><b>VN:</b> Deckblatt S. 1, ContrAct-Box<br><b>An:</b> Deckblatt S. 1 + Vertrag S. 2 Titel<br><b>BL:</b> Deckblatt S. 1 (SBB-Strecke)<br><b>km:</b> Deckblatt S. 1 (36.540–36.600)<br><b>VP:</b> Deckblatt S. 1, Partner<br><b>VB:</b> Deckblatt S. 1 (In Kraft: 08.12.1949)<br><b>VE:</b> Deckblatt S. 1 («unbestimmte Zeit»)<br><b>Aus:</b> Vertrag S. 3, Art. 5 (Fr. 158.80)<br><b>Gem:</b> Deckblatt S. 1 (Politische Gemeinde: Villnachern)</td>
+</tr>
+
+<tr>
+  <td class="rn">5</td>
+  <td class="ok"><span class="vn">0500-1995-0005</span></td>
+  <td class="vt-gb"><span class="tb tb-gb">Bauten Dritter</span><span class="vtpath">Grundstücknutzung › Bauten Dritter › <strong>Kleinbauten</strong></span></td>
+  <td class="ok">Elektrisch beheizter Verkehrsspiegel auf Stützmauer Bachstrasse, Bf. St. Fiden</td>
+  <td class="ok">Strecke St. Gallen St. Fiden–St. Gallen</td>
+  <td class="ok">78.527</td>
+  <td class="ok">78.527</td>
+  <td class="ok">Stadtverwaltung St. Gallen, Tiefbauamt, 9000 St. Gallen</td>
+  <td class="ok">01.07.1995</td>
+  <td class="ok">Unbestimmte Zeit; Kündigung 1 Monat schriftlich</td>
+  <td class="ok">Fr. 210.– p.a. (Energiepauschale, jährlich voraus)</td>
+  <td class="ms">—</td>
+  <td class="ok">St. Gallen SG</td>
+  <td class="src"><b>VN:</b> Deckblatt S. 1, ContrAct-Box<br><b>An:</b> Ziff. 1 «Gegenstand», S. 2<br><b>BL:</b> Deckblatt S. 1 (SBB-Strecke)<br><b>km:</b> Deckblatt S. 1 (78.527 rdB)<br><b>VP:</b> Deckblatt S. 1, Partner<br><b>VB:</b> Deckblatt S. 1 (In Kraft: 01.07.1995)<br><b>VE:</b> Ziff. 3 «Hinfall», S. 2<br><b>Ein:</b> Ziff. 9 «Weitere Bestimmungen», S. 4 + Ziff. 1 «FC-113»<br><b>Gem:</b> Deckblatt S. 1 (Politische Gemeinde: St. Gallen)</td>
+</tr>
+
+<tr>
+  <td class="rn">6</td>
+  <td class="ok"><span class="vn">0500-2004-0036</span></td>
+  <td class="vt-gn"><span class="tb tb-gn">Nutzungsvertrag</span><span class="vtpath">Grundstücknutzung › Nutzungsverträge › <strong>Flächennutzung</strong></span></td>
+  <td class="ok">Weiterbestand und Benützung Rheinkiesgeleise (Objekt P 191)</td>
+  <td class="wn">Strecke 24 ⁴</td>
+  <td class="ms">— ⁵</td>
+  <td class="ms">— ⁵</td>
+  <td class="ok">Ortsgemeinde Buchs, 9471 Buchs SG</td>
+  <td class="ok">19.02.2002</td>
+  <td class="ok">Bis 31.12.2026 (25 J.); Kündigung 6 Monate vor Jahresende</td>
+  <td class="ms">—</td>
+  <td class="ok">Fr. 300.– p.a. (an Ortsgemeinde; zahlbar 30. Nov.)</td>
+  <td class="ok">Buchs SG</td>
+  <td class="src"><b>VN:</b> Deckblatt S. 1, ContrAct-Header (1974-Dok.)<br><b>An:</b> Vereinbarung 2002, Ziff. 1 (S. 7)<br><b>BL:</b> <span class="inf">Deckblatt Stempel «Strecke 24» ⁴</span><br><b>km:</b> <span class="nd">nicht vorhanden ⁵</span><br><b>VP:</b> Vereinbarung 2002, Parteienbezeichnung (S. 7)<br><b>VB:</b> Vereinbarung 2002, Unterzeichnungszeile (S. 7)<br><b>VE:</b> Vereinbarung 2002, Ziff. 2 (S. 7)<br><b>Aus:</b> Vereinbarung 2002, Ziff. 5 (S. 7, Fr. 300.–)<br><b>Gem:</b> Vereinbarung 2002, Parteienbezeichnung (S. 7)</td>
+</tr>
+
+<tr>
+  <td class="rn">7</td>
+  <td class="ok"><span class="vn">0400-1995-0008</span></td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Ausführung Projekt (Vertrag 3) › <strong>Bahnhof</strong></span></td>
+  <td class="ok">Zusammenarbeit Bau Bahnhof Turgi – Investitionskostenaufteilung</td>
+  <td class="ms">—</td>
+  <td class="ms">—</td>
+  <td class="ms">—</td>
+  <td class="ok">Kanton Aargau (Regierungsrat), 5000 Aarau</td>
+  <td class="ok">20.03.1995</td>
+  <td class="ok">Unbestimmte Zeit; erstmals kündbar nach 25 J.; Frist 2 Jahre</td>
+  <td class="ok">Abschlagszahlungen p.a. Kt. AG (40%; max. Fr. 16'100'000.–)</td>
+  <td class="ms">—</td>
+  <td class="ok">Turgi AG</td>
+  <td class="src"><b>VN:</b> S. 1, oben rechts (handschr.)<br><b>An:</b> S. 1, Titel<br><b>BL/km:</b> <span class="nd">nicht vorhanden</span><br><b>VP:</b> S. 1, Parteienbezeichnung<br><b>VB:</b> S. 5, Unterzeichnung (Zürich 20.3.95; Aarau 2.8.95)<br><b>VE:</b> S. 4, Ziff. 4 «Vertragsdauer»<br><b>Ein:</b> S. 3, Ziff. 1.3 + Ziff. 1.4<br><b>Gem:</b> S. 2, Einleitung («Bahnhof Turgi»)</td>
+</tr>
+
+<tr>
+  <td class="rn">8</td>
+  <td class="ok"><span class="vn">0400-2010-0041</span></td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Vorstudie (Vertrag 1) › <strong>Bahnhof</strong></span></td>
+  <td class="ok">Finanzierung Studie S-Bahn Bern 2. Teilergänzung – Perronverlängerungen Horizont 2014</td>
+  <td class="ok">Strecke 250 (Bern–Fribourg)</td>
+  <td class="ok">72.214</td>
+  <td class="ok">84.073</td>
+  <td class="ok">Kanton Freiburg, Amt für Verkehr und Energie, 1701 Fribourg</td>
+  <td class="ok">22.06.2010</td>
+  <td class="ok">Bis Abschluss Studie (Schlussabrechnung 31.12.2010)</td>
+  <td class="ok">80% Studienkosten halbjährlich; Kostendach CHF 80'000.–</td>
+  <td class="ms">—</td>
+  <td class="wn">Diverse: Flamatt, Wünnewil, Schmitten, Düdingen ⁶</td>
+  <td class="src"><b>VN:</b> S. 1, Kopfzeile<br><b>An:</b> S. 1, Titel<br><b>BL:</b> S. 1, Kopfzeile (DfA-Strecke: 250)<br><b>km:</b> S. 1, Kopfzeile (km: 72.214–84.073)<br><b>VP:</b> S. 1, Parteienbezeichnung<br><b>VB:</b> S. 1 («Gültig ab 22. Juni 2010»)<br><b>VE:</b> Art. 6, Ziff. 6.1, S. 4<br><b>Ein:</b> Art. 5, Ziff. 5.2 + 5.6, S. 3<br><b>Gem:</b> Art. 2, Ziff. 2.2, S. 2 ⁶</td>
+</tr>
+
+<tr>
+  <td class="rn">9</td>
+  <td class="ok"><span class="vn">0600-1964-0003</span></td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Ausführung Projekt mit B+U (3&amp;4) › <strong>Öff. Verkehrswege ohne Kreuzung</strong></span></td>
+  <td class="ok">Personenunterführung Station Immensee km 0.278</td>
+  <td class="wn">SBB-Kreis II, Station Immensee ⁷</td>
+  <td class="ok">0.278</td>
+  <td class="ok">0.278</td>
+  <td class="ok">Bezirksrat Küssnacht a/R., Kanton SZ</td>
+  <td class="ok">10.11.1964</td>
+  <td class="ms">Nicht angegeben</td>
+  <td class="ms">—</td>
+  <td class="wn">Unterhalt Unterführungsteil anteilig ⁸ (kein CHF-Betrag)</td>
+  <td class="ok">Küssnacht a/R. SZ</td>
+  <td class="src"><b>VN:</b> S. 1, oben links (handschr.)<br><b>An:</b> S. 1, Titel<br><b>BL:</b> <span class="inf">S. 1, Kopfzeile («SBB-Kreis II, Station Immensee») ⁷</span><br><b>km:</b> S. 1, Kopfzeile (km 0.278)<br><b>VP:</b> S. 1, Parteienbezeichnung<br><b>VB:</b> S. 2, Unterzeichnungszeile (10. November 1964)<br><b>VE:</b> <span class="nd">nicht vorhanden</span><br><b>Aus:</b> Ziff. 3, S. 1 ⁸<br><b>Gem:</b> S. 1, Kopfzeile (Gemeinde: Küssnacht a/R.)</td>
+</tr>
+
+<tr>
+  <td class="rn">10</td>
+  <td class="ok"><span class="vn">0660-1970-0001</span></td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Ausführung Projekt mit B+U (3&amp;4) › <strong>Kreuzungsbauwerk (Brücke)</strong></span></td>
+  <td class="ok">Strassenunterführung km 7.108, Strecke Birrfeld-Othmarsingen</td>
+  <td class="ok">Strecke Birrfeld–Othmarsingen</td>
+  <td class="ok">7.108</td>
+  <td class="ok">7.108</td>
+  <td class="ok">Kanton Aargau, Kant. Baudirektion, 5000 Aarau</td>
+  <td class="ok">30.01.1970</td>
+  <td class="ms">Nicht angegeben</td>
+  <td class="ms">—</td>
+  <td class="wn">Unterhalt Unterführungsbauwerk (kein CHF-Betrag) ⁸</td>
+  <td class="ok">Brunegg AG</td>
+  <td class="src"><b>VN:</b> S. 1, oben links (handschr.)<br><b>An:</b> S. 1, Titel<br><b>BL:</b> S. 1, Kopfzeile + Titel<br><b>km:</b> S. 1, Kopfzeile + Titel (km 7.108)<br><b>VP:</b> S. 1, Parteienbezeichnung<br><b>VB:</b> S. 2, Unterzeichnung (30. Januar 1970)<br><b>VE:</b> <span class="nd">nicht vorhanden</span><br><b>Aus:</b> Art. 4, S. 1–2 ⁸<br><b>Gem:</b> S. 1, Kopfzeile + Art. 1</td>
+</tr>
+
+<!-- ===== BATCH 2 ===== -->
+<tr class="batch-header"><td colspan="14">BATCH 2 — 6 PDFs hochgeladen (Zeilen 11–16) · Neu: Mehrparteienvertrag · Vertragsbeilagen ohne ContrAct-Nr. · Nachtrag-Versionierung</td></tr>
+
+<tr>
+  <td class="rn">11</td>
+  <td class="ok"><span class="vn">0400-1971-0011</span></td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Ausführung Projekt mit B+U (3&amp;4) › <strong>Bahnhof (WC)</strong></span></td>
+  <td class="ok">Bau, Unterhalt und Benützung Abortanlage (WC), Station Mitlödi <em style="font-size:10px;color:#888">(inkl. Nachtrag I, 28.05.1990)</em></td>
+  <td class="ms">—</td>
+  <td class="ms">—</td>
+  <td class="ms">—</td>
+  <td class="ok">Gemeinde Mitlödi (Gemeinderat)</td>
+  <td class="ok">28.10.1971</td>
+  <td class="ok">Kündbar: 6 Monate (SBB oder Gemeinde), Art. 11</td>
+  <td class="wn">Einnahmen Abortkabinen; nach Nachtrag 1990: <em>gehen an Gemeinde</em> ⁹</td>
+  <td class="wn">Heizung (Zentralheizung) + Brandversicherung zu Lasten SBB; kein CHF-Betrag ⁸</td>
+  <td class="ok">Mitlödi GL</td>
+  <td class="src"><b>VN:</b> S. 1, oben rechts (handschr.)<br><b>An:</b> S. 1, Titel («Bau, Unterhalt und Benützung der Abortanlage...»)<br><b>BL/km:</b> <span class="nd">nicht vorhanden (SBB Bauabt. III, Zürich)</span><br><b>VP:</b> S. 1, Parteienbezeichnung<br><b>VB:</b> S. 3, Art. 13 Unterzeichnung (28. Oktober 1971)<br><b>VE:</b> S. 3, Art. 11 (Kündigung 6 Monate)<br><b>Ein:</b> S. 3, Art. 10 (Gebühren); Nachtrag I S. 4, Art. 10 neu (Einnahmen → Gemeinde)<br><b>Aus:</b> S. 2, Art. 5 (Heizung) + Art. 6 (Brandversicherung)<br><b>Gem:</b> S. 1, Parteienbezeichnung + Art. 13 (Mitlödi)</td>
+</tr>
+
+<tr>
+  <td class="rn">12</td>
+  <td class="ok"><span class="vn">0400-1978-0020</span> <span style="font-size:10px;color:#999">⚠️ + 1000-1978-0622/0623</span></td>
+  <td class="vt-gb"><span class="tb tb-gb">Bauten Dritter</span><span class="vtpath">Grundstücknutzung › Bauten Dritter › <strong>Kleinbauten</strong> ⚠️</span></td>
+  <td class="ok">Anpassung Bahnböschung + Kanalisation + Trottoir, Strecke Delémont-Basel, km 108.779–108.826, Grellingen</td>
+  <td class="ok">Linie Delémont–Basel</td>
+  <td class="ok">108.779</td>
+  <td class="ok">108.826</td>
+  <td class="ok">Einwohnergemeinde Grellingen, 4203 Grellingen (Konzessionärin)</td>
+  <td class="ok">28.09.1978</td>
+  <td class="ok">Unbestimmte Zeit; kündbar 1 Jahr schriftlich (Art. 6)</td>
+  <td class="wn">Fr. 50.– <em>einmalig</em> (Kanzleigebühr, Art. 7) ³</td>
+  <td class="ms">—</td>
+  <td class="ok">Grellingen BL</td>
+  <td class="src"><b>VN:</b> S. 1, ContrAct-Box unten rechts (mehrere Nrn.!) ¹⁰<br><b>An:</b> S. 1, Einleitung + Art. 1 (km 108.779–108.826)<br><b>BL:</b> Art. 1 (Linie Delémont – Basel)<br><b>km:</b> Art. 1 (km 108.779 – km 108.826)<br><b>VP:</b> S. 1, Parteienbezeichnung (Einwohnergemeinde Grellingen)<br><b>VB:</b> S. 3, Unterzeichnung (Lausanne und Grellingen, 28.09.1978)<br><b>VE:</b> S. 2, Art. 6 (unbestimmte Dauer; 1 Jahr Kündigung)<br><b>Ein:</b> S. 3, Art. 7 (Fr. 50.– Kanzleigebühr)<br><b>Gem:</b> S. 1, Parteienbezeichnung (4203 Grellingen)</td>
+</tr>
+
+<tr>
+  <td class="rn">13</td>
+  <td class="ms">❌ Kein ContrAct sichtbar ¹¹ <em style="font-size:10px">(Vorgänger: Nr. 87220.116.001)</em></td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Ausführung Projekt mit B+U (3&amp;4) › <strong>Bahnhof (WC)</strong></span></td>
+  <td class="ok">Neue öffentliche WC-Anlage (System Fierz), Bahnhof Kaltbrunn</td>
+  <td class="ms">—</td>
+  <td class="ms">—</td>
+  <td class="ms">—</td>
+  <td class="ok">Politische Gemeinde Kaltbrunn, 8722 Kaltbrunn</td>
+  <td class="ok">24.08.2016 (rückwirkend); Unterzeichnung 22./20. März 2017</td>
+  <td class="ok">10 Jahre ab 24.08.2016 (bis ca. 24.08.2026), Ziff. 7</td>
+  <td class="wn">CHF 1.– pro Benutzung (Einnahmen an SBB) — kein Fixbetrag ¹²</td>
+  <td class="wn">Laufender betriebl. + baulicher Unterhalt; Wasser/Strom SBB (Ziff. 5, 6) — kein CHF-Betrag</td>
+  <td class="ok">Kaltbrunn SG</td>
+  <td class="src"><b>VN:</b> <span class="nd">nicht vorhanden im Dokument ¹¹</span><br><b>An:</b> S. 1, Titel («neue öffentliche WC-Anlage (System Fierz)...»)<br><b>BL/km:</b> <span class="nd">nicht vorhanden</span><br><b>VP:</b> S. 1, Parteienbezeichnung (Gemeinde Kaltbrunn, 8722)<br><b>VB:</b> S. 1, Ziff. 1 (Inbetriebnahme 24.08.2016) + S. 2, Ziff. 7<br><b>VE:</b> S. 2, Ziff. 7 (10 Jahre ab 24.08.2016)<br><b>Ein:</b> S. 2 («Benutzung CHF 1.–»)<br><b>Aus:</b> S. 1, Ziff. 5 + S. 2, Ziff. 6<br><b>Gem:</b> S. 1, Parteienbezeichnung (Gemeinde Kaltbrunn)</td>
+</tr>
+
+<tr>
+  <td class="rn">14</td>
+  <td class="ms">❌ Vertragsbeilage 2 zu Bau III Nr. 703/287/1/75 — kein eigener ContrAct ¹³</td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Ausführung Projekt mit B+U (3&amp;4) › <strong>Öff. Verkehrswege ohne Kreuzung</strong></span></td>
+  <td class="ok">Personenunterführung beim Aufnahmegebäude km 74.502, Bahnhof Wetzikon (inkl. Zivilschutzanlage SBB)</td>
+  <td class="wn">SBB Kreisdirektion III; Bahnhof Wetzikon ⁷</td>
+  <td class="ok">74.502</td>
+  <td class="ok">74.502</td>
+  <td class="ok">Gemeinde Wetzikon (Gemeinderat), 8620 Wetzikon</td>
+  <td class="wn">Zürich 23.05.1989 (SBB); Wetzikon 13.07.1989 (Gemeinde)</td>
+  <td class="ms">Nicht angegeben</td>
+  <td class="ms">—</td>
+  <td class="wn">Anteil Unterhalt/Erneuerung gemäss Kostenverteilung (kein Fixbetrag) ⁸</td>
+  <td class="ok">Wetzikon ZH</td>
+  <td class="src"><b>VN:</b> <span class="nd">nicht vorhanden (Vertragsbeilage 2) ¹³</span><br><b>An:</b> S. 1, Titel («PERSONENUNTERFÜHRUNG BEIM AUFNAHMEGEBÄUDE KM 74.502...»)<br><b>BL:</b> <span class="inf">nicht im Dok.; SBB Kreisdirektion III, km 74.502 ⁷</span><br><b>km:</b> S. 1, Titel (km 74.502)<br><b>VP:</b> S. 1, Parteienbezeichnung (Gemeinde Wetzikon)<br><b>VB:</b> S. 7, Unterzeichnungszeilen (zwei Daten)<br><b>VE:</b> <span class="nd">nicht vorhanden</span><br><b>Aus:</b> Ziff. 5 «Kostenverleger» + Ziff. 7 «Unterhalt»<br><b>Gem:</b> S. 1, Parteienbezeichnung (Gemeinde Wetzikon)</td>
+</tr>
+
+<tr>
+  <td class="rn">15</td>
+  <td class="ms">❌ Vertragsbeilage 3 zu Bau III Nr. 703/287/1/75 — kein eigener ContrAct ¹³</td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Ausführung Projekt mit B+U (3&amp;4) › <strong>Öff. Verkehrswege ohne Kreuzung</strong></span></td>
+  <td class="ok">Personenunterführung Poststrasse km 74.658, Bahnhof Wetzikon (inkl. Zivilschutzanlage PTT)</td>
+  <td class="wn">SBB Kreisdirektion III; Bahnhof Wetzikon ⁷</td>
+  <td class="ok">74.658</td>
+  <td class="ok">74.658</td>
+  <td class="wn">Gemeinde Wetzikon + PTT ¹⁴ (3 Vertragsparteien!)</td>
+  <td class="wn">SBB Zürich 23.05.1989; Gemeinde Wetzikon 12.07.1989; PTT 19.09.1989</td>
+  <td class="ms">Nicht angegeben</td>
+  <td class="ms">—</td>
+  <td class="wn">Anteil Unterhalt/Erneuerung gemäss Kostenverteilung (kein Fixbetrag) ⁸</td>
+  <td class="ok">Wetzikon ZH</td>
+  <td class="src"><b>VN:</b> <span class="nd">nicht vorhanden (Vertragsbeilage 3) ¹³</span><br><b>An:</b> S. 1, Titel («PERSONENUNTERFÜHRUNG POSTSTRASSE KM 74.658...»)<br><b>BL:</b> <span class="inf">nicht im Dok. ⁷</span><br><b>km:</b> S. 1, Titel (km 74.658)<br><b>VP:</b> S. 1, Parteienbezeichnung + S. 7 PTT-Einverständnis ¹⁴<br><b>VB:</b> S. 7, drei Unterzeichnungsdaten (SBB / Gemeinde / PTT)<br><b>VE:</b> <span class="nd">nicht vorhanden</span><br><b>Aus:</b> Ziff. 5 «Kostenverleger» + Ziff. 7 «Unterhalt»<br><b>Gem:</b> S. 1, Parteienbezeichnung (Gemeinde Wetzikon)</td>
+</tr>
+
+<tr>
+  <td class="rn">16</td>
+  <td class="ok"><span class="vn">0400-1988-0012</span></td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Betrieb und Unterhalt (Vertrag 4) › <strong>Bahnhof</strong></span></td>
+  <td class="ok">Unterhalt Anlagen umgebautes Bahnareal Unter-Wetzikon (WC, PU-Bauwerke, Parkierung, Zweirad-Einstellanlagen, Grünanlagen) — Dachvertrag ¹³</td>
+  <td class="ms">—</td>
+  <td class="wn">74.504 ¹⁵</td>
+  <td class="wn">74.655 ¹⁵</td>
+  <td class="ok">Gemeinde Wetzikon (Gemeinderat), 8620 Wetzikon</td>
+  <td class="ok">19.02.1988</td>
+  <td class="ok">Unbestimmte Zeit; kündbar 6 Monate (Art. 14)</td>
+  <td class="ok">Velo/Mofa-Einstellanlagen: Fr. 7'000.– p.a. (Art. 10 Ziff. 2; nach Anpassung Fr. 3'500.–) + WC-Einnahmen hälftig (Art. 6 Ziff. 5) + Parkuhr-Einnahmen hälftig (Art. 7)</td>
+  <td class="wn">Heizung + Brandversicherung WC (Art. 6 Ziff. 1); PU-Unterhalt anteilig (Beilagen 2+3); Parkuhren hälftig — kein Gesamtbetrag</td>
+  <td class="ok">Wetzikon ZH</td>
+  <td class="src"><b>VN:</b> S. 1, oben (0400-1988-0012)<br><b>An:</b> S. 1, Titel («Unterhalt der Anlagen des umgebauten Bahnhofareals...»)<br><b>BL:</b> <span class="nd">nicht vorhanden</span><br><b>km:</b> <span class="inf">Art. 5, S. 3 (km 74.504 + km 74.655 als Beilage-Referenzen) ¹⁵</span><br><b>VP:</b> S. 1, Parteienbezeichnung (Gemeinde Wetzikon, 8620)<br><b>VB:</b> S. 1, Datum («vom 19. Februar 1988»)<br><b>VE:</b> S. 9, Art. 14 (unbestimmte Zeit; 6 Monate Kündigung)<br><b>Ein:</b> S. 7–8, Art. 10 (Entschädigungen); Art. 6 Ziff. 5 (WC); Art. 7 (Parkierung)<br><b>Aus:</b> Art. 6 Ziff. 1; Beilagen 2+3; Art. 7 (Parkuhren)<br><b>Gem:</b> S. 1, Parteienbezeichnung (Gemeinde Wetzikon)</td>
+</tr>
+
+<!-- ===== BATCH 3 ===== -->
+<tr class="batch-header"><td colspan="14">BATCH 3 — 6 PDFs → 4 Verträge (Zeilen 17–20) · «The Circle» = 1 Vertrag aus 3 Dok. · Neu: Versionskette · Duldung/Zustimmungsbrief · Nutzungsrichtung · n.a. ≠ fehlend</td></tr>
+
+<tr>
+  <td class="rn">17</td>
+  <td class="ok"><span class="vn">0400-1992-0017</span></td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Betrieb und Unterhalt (Vertrag 4) › <strong>Bahnhof (WC)</strong></span></td>
+  <td class="ok">Öffentliche WC-Anlage Bahnhof Zürich Tiefenbrunnen (samt Inneneinrichtung, Eigentum SBB); separate VBZ-Personalkabine</td>
+  <td class="ms">—</td>
+  <td class="ms">—</td>
+  <td class="ms">—</td>
+  <td class="ok">Stadt Zürich, Amt für Gesundheit und Umwelt, 8035 Zürich</td>
+  <td class="ok">01.10.1992 (rückwirkend)</td>
+  <td class="ok">Unbestimmte Zeit; kündbar 6 Monate (beidseitig), Art. 7</td>
+  <td class="ok">Fr. 7'020.– p.a. exkl. MWST (Jahrespauschale Stadt = ¾ der Kosten; vierteljährl. Fr. 1'755.–) ¹⁶</td>
+  <td class="wn">Reinigung Drittfirma Fr. 9'360.– p.a. (Basis ¾-Pauschale) + Energie/Material — kein Fixbetrag ⁸ ¹⁶</td>
+  <td class="ok">Zürich ZH</td>
+  <td class="src"><b>VN:</b> Deckblatt, ContrAct-Box (handschr.; Alt-Nr. 90 002 069)<br><b>An:</b> S. 1, Titel + Art. 1, Art. 3<br><b>BL/km:</b> <span class="nd">nicht vorhanden</span><br><b>VP:</b> S. 1, Parteienbezeichnung<br><b>VB:</b> S. 1, Datum + Art. 8 (rückwirkend 01.10.1992)<br><b>VE:</b> Art. 7 (Kündigung 6 Monate)<br><b>Ein:</b> Art. 4 Ziff. 2 + <span class="inf">I. Nachtrag 07.05.1996 (Pauschale Fr. 5'400.– → Fr. 7'020.–) ¹⁶</span><br><b>Aus:</b> Art. 4 Ziff. 1 + Nachtrag (Reinigung Drittfirma Fr. 9'360.–) ⁸<br><b>Gem:</b> S. 1, Parteienbezeichnung (Zürich)</td>
+</tr>
+
+<tr>
+  <td class="rn">18</td>
+  <td class="ok"><span class="vn">0400-1993-0024</span></td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Ausführung Projekt mit B+U (3&amp;4) › <strong>Bahnhof</strong></span></td>
+  <td class="ok">Ausbau Bahnhof Winterthur Seen (S-Bahn): Perrons (320 m, Gleis 1 / Hilfsperron), Personenunterführung, Zugänge, Bushaltestelle, P+R (27+6 PP), Velo/Mofa (2×50), Grünanlagen, öffentl. WC. SBB-Bau Fr. 1'770'000.–, Stadt-Bau Fr. 5'640'000.–</td>
+  <td class="wn">Bf Winterthur Seen ⁷</td>
+  <td class="wn">~4.5 ²</td>
+  <td class="wn">~4.7 ²</td>
+  <td class="ok">Stadt Winterthur, Departement Bau, 8401 Winterthur</td>
+  <td class="ok">10.02.1994 (Unterz.; Vertragsdatum 25.11.1993)</td>
+  <td class="ok">Unbestimmte Zeit; kündbar 6 Monate aus zwingenden Gründen; gilt bis Ersatz (Art. 14)</td>
+  <td class="wn">P+R-/Kurzpark-Gebühren: Inkasso SBB, Stadt erhält 15% Gebührenanteil — variabel, kein Fixbetrag ¹²</td>
+  <td class="wn">15%-Gebührenanteil an Stadt (variabel) + baulicher/betriebl. Unterhalt einzelner Anlagen — kein Fixbetrag ⁸</td>
+  <td class="ok">Winterthur ZH</td>
+  <td class="src"><b>VN:</b> S. 1, oben rechts (handschr.; Alt-Nr. 90 002 034)<br><b>An:</b> S. 1, Titel + Art. 1<br><b>BL:</b> <span class="inf">nicht im Vertragstext; Bf Winterthur Seen ⁷</span><br><b>km:</b> <span class="inf">Situationsplan Beilage 1 (~4.5–4.7) ²</span><br><b>VP:</b> S. 1, Parteienbezeichnung (Stadt Winterthur, Dep. Bau)<br><b>VB:</b> S. 8, Unterzeichnung 10.02.1994 (Vertragsdatum 25.11.1993)<br><b>VE:</b> Art. 14<br><b>Ein:</b> Beilage 3, Ziff. 3 + 6 (P+R-Inkasso SBB, 15% Stadt) ¹²<br><b>Aus:</b> Beilage 3, Ziff. 6 (15%) + Beilage 2 (Unterhalt) ⁸<br><b>Gem:</b> S. 1, Parteienbezeichnung (Winterthur)<br><span class="inf">+ sep. WC-Vertrag 10.07.1993 (Art. 8) + sep. Objektvertrag PU (Art. 5) ²⁰</span></td>
+</tr>
+
+<tr>
+  <td class="rn">19</td>
+  <td class="ms">❌ Kein ContrAct — Zustimmungsbrief / Duldung ¹⁹</td>
+  <td class="vt-gn"><span class="tb tb-gn">Nutzungsvertrag</span><span class="vtpath">Grundstücknutzung › Nutzungsverträge › <strong>Gebrauchsleihe</strong> ⚠️ ¹⁹</span></td>
+  <td class="ok">Duldung der Zu-/Durchfahrt zu SBB-Fahrleitungsmasten (GS Nr. 1173 r. U. GB Luzern) über diverse GS der Stadt + Korporation Luzern; ⌀ ≤ 12 Fahrten/Jahr</td>
+  <td class="ms">—</td>
+  <td class="ms">—</td>
+  <td class="ms">—</td>
+  <td class="wn">Stadt Luzern (Immobilien) + Korporation Luzern (2 Partner)</td>
+  <td class="ok">27.10.2021 (Datum Schreiben)</td>
+  <td class="ok">Unbestimmt, jederzeit widerruflich («bis auf weiteres»; erneute Prüfung bei Mehrbedarf)</td>
+  <td class="ms">— ¹⁹</td>
+  <td class="ms">— ¹⁹</td>
+  <td class="ok">Luzern LU</td>
+  <td class="src"><b>VN:</b> <span class="nd">nicht vorhanden (Zustimmungsbrief) ¹⁹</span><br><b>An:</b> Schreiben (1 S.), Abs. 1 (GS 1173; ≤ 12 Fahrten/Jahr)<br><b>BL/km:</b> <span class="nd">nicht vorhanden</span><br><b>VP:</b> Abs. 2 + Unterschriften (Stadt Luzern + Korporation Luzern)<br><b>VB:</b> Datum Schreiben 27.10.2021<br><b>VE:</b> Abs. 1 («bis auf weiteres», widerruflich)<br><b>Ein:</b> <span class="nd">nicht einschlägig — SBB = Nutzer ¹⁹</span><br><b>Aus:</b> <span class="inf">Verzicht auf Entschädigung (Abs. 1) — keine Zahlung ¹⁹</span><br><b>Gem:</b> Briefkopf / Unterschrift (Luzern)</td>
+</tr>
+
+<tr>
+  <td class="rn">20</td>
+  <td class="ok"><span class="vn">90051620</span></td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Ausführung Projekt mit B+U (3&amp;4) › <strong>Durchleitung / Zufahrtsbauwerk</strong> ⚠️ ¹⁶</span></td>
+  <td class="ok">Ersatz-Erschliessung (Rampe «The Circle» bis 2.10 m / Rampe ELP bis 2.80 m) zu unterirdischen SBB-Betriebsräumen + SBB-Tiefgarage (44 Plätze), Flughafen Zürich; inkl. Brandschutz-/Betriebstor, Parkplatzersatz, Interventionszugang. Vertragsänderung 2: temp. Verlegung 2 SBB-PP (Vorfahrt Süd → Ankunft), April–~Ende Juni 2026</td>
+  <td class="ms">— ¹⁸</td>
+  <td class="ms">— ¹⁸</td>
+  <td class="ms">— ¹⁸</td>
+  <td class="ok">Flughafen Zürich AG (FZAG) + Miteigentümergemeinschaft «The Circle» (FZAG + Swiss Life AG)</td>
+  <td class="ok">09.03.2016 (Vertragsdatum; Unterz. 03–04.2016)</td>
+  <td class="ok">Unbestimmt (dingliches Nutzungsrecht, Grundbuch); definitive Zufahrt spätestens Ende 2027 (VÄ 19.12.2023; vorher Ende 2023) ¹⁶</td>
+  <td class="wn">Urspr.: Umtriebsentschäd. CHF 100'000 p.a. zzgl. MwSt (bis Ende 2023) + Konventionalstrafe CHF 2'000'000 p.a. ab 01.01.2024 (MEG→SBB). Konventionalstrafe per VÄ 19.12.2023 ersatzlos gestrichen → aktuell keine ¹⁶</td>
+  <td class="wn">Unterhalt/Wartung/Betrieb der exklusiven SBB-Erschliessung + Brandschutztor nach IBN (Eigentum SBB) — kein Fixbetrag; Bau-/Planungskosten trägt FZAG/MEG (inkl. Art. 19 EBG) ⁸</td>
+  <td class="wn">Kloten ZH ¹⁷</td>
+  <td class="src"><b>VN:</b> Deckblatt Basisvertrag + VÄ 19.12.2023 (gelb markiert) ¹⁶<br><b>An:</b> Ziff. 1 (Kat. 6133; 44 Plätze) + Zufahrt Ziff. 2.1–2.3<br><b>BL/km:</b> <span class="inf">nicht anwendbar (Immobilien-/Erschliessungsobjekt) ¹⁸</span><br><b>VP:</b> Deckblatt (FZAG + MEG = FZAG + Swiss Life AG)<br><b>VB:</b> Deckblatt 09.03.2016<br><b>VE:</b> Ziff. 7 (dingl. Recht, unbefristet) + VÄ 19.12.2023 (Termin spät. Ende 2027) ¹⁶<br><b>Ein:</b> Ziff. 3.2 (CHF 100'000 / CHF 2 Mio.) — Konventionalstrafe per VÄ 19.12.2023 gestrichen ¹⁶<br><b>Aus:</b> Ziff. 3.1 (Baukosten FZAG/MEG) + Ziff. 7 (Unterhalt exkl. Erschliessung + Tor) ⁸<br><b>Gem:</b> <span class="inf">abgeleitet Kloten ZH ¹⁷</span></td>
+</tr>
+
+<!-- ===== BATCH 4 ===== -->
+<tr class="batch-header"><td colspan="14">BATCH 4 — 4 Verträge (Zeilen 21–24) · moderne Finanzierungsvereinbarungen 2023–2024, maschinenlesbarer Kopf · Neu: Rahmenvereinbarung→Objektverträge · einmalig + Folgekosten ab IBN · Kostenanteil-Rückerstattung · Bahnübergang</td></tr>
+
+<tr>
+  <td class="rn">21</td>
+  <td class="ok"><span class="vn">90051418</span></td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Ausführung Projekt (Vertrag 3) › <strong>Durchleitung (Werkleitungen)</strong> ⚠️ ²⁶</span></td>
+  <td class="ok">Finanzierung Verlegung diverser Gemeindeleitungen (Meteor-/Trink-/Schmutzwasser, Veloweg-Beleuchtung), die SBB-Areal queren — Projekt MehrSpur Zürich–Winterthur (MSZW), Abschnitt 4 Bassersdorf, Phase Bauprojekt</td>
+  <td class="ok">752</td>
+  <td class="ok">13.4</td>
+  <td class="ok">15.7</td>
+  <td class="ok">Gemeinde Bassersdorf, Abteilung Bau und Werke, 8303 Bassersdorf</td>
+  <td class="ok">01.11.2023 (Inkrafttreten = letzte Unterschrift, Zürich; Gemeinde 26.09.2023)</td>
+  <td class="ms">Nicht angegeben (keine Laufzeitklausel; Ausführung ~2026)</td>
+  <td class="wn">CHF 1'707'749 — Gemeinde-Anteil, einmalig (effektive Kosten, ±20%), Rechnung nach Abschluss ²³</td>
+  <td class="wn">CHF 3'297'344 — SBB-Eigenanteil, intern; keine Zahlung an Gemeinde ²³</td>
+  <td class="ok">Bassersdorf ZH</td>
+  <td class="src"><b>VN:</b> S. 1, Kopf (Vertrag-Nr. 90051418)<br><b>An:</b> S. 1, Titel + Ziff. 2.1<br><b>BL:</b> S. 1, Kopf (Linie 752)<br><b>km:</b> S. 1, Kopf (km 13.4–15.7); Beilage 1 Einzelleitungen km 14.6–15.6<br><b>VP:</b> S. 1, Parteienbezeichnung<br><b>VB:</b> S. 7, Unterschriften (Zürich 1.11.2023, handschr.) + Ziff. 15<br><b>VE:</b> <span class="nd">nicht vorhanden</span><br><b>Ein:</b> Ziff. 5.1 + Beilage 1 Kostenteiler (Gde CHF 1'707'749) ²³<br><b>Aus:</b> Beilage 1 (SBB CHF 3'297'344, intern) ²³<br><b>Gem:</b> S. 1, Kopf (Bassersdorf)<br><span class="inf">+ Durchleitungsrechte in sep. Leitungsverträgen (Ziff. 2.3, 10); Kostenteiler nach Vorteilsanrechnung Art. 27 EBG ²⁶</span></td>
+</tr>
+
+<tr>
+  <td class="rn">22</td>
+  <td class="ok"><span class="vn">90051484</span></td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Ausführung Projekt (Vertrag 3) › <strong>Kreuzungsbauwerk (Bahnübergang)</strong></span></td>
+  <td class="ok">Anpassung Bahnübergang Hakenrüti (Verlängerung Fahrbahnplatten, 2 neue Schranken Rad-/Gehweg, Schienenwechsel auf Ponti-Strail-Platten) — auf Wunsch Kanton Luzern, Projekt K10 Wolhusen</td>
+  <td class="ok">460</td>
+  <td class="ok">74.659 (Punkt)</td>
+  <td class="ok">74.659 (Punkt)</td>
+  <td class="ok">Kanton Luzern, Verkehr und Infrastruktur (vif), 6010 Kriens</td>
+  <td class="ok">26.02.2024 (Inkrafttreten = letzte Unterschrift, Olten; Kanton Kriens 15.02.2024)</td>
+  <td class="ok">Bis Abschluss des separaten Kreuzungsbauwerkvertrags für den Bahnübergang (Ziff. 28) ²⁴</td>
+  <td class="wn">Kanton-Anteil CHF 603'015 — einmalig (Schlusskostenrechnung, effektiv, ±10%) + jährl. Investitionsfolgekosten ab IBN Schrankenanlage (Betrag offen) ²²</td>
+  <td class="wn">CHF 96'000 — SBB-Eigenanteil, intern; keine Zahlung an Kanton ²³</td>
+  <td class="ok">Wolhusen LU</td>
+  <td class="src"><b>VN:</b> S. 1, Kopf (Vertrag-Nr. 90051484)<br><b>An:</b> S. 1, Titel + Ziff. 1, 3<br><b>BL:</b> S. 1, Kopf (Linie 460)<br><b>km:</b> S. 1, Kopf (74.659); Body Ziff. 74.660<br><b>VP:</b> S. 1, Parteienbezeichnung (Kanton Luzern vif)<br><b>VB:</b> S. 10, Unterschriften (Olten 26.02.2024) + Ziff. 27<br><b>VE:</b> Ziff. 28 (bis Kreuzungsbauwerkvertrag) ²⁴<br><b>Ein:</b> Ziff. 14 + Beilage 2 KV (Kanton CHF 603'015) + Ziff. 15 (jährl. Investitionsfolgekosten ab IBN) ²²<br><b>Aus:</b> Beilage 2 (SBB CHF 96'000, intern) ²³<br><b>Gem:</b> S. 1, Kopf (Wolhusen)</td>
+</tr>
+
+<tr>
+  <td class="rn">23</td>
+  <td class="ok"><span class="vn">90051665</span></td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Ausführung Projekt (Vertrag 3) › <strong>Rahmenvereinbarung</strong> ⚠️ ²¹</span></td>
+  <td class="ok">Übergeordnete Finanzierungsvereinbarung Projekt «AS25 Bern West, Leistungssteigerung»: Kostenbeteiligung Stadt Bern an 6 Bauwerkskategorien (Kanalisationen, Kundenprojekte Kanalisationen, Stützmauern, Haltestelle Europaplatz Nord, Velostation, LVP Steigerhubel/Passerelle); je separater Objektvertrag ²¹</td>
+  <td class="wn">250 (primär) · zusätzlich 220 + 298 ²¹</td>
+  <td class="wn">93.190 (Linie 250) ²¹</td>
+  <td class="wn">97.105 (Linie 250) ²¹</td>
+  <td class="wn">Schweizerische Eidgenossenschaft (BAV/Bund) + Stadt Bern (3 Vertragsparteien inkl. SBB) ²¹</td>
+  <td class="ok">17.09.2024 (Inkrafttreten = letzte Unterschrift, BAV Ittigen; SBB Bern 30.08.2024; Stadt Bern 15.06.2024)</td>
+  <td class="ms">Nicht angegeben (Rahmenvereinbarung; Betrieb/Erhaltung je Bauwerk im separaten Objektvertrag) ²¹</td>
+  <td class="wn">Fixbeitrag Stadt Bern CHF 21'575'000 inkl. MWST (Preisbasis 06/2023), in 3 Tranchen (⅓ vor / ⅓ bei / ⅓ nach Baubeginn je Bauwerk); Bundesmittel via vierteljährl. Mittelabruf ²¹</td>
+  <td class="wn">SBB trägt Mehrkosten + SBB-Anteil (z. B. 63.92% / 87.25% / 98.05%), intern bzw. via Bund; keine Zahlung an Stadt/BAV ²³</td>
+  <td class="ok">Bern BE</td>
+  <td class="src"><b>VN:</b> S. 1, Kopf (Vertrag-Nr. 90051665)<br><b>An:</b> S. 1, Kopf + Ziff. 1, 2 (6 Bauwerkskategorien) + Ziff. 4 (Objektverträge) ²¹<br><b>BL:</b> S. 1, Kopf (220 / 250 / 298) ²¹<br><b>km:</b> S. 1, Kopf (Linie 250: 93.190–97.105) ²¹<br><b>VP:</b> S. 1, Parteien (BAV + SBB + Stadt Bern) ²¹<br><b>VB:</b> S. 8, Unterschriften (BAV 17.09.2024) + Ziff. 6<br><b>VE:</b> <span class="nd">nicht vorhanden (Rahmen)</span> ²¹<br><b>Ein:</b> Ziff. 3.1/3.2 (CHF 21'575'000) + Ziff. 3.5 Zahlungsplan ²¹<br><b>Aus:</b> Ziff. 3.1 (Gesamtkosten/SBB-Anteil) + Ziff. 3.2 (SBB trägt Mehrkosten) ²³<br><b>Gem:</b> S. 1, Kopf (Bern)</td>
+</tr>
+
+<tr>
+  <td class="rn">24</td>
+  <td class="ok"><span class="vn">90052164</span></td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Ausführung Projekt mit B+U (3&amp;4) › <strong>Öff. Verkehrswege ohne Kreuzung</strong> ⚠️ ²⁵</span></td>
+  <td class="ok">Projektierung, Bau und Erhaltung Personenunterführung (PU) Platten + Bahnzugang Seite Zürich, Kloten Balsberg (Modul 1 Rohbau, 2 Ausbau, 3.1 Zugang Süd Rampe+Treppe, 5 Perronverlängerung); Teil Doppelspurausbau Opfikon Riet–Kloten (STEP AS35). Module 3.2 + 4 ausgeschlossen</td>
+  <td class="ok">752</td>
+  <td class="ok">8.650 (Punkt)</td>
+  <td class="ok">8.650 (Punkt)</td>
+  <td class="wn">Stadt Opfikon + Stadt Kloten + Flughafen Zürich AG (FZAG) (4 Vertragsparteien inkl. SBB) ²⁵</td>
+  <td class="ok">07.11.2024 (Inkrafttreten = letzte Unterschrift, SBB Zürich; Opfikon/Kloten 05.11.2024; FZAG 31.10.2024)</td>
+  <td class="wn">Keine feste Laufzeit; Nutzungsdauern ab Bau: PU 100 J. / Innenausbau PU 25 J. / Rampe+Treppe 80 J. (Ziff. 3.2); baul./betriebl. Unterhalt in sep. Vertrag (Ziff. 14.3) ²⁴</td>
+  <td class="wn">Partner-Anteile pauschal CHF 3'444'000 (Opfikon 1'609'821 / Kloten 804'965 / FZAG 1'029'214), in Tranchen (Dez. 2024 / Plangenehmigung 2025 / Bauvollendung 2026); Mehr-/Minderkosten nicht weiterverrechenbar ²⁵</td>
+  <td class="wn">SBB-Eigenanteil Modul 1 CHF 1'840'000, intern (via AS35-Projekt finanziert); keine Zahlung an Partner ²³</td>
+  <td class="wn">Kloten ZH (+ Opfikon ZH) ²⁵</td>
+  <td class="src"><b>VN:</b> S. 1, Kopf (Vertrag-Nr. 90052164)<br><b>An:</b> S. 1, Titel + Ziff. 3.1 (Module 1/2/3.1/5) + Ziff. 3.2 (Verzicht Module 3.2/4)<br><b>BL:</b> S. 1, Kopf (Linie 752)<br><b>km:</b> S. 1, Kopf (km 8.650)<br><b>VP:</b> S. 1, Parteien (Opfikon + Kloten + FZAG + SBB) ²⁵<br><b>VB:</b> S. 11, Unterschriften (SBB Zürich 7.11.2024) + Ziff. 25.1<br><b>VE:</b> Ziff. 3.2 (Nutzungsdauern) + Ziff. 14.3 (B&amp;U sep. Vertrag) ²⁴<br><b>Ein:</b> Ziff. 12.3 Kostenteiler + Ziff. 13 Zahlungsplan (Partner-Tranchen) ²⁵<br><b>Aus:</b> Ziff. 12.3 (SBB Modul 1 CHF 1'840'000, intern via AS35) ²³<br><b>Gem:</b> S. 1, Kopf (Kloten) + Parteien (Opfikon) ²⁵</td>
+</tr>
+
+<!-- ===== BATCH 5 ===== -->
+<tr class="batch-header"><td colspan="14">BATCH 5 — 4 Verträge (Zeilen 25–28) · Vereinbarungen 2025, maschinenlesbarer Kopf · Neu: Bahntechnik/Fahrstrom (Speiseleitung) · Rückbau als Vertragszweck · Bund/ASTRA-Partei · Kostenteiler in Beilage · Kostenträger ≠ Vertragspartei · Pauschalbeitrag für Vorteilsabgeltung</td></tr>
+
+<tr>
+  <td class="rn">25</td>
+  <td class="ok"><span class="vn">90052618</span></td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Ausführung Projekt (Vertrag 3) › <strong>Kreuzungsbauwerk (Brücke)</strong> ⚠️ ²⁷</span></td>
+  <td class="ok">Ersatz Bahnbrücke «Unterführung Usterstrasse» (grössere Spannweite, beidseitige Velostreifen, Mittelinsel); abgestimmt auf Instandsetzung/Verbreiterung Usterstrasse durch Kt. ZH 2028</td>
+  <td class="ok">Strecke 753 (Kempten–Wetzikon)</td>
+  <td class="ok">16.701 (Punkt)</td>
+  <td class="ok">16.701 (Punkt)</td>
+  <td class="ok">Stadt Wetzikon (Stadtrat), Bahnhofstrasse 167, 8620 Wetzikon ²⁸</td>
+  <td class="ok">18.02.2025 (Inkrafttreten = letzte Unterschrift, SBB Zürich; Stadt Wetzikon 12.02.2025, handschr.)</td>
+  <td class="ms">Nicht angegeben (keine Laufzeitklausel; Ausführung 2026)</td>
+  <td class="wn">Stadt-Beitrag pauschal CHF 175'000 inkl. 8.1% MWST (CHF 161'887 exkl.), einmalig, fällig Okt. 2026 — Abgeltung Synergien/Vorteile; entfällt bei Projektabbruch ²⁹</td>
+  <td class="wn">SBB-Eigenanteil 75% des Brückenprojekts (Total CHF 7'250'000 ±10%), intern; Kt. ZH trägt 25% (sep. Verhältnis) — keine Zahlung an Stadt ²⁸ ³⁰</td>
+  <td class="ok">Wetzikon ZH</td>
+  <td class="src"><b>VN:</b> S. 1, Kopf (Vertrag-Nr. 90052618)<br><b>An:</b> S. 1, Titel + Ziff. 1<br><b>BL:</b> S. 1, Kopf (Strecke Kempten–Wetzikon, Linie 753)<br><b>km:</b> S. 1, Kopf (753 / 16.701; Objekt-Nr. 543)<br><b>VP:</b> S. 1, Parteienbezeichnung (Stadt Wetzikon) ²⁸<br><b>VB:</b> S. 5, Unterschriften (Zürich 18.2.2025; Wetzikon 12.02.2025) + Ziff. 12.1<br><b>VE:</b> <span class="nd">nicht vorhanden</span><br><b>Ein:</b> Ziff. 3.5 (Stadt-Pauschale CHF 175'000 inkl. MWST) + Ziff. 4 (Rechnung Okt. 2026) ²⁹<br><b>Aus:</b> Ziff. 3.1/3.2 (Total CHF 7.25 Mio.; 75% SBB / 25% Kt. ZH) ³⁰<br><b>Gem:</b> S. 1, Kopf (Stadt Wetzikon)</td>
+</tr>
+
+<tr>
+  <td class="rn">26</td>
+  <td class="ok"><span class="vn">90052784</span></td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Zusammenarbeitsgrundsätze und Projektierung (Vertrag 2) › <strong>Kreuzungsbauwerk (Brücke)</strong> ⚠️ ³¹</span></td>
+  <td class="ok">Erarbeitung Bau- und Auflagenprojekt für Ersatzneubau Eisenbahnbrücke über die Steinach (höhere Durchflusskapazität für Hochwasserschutzprojekt der Gemeinde); Vorprojekt Mai 2024 abgeschlossen</td>
+  <td class="ok">Linie 825 (Bahnhof Steinach)</td>
+  <td class="ok">91.737 (Punkt)</td>
+  <td class="ok">91.737 (Punkt)</td>
+  <td class="ok">Gemeinde Steinach, Schulstrasse 5, 9323 Steinach</td>
+  <td class="ok">02.06.2025 (Inkrafttreten = letzte Unterschrift, SBB Zürich; Gemeinde Steinach 27.05.2025)</td>
+  <td class="wn">BP-Phase bis 31.12.2027 (Termine Ziff. 13); Folgephasen (Ausführung/Betrieb) in nachgelagerten Vereinbarungen (Ziff. 4.6) ³²</td>
+  <td class="wn">Gemeinde-Anteil 100% = CHF 300'000 (inkl. VGK, exkl. MWST) für BP-Phase, vierteljährlich nach effektivem Aufwand; gilt nur für diese Phase (Ziff. 8.6) ³²</td>
+  <td class="wn">SBB-Anteil 0% (BP-Phase); künftige SBB-Beteiligung ~CHF 3'190'000 (Vorteilsanrechnung vorzeitiger Substanzerhalt) erst in Finanzierungsvereinbarung Ausführung ³²</td>
+  <td class="ok">Steinach SG</td>
+  <td class="src"><b>VN:</b> S. 1, Kopf (Vertrag-Nr. 90052784)<br><b>An:</b> S. 1, Titel + Ziff. 3.1<br><b>BL:</b> S. 1, Kopf (Bahnhof Steinach, Linie 825)<br><b>km:</b> S. 1, Kopf (825 / 91.737)<br><b>VP:</b> S. 1, Parteienbezeichnung (Gemeinde Steinach)<br><b>VB:</b> S. 8, Unterschriften (Zürich 2.6.2025; Steinach 27.5.2025) + Ziff. 11.1<br><b>VE:</b> Ziff. 13 (Termine: BP 01.06.2025–31.12.2027) + Ziff. 4.6 ³²<br><b>Ein:</b> Ziff. 8.2 Kostenteiler (Gde 100% = CHF 300'000) + Ziff. 9.1 (vierteljährl.) ³²<br><b>Aus:</b> Ziff. 8.2 (SBB 0%) + Ziff. 7.1 (künftige Beteiligung CHF 3'190'000) ³²<br><b>Gem:</b> S. 1, Kopf (Steinach)</td>
+</tr>
+
+<tr>
+  <td class="rn">27</td>
+  <td class="ok"><span class="vn">90052877</span></td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Ausführung Projekt (Vertrag 3) › <strong>Bahntechnik- und Steuerung (Fahrstrom-Speiseleitung)</strong> ⚠️ ³³</span></td>
+  <td class="ok">Rückbau SBB 15kV-Speiseleitung UW Emmenbrücke – SP Ebikon (Masten 1–9 + Fundamente; Masten 104 + 107 bleiben/weitergenutzt); ermöglicht durch ASTRA-Projekt «Bypass Luzern» (N02), Eigentum erlischt mit Rückbau ³⁴</td>
+  <td class="wn">Linie 500 + Linie 660 (2 Linien) ³⁵</td>
+  <td class="wn">Linie 500: 90.550 · Linie 660: 62.700 ³⁵</td>
+  <td class="wn">(Linien-Referenz; Leitung über Strecke) ³⁵</td>
+  <td class="ok">Schweizerische Eidgenossenschaft, vertreten durch Bundesamt für Strassen ASTRA, Filiale Zofingen, 4800 Zofingen ³⁶</td>
+  <td class="ms">Unterschriftsdaten nicht angegeben/lesbar; Vertrag nach 23.06.2025 (techn. Bericht V1.3) ³⁷</td>
+  <td class="ok">Bis Abschluss letzte Arbeiten + letzte Zahlung (Ziff. 26); Ausführung ~2027</td>
+  <td class="wn">ASTRA trägt 100% = CHF 461'500 ±10% (inkl. VVGK CHF 470'730; Dienstleistungen 45'000 + Ausführung 416'500), nach Leistungsfortschritt/effektivem Aufwand ³⁸</td>
+  <td class="ms">— (SBB-Anteil 0%; Selbstkosten an ASTRA verrechnet) ³⁸</td>
+  <td class="wn">Ebikon LU (Kopf); Leitung quert auch Emmen (UW Emmenbrücke) + Stadt Luzern — Abbruchsanzeige an Ebikon + Luzern ³⁹</td>
+  <td class="src"><b>VN:</b> S. 1, Kopf (Vertrag-Nr. 90052877; Code I-NAT-LPM-PMI-VEM)<br><b>An:</b> S. 1, Titel + Ziff. 3<br><b>BL:</b> S. 1, Kopf (Linie 500 + Linie 660) ³⁵<br><b>km:</b> S. 1, Kopf (500/km 90.550; 660/km 62.700) ³⁵<br><b>VP:</b> S. 1, Parteienbezeichnung (Eidgenossenschaft/ASTRA) ³⁶<br><b>VB:</b> <span class="nd">Unterschriftsdaten S. 11 nicht angegeben/lesbar ³⁷</span><br><b>VE:</b> Ziff. 26 «Dauer» (Abschluss Arbeiten + letzte Zahlung)<br><b>Ein:</b> Ziff. 13.1–13.3 + Kostenaufstellung S. 6 (ASTRA 100% CHF 461'500) ³⁸<br><b>Aus:</b> <span class="inf">SBB-Anteil 0% — Selbstkosten an ASTRA verrechnet ³⁸</span><br><b>Gem:</b> S. 1, Kopf (Ebikon) + Ziff. 10.1 (Emmen/Luzern) ³⁹</td>
+</tr>
+
+<tr>
+  <td class="rn">28</td>
+  <td class="ok"><span class="vn">90052912</span></td>
+  <td class="vt-za"><span class="tb tb-za">Zusammenarbeit Anlagen</span><span class="vtpath">Zusammenarbeit › Ausführung Projekt (Vertrag 3) › <strong>Durchleitung (Werkleitungen)</strong> ⚠️ ⁴⁰</span></td>
+  <td class="ok">Finanzierung Verlegung + Neubau Versorgungs-/Werkleitungen der wwb (Werke Wangen-Brüttisellen) im Projekt MSZW, Abschnitt 3 Dietlikon; Einzelleitungen + Kostenteiler in Beilage 1 (nicht vorliegend) ⁴¹</td>
+  <td class="ok">Linie 751 (Wallisellen–Effretikon)</td>
+  <td class="ok">11.7</td>
+  <td class="ok">12.4</td>
+  <td class="ok">Werke Wangen-Brüttisellen (wwb), Zürichstrasse 22, 8306 Brüttisellen ⁴²</td>
+  <td class="ok">02.12.2025 (Inkrafttreten = letzte Unterschrift, SBB Zürich; wwb Wangen-Brüttisellen 18.11.2025)</td>
+  <td class="ms">Nicht angegeben (Finanzierungsvereinbarung; Ausführung 2030–2032); Durchleitungsrecht/Fortbestand in separaten Leitungsverträgen (Ziff. 3.2, 12) ⁴³</td>
+  <td class="wn">wwb-Kostenanteil gemäss Beilage 1 (% + CHF; nicht vorliegend); Gesamtkosten CHF 415'300 exkl. MWST, nach Aufwand je Leitung; wwb trägt Investitionsfolgekosten gesamte Nutzungsdauer (Ziff. 8) ⁴¹</td>
+  <td class="wn">SBB-Eigenanteil gemäss Beilage 1 (intern; Betrag nicht im Hauptdok.) ⁴¹</td>
+  <td class="ok">Wangen-Brüttisellen ZH</td>
+  <td class="src"><b>VN:</b> S. 1, Kopf (Vertrag-Nr. 90052912)<br><b>An:</b> S. 1, Titel + Ziff. 1.2, 3.1<br><b>BL:</b> S. 1, Kopf (Strecke Wallisellen–Effretikon, Linie 751)<br><b>km:</b> S. 1, Kopf (751 / 11.7–12.4)<br><b>VP:</b> S. 1, Parteienbezeichnung (wwb) ⁴²<br><b>VB:</b> S. 9, Unterschriften (Zürich 2.12.2025; Wangen-Brüttisellen 18.11.2025) + Ziff. 18<br><b>VE:</b> <span class="nd">keine Laufzeitklausel</span>; Ziff. 12 (sep. Leitungsverträge) ⁴³<br><b>Ein:</b> Ziff. 6.1 (Gesamt CHF 415'300) + Beilage 1 Kostenteiler (nicht vorliegend) + Ziff. 8 (Folgekosten wwb) ⁴¹<br><b>Aus:</b> Beilage 1 (SBB-Anteil, nicht vorliegend) ⁴¹<br><b>Gem:</b> S. 1, Kopf (Wangen-Brüttisellen)</td>
+</tr>
+
+</tbody>
+</table>
+</div>
+
+<div class="obs">
+<h2>📋 Beobachtungen für das SAP-Entwicklungsteam — kumuliert Batch 1–5</h2>
+<div class="og">
+<div class="os">
+<h3>Neue Erkenntnisse aus Batch 2</h3>
+<ul>
+  <li><strong>Mehrparteienvertrag (Doc 15 ¹⁴)</strong> <span class="chip ca">KRITISCH</span> — PU Poststrasse Wetzikon hat 3 Parteien: SBB + Gemeinde + PTT. Das Feld «Vertragspartner (extern)» ist als Singular modelliert. SAP braucht eine 1:n-Relation für Vertragsparteien.</li>
+  <li><strong>Vertragsbeilagen ohne ContrAct-Nr. (Docs 14+15 ¹³)</strong> <span class="chip ca">KRITISCH</span> — Sub-Verträge existieren ohne eigene ContrAct-Nummer, nur als Beilagen zum Dachvertrag. SAP braucht hierarchische Vertragsstruktur (Eltern/Kind-Relation).</li>
+  <li><strong>Nachtrag ändert fundamentale Bestimmungen (Doc 11 ⁹)</strong> <span class="chip ca">KRITISCH</span> — Nachtrag I von 1990 ersetzt Art. 4 und Art. 10 komplett. SAP muss Nachträge als datierte Versionsänderungen einzelner Klauseln modellieren, nicht nur als Anhänge.</li>
+  <li><strong>Fehlende ContrAct-Nr. im modernen Dokument (Doc 13 ¹¹)</strong> — Vereinbarung von 2016/2017 ohne sichtbare ContrAct-Nummer; Vorgängervertrag Nr. 87220.116.001 referenziert. SAP muss Nachfolgebeziehungen zwischen Verträgen speichern können.</li>
+  <li><strong>Mehrfache ContrAct-Nummern (Doc 12 ¹⁰)</strong> — Ein einziges Dokument mit 3 verschiedenen ContrAct-Nummern (0400-1978-0020, 1000-1978-0622, 1000-1978-0623). Möglicherweise unterschiedliche Sub-Objekte. Schema-Felddefinition unklar.</li>
+  <li><strong>Dachvertrag + Detailbeilagen (Docs 14+15+16)</strong> — Bahnhof Wetzikon: 1 Dachvertrag (16) mit 2 spezifischen Unterführungsverträgen als Beilagen (14+15). Hierarchie ist für SAP essenziell.</li>
+  <li><strong>WC-Anlagen als Vertragscluster</strong> — 3 WC-Verträge in 2 Batches (Mitlödi 1971, Kaltbrunn 2016, Wetzikon 1988). Könnte eigene Ebene 4-Kategorie «WC-Anlage» rechtfertigen (aktuell unter «Bahnhof» eingeordnet). <em style="font-size:11px;color:#777">Batch 3 ergänzt Zürich Tiefenbrunnen 1992 → nun 4 WC-Verträge.</em></li>
+</ul>
+
+<h3 class="b3">Neue Erkenntnisse aus Batch 3</h3>
+<ul>
+  <li><strong>Mehrstufige Änderungskette an einer ContrAct-Nr. (Doc 20 ¹⁶)</strong> <span class="chip ca">KRITISCH</span> — «The Circle» 90051620 besteht aus Basisvertrag (2016) + 2 Vertragsänderungen (2023, 2025) über 3 Dokumente. Erweitert die Nachtrags-Beobachtung von einem Einzelnachtrag (Doc 11) auf eine echte Versionskette. SAP muss je Klausel einen konsolidierten Gültig-Stand führen.</li>
+  <li><strong>Geldklausel rückwirkend gestrichen (Doc 20 ¹⁶)</strong> <span class="chip ca">KRITISCH</span> — Konventionalstrafe CHF 2 Mio./Jahr (ab 01.01.2024) wurde per Vertragsänderung 19.12.2023 ersatzlos entfernt, bevor sie griff. Ground-Truth muss den aktuellen konsolidierten Stand abbilden; Geldfelder brauchen «gültig-ab/bis» + Status (aktiv/gestrichen).</li>
+  <li><strong>Dokumenttyp variiert (Doc 19 ¹⁹)</strong> <span class="chip ca">KRITISCH</span> — Luzern ist ein formloser Zustimmungsbrief/Duldung: kein nummerierter Vertrag, keine Dienstbarkeit, jederzeit widerruflich. SAP braucht ein Feld «Dokumenttyp» + Verbindlichkeitsgrad (Vertrag / Nachtrag / Beilage / Duldung).</li>
+  <li><strong>Nutzungsrichtung (Doc 19)</strong> — SBB kann <em>Nutzer fremden Landes</em> sein (Durchfahrt über Stadt-/Korporationsland), nicht nur Verpächter eigenen Areals. Das Feld «Nutzungsrichtung» steuert die Einnahmen-/Ausgaben-Logik.</li>
+  <li><strong>«nicht anwendbar» ≠ «fehlend» (Doc 20 ¹⁸)</strong> — Bei Immobilien-/Erschliessungsobjekten (Tiefgarage, Rampe) sind Bahnlinie/km gegenstandslos, nicht bloss nicht extrahiert. Eigener Status «n.a.» neben «fehlend» nötig für korrekte Trefferquoten.</li>
+  <li><strong>Vertragsnetz statt nur Eltern-Kind (Doc 18 ²⁰)</strong> — Winterthur Seen verweist auf separate Objektverträge (WC 10.07.1993, Personenunterführung); referenzierte Verträge teils nicht im Bestand. Mehrparteien-1:n erneut bestätigt (Doc 19: Stadt + Korporation; Doc 20: FZAG + MEG/Swiss Life).</li>
+</ul>
+
+<h3 class="b3">Neue Erkenntnisse aus Batch 4</h3>
+<ul>
+  <li><strong>Maschinenlesbarer Standard-Kopf (Docs 21–24)</strong> <span class="chip cn">CHANCE</span> — Alle vier neuen Verträge tragen einen strukturierten Kopf (Vertrag-Nr., Bahnhof/Strecke, Gemeinde, Linie/km). Das ist das primäre Extraktionsziel und eignet sich als Parsing-Template mit hoher Trefferquote. Altverträge (handschr. ContrAct, km nur im Situationsplan) bleiben der Härtefall.</li>
+  <li><strong>Rahmenvereinbarung → Objektverträge (Doc 23 ²¹)</strong> <span class="chip ca">KRITISCH</span> — «AS25 Bern West» ist eine übergeordnete Finanzierungsvereinbarung über 6 Bauwerkskategorien, je mit eigenem, später abzuschliessendem Objektvertrag. SAP braucht eine Hierarchie 1 Rahmen : n Bauwerke : n Objektverträge — über die bisherige Eltern-Kind-Relation hinaus.</li>
+  <li><strong>Einmalige Investition + periodische Folgekosten in EINEM Vertrag (Doc 22 ²²)</strong> <span class="chip ca">KRITISCH</span> — Hakenrüti: Kanton zahlt CHF 603'015 einmalig (Schlussrechnung) UND danach jährliche Investitionsfolgekosten, ausgelöst «ab Inbetriebnahme der Schrankenanlage». Geldfelder brauchen Typ (einmalig/periodisch) + Trigger-Ereignis für den Periodenbeginn.</li>
+  <li><strong>Kostenanteil-Rückerstattung als Standardmodell (Docs 21–24 ²³)</strong> <span class="chip ca">KRITISCH</span> — Einnahmen entstehen nicht als Miete/Gebühr, sondern als erstatteter Partner-Anteil an Baukosten (Kostenteiler in % + Bezugsbasis, einmalig oder in Tranchen). Der SBB-Eigenanteil ist intern/teils bundesfinanziert. Das aktuelle 2-Spalten-Modell «periodische Einnahmen/Ausgaben» bildet das nicht ab → eigenes Kostenteiler-Objekt nötig.</li>
+  <li><strong>Vertragsdauer als Referenz auf Folgevertrag (Docs 22 + 24 ²⁴)</strong> <span class="chip cc">ÄNDERUNG</span> — Hakenrüti gilt «bis Abschluss des Kreuzungsbauwerkvertrags»; Kloten verweist Betrieb/Unterhalt auf einen separaten Vertrag. Vertragsende kann ein Ereignis (= Abschluss eines anderen Vertrags) statt ein Datum sein.</li>
+  <li><strong>Mehrere Linien + Gemeinden + Parteien zugleich (Docs 23 + 24 ²¹ ²⁵)</strong> — Bern West: 3 Linien, 3 Parteien (inkl. Bund/BAV). Kloten: 4 Parteien (SBB + 2 Städte + FZAG), 2 Gemeinden, modulscharfer Pauschal-Kostenteiler. Die 1:n-Relationen für Bahnlinie, Gemeinde und Vertragspartei sind damit definitiv bestätigt — inkl. Parteityp «Bund/BAV».</li>
+</ul>
+
+<h3 class="b3">Neue Erkenntnisse aus Batch 5</h3>
+<ul>
+  <li><strong>Rückbau als Vertragszweck (Doc 27 ³⁴)</strong> <span class="chip ca">KRITISCH</span> — Sedelleitung ist kein Bau-, sondern ein Rückbauvertrag: eine bestehende SBB-Speiseleitung wird demontiert, das Eigentum daran <em>erlischt</em> mit Vollendung. Bisher implizierte jeder Vertrag den Bau/Bestand eines Objekts. SAP braucht ein Feld «Massnahmenzweck» (Bau / Umbau / Rückbau / Stilllegung), da Rückbau Bilanz, Anlagenstamm und Folgekosten gegenteilig zum Neubau berührt.</li>
+  <li><strong>Kostenträger ≠ Vertragspartei (Docs 25 + 27 ²⁸ ³⁴)</strong> <span class="chip ca">KRITISCH</span> — Wetzikon: Kanton ZH trägt 25% der Baukosten, ist aber <em>nicht</em> Vertragspartei (nur SBB + Stadt unterzeichnen). Sedelleitung: ASTRA finanziert 100% nach dem Veranlasser-Prinzip, weil dessen Bypass-Projekt den Rückbauf auslöst. Wer zahlt und wer Vertragspartei ist, sind getrennte Relationen — das Kostenteiler-Objekt braucht eigene Kostenträger-Einträge unabhängig von den Vertragsparteien.</li>
+  <li><strong>Phasenspezifischer Kostenteiler + Phasenkette (Doc 26 ³²)</strong> <span class="chip ca">KRITISCH</span> — Steinach finanziert nur die Phase Bau-/Auflageprojekt: Gemeinde 100% / SBB 0% für <em>diese</em> Phase, ausdrücklich ohne Präjudiz für die Realisierung; die künftige SBB-Beteiligung (CHF 3'190'000 Vorteilsanrechnung) wird erst im Ausführungsvertrag verbindlich. Der Kostenteiler ist an eine Projektphase (V2 Projektierung → V3 Ausführung → V4 Betrieb) gebunden, nicht an den Vertrag als Ganzes.</li>
+  <li><strong>Kostenteiler in nicht beigefügter Beilage (Doc 28 ⁴¹)</strong> <span class="chip ca">KRITISCH</span> — wwb-A3: die eigentliche Kostenaufteilung (% + CHF je Leitung) steht in «Beilage 1», die dem Vertrag nicht beiliegt. Ohne Beilage ist nur die Gesamtsumme CHF 415'300 extrahierbar, nicht der SBB-/Partner-Anteil. SAP muss Beilagen als Pflichtquelle für den Kostenteiler kennzeichnen und fehlende Beilagen als Datenlücke (nicht als 0) führen.</li>
+  <li><strong>Pauschalbeitrag für Vorteilsabgeltung (Doc 25 ²⁹)</strong> <span class="chip cn">NEU</span> — Wetzikon zahlt CHF 175'000 nicht als %-Kostenanteil, sondern als pauschale Abgeltung der Synergien/Vorteile aus dem gemeinsamen Bauwerk; einmalig fällig Okt. 2026 und <em>bedingt</em> — entfällt vollständig bei Projektabbruch. Ergänzt die Geldfeld-Art um «Pauschalbeitrag» mit Bedingungsklausel neben «Kostenteiler-Anteil» und «Gebühr».</li>
+  <li><strong>Parteityp-Erweiterung: Bund/ASTRA + kommunaler Werkbetrieb (Docs 27 + 28 ³⁶ ⁴²)</strong> <span class="chip cn">NEU</span> — Vertragspartei kann der Bund vertreten durch das ASTRA sein (Variante zu «Bund/BAV» aus Batch 4) sowie ein eigenständiger kommunaler Werkbetrieb (Werke Wangen-Brüttisellen), nicht die Gemeinde direkt. Die Parteityp-Liste wächst weiter.</li>
+  <li><strong>Bahnlinie 1:n und Gemeinde 1:n erneut bestätigt (Doc 27 ³⁵ ³⁹)</strong> — Sedelleitung quert 2 Bahnlinien (500 + 660, je km-Referenzpunkt im Kopf) und geografisch 3 Gemeinden (Ebikon, Emmen, Luzern), wovon keine Vertragspartei ist. Bekräftigt die 1:n-Relationen aus Batch 4 und die Trennung «geografische Gemeinde» ≠ «Vertragspartei».</li>
+  <li><strong>Datenqualität: fehlende Unterschriftsdaten + Datumsinkonsistenz (Doc 27 ³⁷)</strong> <span class="chip cc">ÄNDERUNG</span> — Bei der Sedelleitung sind die Unterschriftsdaten nicht angegeben/lesbar, der Vertragsbeginn also nicht ermittelbar; zudem widersprüchliche Daten (BAV-Verfügung 22.02. vs. 22.04.2024). Selbst maschinenlesbare Köpfe garantieren kein vollständiges Beginndatum — Extraktion muss «Datum unklar/widersprüchlich» abbilden können.</li>
+</ul>
+</div>
+<div class="os">
+<h3>Schema-Ergänzungen (kumuliert)</h3>
+<ul>
+  <li><strong>Vertragsparteien → 1:n-Relation</strong> <span class="chip ca">DRINGEND</span> — Mehrparteienverträge (SBB + Gem. + PTT; FZAG + MEG)</li>
+  <li><strong>Eltern-Kind-Relation Verträge</strong> <span class="chip ca">DRINGEND</span> — Beilagen/Sub-Verträge ohne eigene ContrAct-Nr.</li>
+  <li><strong>Nachtrag/Versionierung</strong> <span class="chip ca">DRINGEND</span> — Datierte Änderungen einzelner Klauseln; mehrstufige Ketten</li>
+  <li><strong>Dokumenttyp</strong> <span class="chip cn">NEU</span> — Vertrag / Nachtrag / Beilage / Zustimmungsbrief-Duldung</li>
+  <li><strong>Nutzungsrichtung</strong> <span class="chip cn">NEU</span> — SBB nutzt fremd / Dritter nutzt SBB</li>
+  <li><strong>Status «n.a.» vs. «fehlend»</strong> <span class="chip cn">NEU</span> — nicht-anwendbar getrennt von nicht-extrahiert</li>
+  <li><strong>Geldfeld: gültig-ab/bis + Status</strong> <span class="chip cn">NEU</span> — aktiv / gestrichen (rückwirkende Änderungen)</li>
+  <li><strong>Vertragstyp Ebene 1–4</strong> <span class="chip cn">NEU</span> — 4 separate Felder</li>
+  <li><strong>Laufzeit_unbestimmt</strong> <span class="chip cn">NEU</span> — Boolean</li>
+  <li><strong>Einmalzahlung_Einnahmen / _Ausgaben</strong> <span class="chip cn">NEU</span> — getrennt von periodisch</li>
+  <li><strong>Unterhaltspflicht_SBB</strong> <span class="chip cn">NEU</span> — Boolean (kein CHF)</li>
+  <li><strong>Quellenangabe je Feld</strong> <span class="chip cn">NEU</span> — Seite + Ziffer</li>
+  <li><strong>Kanton</strong> <span class="chip cn">NEU</span> — separates Feld</li>
+  <li><strong>Vorgänger-/Nachfolgervertrag</strong> <span class="chip cn">NEU</span> — Ablösebeziehungen</li>
+  <li><strong>SBB-Organisationseinheit</strong> <span class="chip cn">NEU</span></li>
+  <li><strong>Grundbuchnummer</strong> <span class="chip cn">NEU</span></li>
+  <li><strong>Vertragsverknüpfung als Netz (n:m)</strong> <span class="chip cc">ÄNDERUNG</span> — Querverweise über Eltern-Kind hinaus</li>
+  <li><strong>Gemeinde → 1:n</strong> <span class="chip cc">ÄNDERUNG</span></li>
+  <li><strong>Vertragsnummer_alt</strong> <span class="chip cc">ÄNDERUNG</span></li>
+  <li><strong>Standard-Kopfblock-Parser</strong> <span class="chip cn">NEU</span> — Vertrag-Nr./Strecke/Linie/km/Gemeinde aus Kopf (Docs 21–24)</li>
+  <li><strong>Geldfeld: einmalig vs. periodisch + Trigger</strong> <span class="chip cn">NEU</span> — Periodenbeginn als Ereignis (z. B. «ab IBN»)</li>
+  <li><strong>Kostenteiler-Objekt (% + Bezugsbasis)</strong> <span class="chip ca">DRINGEND</span> — Partner-Anteil, Rechnungsrichtung, einmalig/Tranchen; SBB-Eigenanteil intern</li>
+  <li><strong>Rahmen → Objektvertrag-Hierarchie</strong> <span class="chip ca">DRINGEND</span> — 1 Rahmen : n Bauwerke : n Objektverträge</li>
+  <li><strong>Vertragspartei-Typ</strong> <span class="chip cn">NEU</span> — Bund/BAV · Kanton · Gemeinde · Dritte (AG)</li>
+  <li><strong>Bahnlinie → 1:n</strong> <span class="chip cc">ÄNDERUNG</span> — mehrere Linien/km-Bereiche je Vertrag (Doc 23)</li>
+  <li><strong>Massnahmenzweck (Bau/Umbau/Rückbau/Stilllegung)</strong> <span class="chip ca">DRINGEND</span> — Rückbau ≠ Bau, gegenteilige Wirkung auf Anlagenstamm/Folgekosten (Doc 27)</li>
+  <li><strong>Kostenträger ≠ Vertragspartei + Veranlasser-Prinzip</strong> <span class="chip ca">DRINGEND</span> — Zahlender separat von Vertragspartei modellieren (Kt. ZH, ASTRA; Docs 25 + 27)</li>
+  <li><strong>Kostenteiler an Projektphase gebunden</strong> <span class="chip ca">DRINGEND</span> — %-Anteil je Phase (V2→V3→V4), nicht je Vertrag; Phasenkette abbilden (Doc 26)</li>
+  <li><strong>Beilage als Pflichtquelle Kostenteiler</strong> <span class="chip cn">NEU</span> — fehlende Beilage = Datenlücke statt 0 (Doc 28)</li>
+  <li><strong>Geldfeld-Art + Bedingung</strong> <span class="chip cn">NEU</span> — Kostenteiler-Anteil · Pauschalbeitrag · Gebühr; Status geplant/fix; bedingt (entfällt bei Abbruch) (Doc 25)</li>
+  <li><strong>Vertragspartei-Typ erweitern</strong> <span class="chip cn">NEU</span> — + Bund/ASTRA · kommunaler Werkbetrieb (Docs 27 + 28)</li>
+  <li><strong>Phasenkette V1→V2→V3→V4</strong> <span class="chip cn">NEU</span> — Vorprojekt → Projektierung → Ausführung → Betrieb als Vertrags-/Phasenfolge (Doc 26)</li>
+</ul>
+
+<h3 style="margin-top:16px">Fussnoten</h3>
+<ul class="fn">
+  <li>¹ Strecke 410 aus Paralleldok. 0400-2010-0080 erschlossen</li>
+  <li>² km aus Situationsplan (Beilage), nicht Vertragstext</li>
+  <li>³ Einmalzahlung — kein periodischer Charakter</li>
+  <li>⁴ «Strecke 24» aus Deckblatt-Stempel erschlossen</li>
+  <li>⁵ Seitengeleise: kein Bahn-km</li>
+  <li>⁶ 4 Gemeinden — 1:n-Relation empfohlen</li>
+  <li>⁷ Keine DfA-Strecke; nur Kreis / Bahnhof angegeben</li>
+  <li>⁸ Unterhaltspflicht qualitativ, ohne CHF-Betrag</li>
+  <li>⁹ Nachtrag I (28.05.1990) ändert Art. 4 + Art. 10 fundamental — SAP braucht Versionsverwaltung</li>
+  <li>¹⁰ Doc 12 hat 3 ContrAct-Nummern in einer Box (0400-1978-0020, 1000-1978-0622, 1000-1978-0623)</li>
+  <li>¹¹ Doc 13 (WC Kaltbrunn 2016): kein ContrAct sichtbar; ersetzt Vertrag Nr. 87220.116.001 vom 01.11.1985</li>
+  <li>¹² Nutzungsabhängige Gebühr (CHF 1.–/Benutzung bzw. P+R-Gebühren), kein periodfixer Betrag</li>
+  <li>¹³ Docs 14+15 = Beilagen 2+3 zum Dachvertrag 0400-1988-0012 (Doc 16) — kein eigener ContrAct</li>
+  <li>¹⁴ Doc 15 (PU Poststrasse Wetzikon): 3 Parteien — SBB, Gemeinde Wetzikon, PTT. Unterzeichnet an 3 verschiedenen Daten.</li>
+  <li>¹⁵ km-Werte aus Art. 5 des Dachvertrags (Beilagenreferenzen), nicht als Vertragsparameter</li>
+  <li>¹⁶ Doc 20 («The Circle» 90051620): 3 Dokumente = 1 Vertrag (Basis 09.03.2016 + Vertragsänderung 19.12.2023 + Vertragsänderung 2 vom 04.2025). VÄ 2023 streicht Konventionalstrafe CHF 2 Mio./Jahr ersatzlos → aktuell keine periodische Zahlung. Doc 17 (Tiefenbrunnen): I. Nachtrag 1996 ändert Jahrespauschale. Versionierung zwingend.</li>
+  <li>¹⁷ Doc 20: Gemeinde Kloten ZH abgeleitet — Dokument nennt nur Postadresse «8058 Zürich-Flughafen»; The Circle / Terminal 2 liegen politisch in Kloten</li>
+  <li>¹⁸ Doc 20: Immobilien-/Erschliessungsobjekt (SBB-Tiefgarage + Zufahrtsrampe) ohne Bahn-Streckenbezug → Bahnlinie/km nicht anwendbar (n.a.), nicht «fehlend»</li>
+  <li>¹⁹ Doc 19 (Luzern): formloser Zustimmungsbrief/Duldung ohne ContrAct-Nr., ohne Dienstbarkeit, jederzeit widerruflich; SBB nutzt fremdes Land (Nutzungsrichtung umgekehrt); Verzicht auf Entschädigung → keine Zahlungen in beide Richtungen</li>
+  <li>²⁰ Doc 18 (Winterthur Seen) verweist auf separate Verträge: WC-Anlage = sep. Vertrag 10.07.1993 (Art. 8), Personenunterführung = sep. Objektvertrag (Art. 5). Referenzierte Verträge nicht im Bestand → Vertragsnetz</li>
+  <li>²¹ Doc 23 («AS25 Bern West» 90051665): übergeordnete Finanzierungsvereinbarung über 6 Bauwerkskategorien, je separater Objektvertrag (Rahmen→Objekt). 3 Vertragsparteien (Bund/BAV + SBB + Stadt Bern), 3 Bahnlinien (220/250/298; primär 250, km 93.190–97.105). Fixbeitrag Stadt Bern CHF 21'575'000 inkl. MWST in 3 Tranchen; Bundesmittel via vierteljährl. Mittelabruf</li>
+  <li>²² Doc 22 (Hakenrüti 90051484): Kanton-Anteil CHF 603'015 einmalig (effektiv, ±10%) + jährliche Investitionsfolgekosten, ausgelöst «ab Inbetriebnahme der Schrankenanlage» (Ziff. 15) — einmalig + periodisch in einem Vertrag</li>
+  <li>²³ Kostenanteil-Rückerstattung als Einnahme-Modell (Docs 21–24): «Einnahme» = erstatteter Partner-/Gemeinde-/Kantonsanteil an Baukosten (einmalig bzw. in Tranchen), nicht Miete/Gebühr. SBB-Eigenanteil ist intern bzw. bundesfinanziert (keine Zahlung an die Gegenpartei) → Eintrag in Spalte «Period. Ausgaben» nur informativ</li>
+  <li>²⁴ Vertragsdauer als Referenz auf einen Folgevertrag: Doc 22 gilt «bis Abschluss des Kreuzungsbauwerkvertrags» (Ziff. 28); Doc 24 verweist baul./betriebl. Unterhalt auf einen separaten Vertrag (Ziff. 14.3). Vertragsende = Ereignis statt Datum</li>
+  <li>²⁵ Doc 24 (Kloten Balsberg 90052164): 4 Vertragsparteien (SBB + Stadt Opfikon + Stadt Kloten + FZAG), 2 Gemeinden (Kloten + Opfikon), modulscharfer Pauschal-Kostenteiler (Module 1/2/3.1/5; Anteile Opfikon 1'609'821 / Kloten 804'965 / FZAG 1'029'214 / SBB 1'840'000); Nutzungsdauern PU 100 / Innenausbau 25 / Rampe+Treppe 80 Jahre</li>
+  <li>²⁶ Doc 21 (Bassersdorf 90051418): Durchleitungsrechte der verlegten Leitungen in separaten Leitungsverträgen (Ziff. 2.3, 10); Kostenteiler nach Verursacherprinzip/Vorteilsanrechnung (sinngemäss Art. 27 EBG), Beilage 1</li>
+  <li>²⁷ Doc 25 (Wetzikon 90052618): Bahnbrücke über die Usterstrasse → Ebene-4-Typ «Kreuzungsbauwerk (Brücke)» abgeleitet; Footer-Code «(Vertrag 3)» = Ausführungsprojekt</li>
+  <li>²⁸ Doc 25: Vertragsparteien sind nur SBB + Stadt Wetzikon. Der Kanton ZH ist am Projekt finanziell beteiligt (75% SBB / 25% Kt. ZH), aber <em>nicht</em> Vertragspartei → Kostenträger ≠ Vertragspartei</li>
+  <li>²⁹ Doc 25: Stadt Wetzikon zahlt pauschal CHF 175'000 inkl. MWST (CHF 161'887 exkl.) als Abgeltung von Synergien/Vorteilen (Ziff. 3.5) — kein %-Kostenteiler; einmalig per Rechnung Okt. 2026 (Ziff. 4), entfällt vollständig bei Projektabbruch (Ziff. 9)</li>
+  <li>³⁰ Doc 25: Gesamtkosten Bauwerk CHF 7'250'000 ±10%; Kostenteiler 75% SBB / 25% Kt. ZH (Ziff. 3.1/3.2). Spalte «Period. Ausgaben» bildet diesen einmaligen internen Anteil nur informativ ab</li>
+  <li>³¹ Doc 26 (Steinach 90052784): Eisenbahnbrücke über das Fliessgewässer Steinach → «Kreuzungsbauwerk (Brücke)»; Footer-Code «(Vertrag 2)» = Projektierung (Bau-/Auflageprojekt)</li>
+  <li>³² Doc 26: Phasenvertrag — Kostenteiler 100% Gemeinde / 0% SBB gilt nur für die Phase Bau-/Auflageprojekt und präjudiziert die Realisierung nicht (Ziff. 8.6); Folgephasen separat (Ziff. 4.6); künftige SBB-Beteiligung CHF 3'190'000 (Vorteilsanrechnung) wird erst in der Finanzierungsvereinbarung Ausführung verbindlich (Ziff. 7.1). Gemeinde-Anteil dieser Phase = CHF 300'000, vierteljährlich (Ziff. 9.1)</li>
+  <li>³³ Doc 27 (Sedelleitung 90052877): 15-kV-Bahnstrom-Speiseleitung → neuer Ebene-4-Typ «Bahntechnik- und Steuerung (Fahrstrom-Speiseleitung)»; Ebene 3 = Ausführungsprojekt (als Rückbau)</li>
+  <li>³⁴ Doc 27: Vertragszweck ist der <em>Rückbau</em> (kein Bau) der Speiseleitung UW Emmenbrücke–SP Ebikon; das Leitungseigentum erlischt mit Vollendung (Ziff. 5.1). Veranlasser-Prinzip — ASTRA trägt 100%, weil das ASTRA-Projekt «Bypass Luzern N02» den Rückbau der SBB-eigenen Leitung auslöst</li>
+  <li>³⁵ Doc 27: Kopf nennt 2 Bahnlinien (500 / km 90.550 und 660 / km 62.700), je als km-Referenzpunkt; Leitung verläuft über die Strecke → km sind Bezugspunkte. Bestätigt 1:n-Relation Bahnlinie</li>
+  <li>³⁶ Doc 27: Vertragspartei = Schweizerische Eidgenossenschaft, vertreten durch das ASTRA (Bund) → Parteityp «Bund/ASTRA» (Variante zu «Bund/BAV»)</li>
+  <li>³⁷ Doc 27: Unterschriftsdaten (S. 11) nicht angegeben/lesbar → Vertragsbeginn nicht ermittelbar; Datumsinkonsistenz (BAV-Verfügung 22.02. vs. 22.04.2024); technischer Bericht V1.3 postdatiert 23.06.2025 → Vertrag jedenfalls danach</li>
+  <li>³⁸ Doc 27: ASTRA trägt 100% der Investitionskosten CHF 461'500 ±10% (inkl. VVGK CHF 470'730); Abrechnung nach Leistungsfortschritt, Zahlungsfrist 45 Tage (Ziff. 13/14). SBB-Anteil 0% — Leistungen werden zu Selbstkosten + 2% VVGK an ASTRA verrechnet, daher keine eigene SBB-Ausgabe (Spalte «Period. Ausgaben» = ❌)</li>
+  <li>³⁹ Doc 27: Kopf nennt nur Ebikon LU; die Leitung quert Emmen (UW Emmenbrücke) und tangiert die Stadt Luzern (Abbruchanzeige Ziff. 10.1) → Gemeinde geografisch 1:n, keine davon Vertragspartei</li>
+  <li>⁴⁰ Doc 28 (wwb-A3 90052912): Werkleitungen → «Durchleitung (Werkleitungen)»; gleicher Typ und Aufbau wie Doc 21 (Bassersdorf) → MSZW-Template</li>
+  <li>⁴¹ Doc 28: Kostenteiler (% + CHF je Leitung) steht in «Beilage 1», die nicht beiliegt → ohne Beilage nur Gesamtsumme CHF 415'300 extrahierbar, SBB-/wwb-Anteil unbekannt (Datenlücke ≠ 0). wwb trägt die Investitionsfolgekosten über die gesamte Nutzungsdauer (Ziff. 8)</li>
+  <li>⁴² Doc 28: Vertragspartei = Werke Wangen-Brüttisellen (wwb), ein eigenständiger kommunaler Werkbetrieb — nicht die Gemeinde direkt</li>
+  <li>⁴³ Doc 28: regelt nur die Finanzierung der Leitungsverlegung; Durchleitungsrechte und Fortbestand in separaten Leitungsverträgen (Ziff. 3.2/12), Dauer «bis zur Beseitigung» (Ziff. 12.2.5) → 1 Finanzierungsvereinbarung : n Leitungsverträge</li>
+</ul>
+</div>
+</div>
+</div>
+
+<p class="footer">
+  Hack4Rail | KI-Vertragsextraktion | Batch 1–5 | 28 / 53 Verträge |
+  Typen Ebene 4: Anker (2×) · Bahnhof (5×) · Bahnhof/WC (3×) · Flächennutzung (2×) · Kleinbauten (2×) · Kreuzungsbauwerk Brücke (3×) · Kreuzungsbauwerk Bahnübergang (1×) · Öff. Verkehrswege ohne Kreuzung (4×) · Gebrauchsleihe (1×) · Durchleitung/Zufahrtsbauwerk (3×) · Rahmenvereinbarung (1×) · Bahntechnik- und Steuerung (1×)
+</p>
+</div>
+</body>
+</html>
