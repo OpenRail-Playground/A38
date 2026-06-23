@@ -116,7 +116,7 @@ PDF → markitdown (text extraction) → LLM + System Prompt → validated JSON
 - **Cross-Bahn:** gleiches Schema für DB / ÖBB / SBB
 - **Brücke zu Challenge 1:** Verträge gegen OSCAL4Rail-Regelwerke auf Compliance prüfen
 
-> "The goal: every new contract that arrives is automatically classified, extracted, and linked – before a human even opens it."
+> "The goal: every new contract that arrives is automatically classified, extracted, and linked – before a human even opens it. But: the human stays in control. Every field marked 'abgeleitet' or 'fehlend' goes to a human for verification. The AI proposes, the human decides."
 
 ---
 
