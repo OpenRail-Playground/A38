@@ -79,35 +79,61 @@ Ebene 1: Infrastrukturverträge (fix)
 
 ## Phasen
 
-### Phase 1: Grundlagen (1–2h)
+### Phase 1: Grundlagen (1–2h) ✅
 - [x] Taxonomie-Schema erstellen (`taxonomy.yaml`)
-- [ ] Masterdatei-Header lesen → Zielstruktur verstehen
+- [x] System-Prompt v1.0 reviewen (liegt fertig vor)
 - [ ] JSON-Schema aus System-Prompt Abschnitt 8 ableiten
-- [ ] System-Prompt v1.0 reviewen
+- [ ] Masterdatei-Header lesen → Zielstruktur verstehen
 
-### Phase 2: Walking Skeleton – 1 Vertrag End-to-End (2–3h)
-- [ ] Ein PDF wählen (deutschsprachig, modern, gute Qualität)
-- [ ] `markitdown` → Text-Extraktion
-- [ ] LLM-API-Call mit System-Prompt + Text
-- [ ] JSON-Output gegen Schema + Taxonomie validieren
-- [ ] Ergebnis manuell gegen Masterdatei prüfen
+### Phase 2: Walking Skeleton – 1 Vertrag End-to-End (2–3h) ✅
+- [x] PDF gewählt: 90051045 (KBW/DE, ASTRA/SBB Brücke Balsberg)
+- [x] `markitdown` → Text-Extraktion (2727 Zeilen, davon 880 Vertragstext)
+- [x] LLM-Extraktion mit System-Prompt v1.0
+- [x] Iteration 1: gekürzt (380 Zeilen) → Betriebskosten fehlen
+- [x] Iteration 2: vollständig (880 Zeilen) → alle Kosten korrekt
+- [x] Taxonomie-Validierung bestanden
+- [x] Manuelle Verifikation durch Team → Betriebskosten-Fehler in v1 identifiziert, in v2 behoben
+- [ ] **Ergebnis gegen Masterdatei `Masterdatei H4R.xlsx` prüfen** (Vertrag 90051045 suchen)
 
-### Phase 3: Pipeline (3–4h)
-- [ ] `extract.py <pdf-ordner> <output-ordner>`
-- [ ] Batch: alle PDFs eines Vertrags (mehrere Dateien pro Nummer)
-- [ ] Automatische Validierung (JSON-Schema + Taxonomie)
-- [ ] Fehler-Handling (OCR-Qualität, unleserlich)
+### Phase 3: Weitere Vertragstypen testen (offen)
+- [ ] **Grundstücknutzung** – z.B. aus `PDF Dateien/KBW/DE/90051158` (Wandbemalung/Graffiti)
+- [ ] **FinVer** (Finanzierungsvereinbarung) – z.B. aus `PDF Dateien/FinVer/DE/`
+- [ ] **Bahnhofvertrag** – z.B. aus `PDF Dateien/Bahnhofverträge/DE/`
+- [ ] **Älterer Vertrag** (handschriftlich, vor 1990) – z.B. `PDF Dateien/KBW/DE/90004096`
+- [ ] **Französisch** – z.B. aus `PDF Dateien/KBW/FR/`
+- [ ] **Italienisch** – z.B. aus `PDF Dateien/KBW/IT/`
+- [ ] Ergebnisse jeweils gegen Masterdatei prüfen
 
-### Phase 4: Qualitätsmessung (2–3h)
-- [ ] Extraktionsergebnisse vs. Masterdatei
+### Phase 4: Automatische Qualitätsmessung (offen)
+- [ ] Masterdatei-Spalten auf JSON-Felder mappen
+- [ ] Automatischer Vergleich: extrahierte Werte vs. Masterdatei
 - [ ] Metriken: Accuracy pro Feld, eindeutig/abgeleitet/fehlend
-- [ ] Confusion: wo halluziniert, wo fehlen Daten?
-- [ ] HTML-Report
+- [ ] HTML-Report mit Ergebnissen
 
-### Phase 5: Demo (2h)
+### Phase 5: Demo (offen)
 - [ ] One-Pager / Pitch
 - [ ] Live-Demo: PDF → validiertes JSON
 - [ ] Zukunftsvision
+
+## Verifikationsdaten
+
+Für den manuellen und automatisierten Abgleich stehen zwei Quellen bereit:
+
+| Datei | Inhalt | Nutzung |
+|-------|--------|---------|
+| `Masterdatei H4R.xlsx` (13 MB) | Alle Verträge mit Soll-Werten für die 13 Felder | **Ground Truth** – extrahierte JSONs dagegen prüfen |
+| `Grundlagen/2026-06-11 Export ALLE Verträge.XLSX` (8.5 MB) | SAP-Export aller Verträge (Ist-Zustand) | **Ist-Stand** – was heute im System steht |
+| `Grundlagen/Versuch Business mit AI-Claude/3_Hack4Rail_Extraktion_Resultate_EXCEL.xlsx` | Bisherige Claude-Extraktion (28 Verträge) | **Baseline** – Vergleich mit unserer Pipeline |
+
+### Verifikations-Workflow
+
+```
+Extrahiertes JSON (results/<nr>.json)
+       │
+       ├─► vs. Masterdatei H4R.xlsx     → Feld-für-Feld-Vergleich (Soll)
+       ├─► vs. SAP-Export               → Abgleich mit bestehendem System
+       └─► vs. Bisherige Ergebnisse     → Delta zur Claude-Baseline
+```
 
 ## Zukunftsvision
 
@@ -155,6 +181,22 @@ aca/
 - LLM-API (Claude)
 - `jsonschema` – Validierung
 
+## Bisherige Ergebnisse (Stand 23.06.2026, 11:50)
+
+### Getestete Verträge
+
+| Nr. | Vertrag | Typ | Iteration | Ergebnis |
+|-----|---------|-----|-----------|----------|
+| 1 | 90051045 (ASTRA/SBB Brücke Balsberg) | Zusammenarbeit › V3&4 › KBW Brücke | v1 (gekürzt) | 6 eindeutig, Betriebskosten fehlen |
+| 1 | 90051045 | | v2 (vollständig) | **8 eindeutig**, alle Kosten korrekt |
+
+### Learnings (Pipeline)
+
+1. **Pre-Processing:** Bauwerksplan-Anhänge abschneiden bei letzter "Seite N/N"-Markierung
+2. **Volltext:** Immer kompletten Vertragstext übergeben (nie willkürlich kürzen)
+3. **Handschrift:** Vertragsbeginn (Unterschriftsdatum) bleibt `fehlend` – ist erwartetes Verhalten
+4. **Iteratives Feedback:** Verifikation nach Iteration 1 führt zu gezielter Verbesserung
+
 ## Offene Entscheidungen
 
 - [ ] **LLM:** Claude API? Lokal? Was ist verfügbar?
@@ -164,4 +206,4 @@ aca/
 
 ---
 
-*Erstellt: 23.06.2026, 10:44*
+*Erstellt: 23.06.2026, 10:44 | Letzte Aktualisierung: 11:50*
