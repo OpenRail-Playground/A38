@@ -397,6 +397,34 @@ catalog:
           Ereignismeldung der Fahrplan ebenfalls anzupassen, dies so, dass eine möglichst kleine Lücke
 
           zwischen Soll-Fahrplan und Echtzeitdaten entsteht.'
+      - name: guidance
+        title: Anhang 1 – Standardsätze für die Kommunikation im Ereignisfall
+        prose: 'Der folgende Katalog mit Standardsätzen ermöglicht den Schweizerischen Transportunternehmen die einheitliche
+          Kommunikation im Ereignisfall. Für Fahrgäste wird dadurch der Zugang zum öffentlichen Verkehr vereinfacht und die
+          Orientierung im Ereignisfall erleichtert.
+
+
+          Diese Vorschrift hat Anspruch auf Vollständigkeit. Ziel ist es, eine schweizweit einheitliche Kommunikation zu gewährleisten.
+
+
+          Meldungselemente (Gliederung nach VDV 736):
+
+          1.1  Titel (zwingend) – Eingeschränkter Betrieb, Unterbruch, Betrieb eingestellt, Unregelmässiger Betrieb, Haltestelle
+          verschoben/nicht bedient/eingeschränkter Zugang
+
+          1.2  Grund – Standardsatz Ereignisgrund + Attributliste Ereignisgründe
+
+          1.3  Dauer – unbestimmt, bekannt, ungefähr absehbar, bis mindestens
+
+          1.4  Information – Linien, Zugänge
+
+          1.5  Auswirkungen – Kein Verkehr, Unterbruch, Einstellung, Haltestelle verschoben/nicht bedient, Durchfahrten, Umleitungen
+
+          1.6  Empfehlungen – Reisendenlenkungen, Ersatzbusse, Umfahrungen
+
+          1.7  Bemerkung – Informationsmöglichkeit, Zeitpunkt, Online-Fahrplan, Barrierefreiheit
+
+          1.8  URL-Link'
       props:
       - name: source-chapter
         value: '2.5'
@@ -424,6 +452,9 @@ catalog:
       - name: applicability
         value: verbindlich
         class: daten.einlieferung
+      - name: source-document
+        value: BS-KI_Anhang1_Ereignistexte_DE.pdf
+        remarks: Anhang Ereignistexte, Version 01.11.2024, 172 Seiten Standardsätze in DE/FR/IT/EN
     - id: bs-ki-2.6
       title: Infos zu Linien und Tarifzonen
       parts:
@@ -3401,3 +3432,36 @@ catalog:
         - name: applicability
           value: empfohlen
           class: haltestelle.bahn
+  back-matter:
+    resources:
+    - uuid: 2b6f0b19-1b00-4493-b4c2-72a3d01cefda
+      title: Übergangsdokument BS-KI
+      description: Übergangsregelungen für den Nationalen Branchenstandard Kundeninformation. Definiert Fristen und Bedingungen
+        für die Umsetzung der einzelnen Vorgaben. 337 Seiten.
+      props:
+      - name: version
+        value: 01.11.2024
+      - name: type
+        value: transition-document
+      rlinks:
+      - href: Uebergangsdokument_DE.pdf
+    - uuid: 8e46420a-0915-49dc-9bb5-19b09cca98be
+      title: Ergänzungen Übergangsdokument BS-KI
+      description: Ergänzungen zum Übergangsdokument mit aktualisierten Fristen und Präzisierungen. Version 01.06.2024.
+      props:
+      - name: version
+        value: 01.06.2024
+      - name: type
+        value: transition-supplement
+      rlinks:
+      - href: Ergaenzungen_Uebergangsdokument_DE.pdf
+    - uuid: 5630415d-84b5-4a26-b8b5-34ffb7ff0228
+      title: Anhang 2 – On-Demand öV Schweiz
+      description: Kundeninformations-Bedürfnisse für On-Demand-Verkehr. Ergänzendes Dokument zum BS-KI. Ausgabe 15.03.2022.
+      props:
+      - name: version
+        value: 15.03.2022
+      - name: type
+        value: supplement
+      rlinks:
+      - href: BS-KI_Anhang2_OnDemand_DE.pdf
