@@ -1,0 +1,112 @@
+<mxfile host="app.diagrams.net" modified="2026-06-23T08:15:00.000Z" agent="Cortex Code" version="24.0.0">
+  <diagram id="workflow" name="BS-KI Pipeline">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Inputs -->
+        <mxCell id="input1" value="Matrix_BS-KI_DE.xlsx" style="shape=document;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="120" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="input2" value="BS-KI_DE.pdf" style="shape=document;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="360" width="180" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 1 -->
+        <mxCell id="phase1" value="Phase 1&#xa;Matrix parsen&#xa;(openpyxl)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="120" width="180" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 2 -->
+        <mxCell id="phase2" value="Phase 2&#xa;PDF extrahieren&#xa;(pdfplumber/markitdown)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="360" width="180" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Intermediate results -->
+        <mxCell id="mid1" value="matrix.json" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;size=10;" vertex="1" parent="1">
+          <mxGeometry x="600" y="120" width="140" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="mid2" value="Kapitel-Texte&#xa;(pro Regel)" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;size=10;" vertex="1" parent="1">
+          <mxGeometry x="600" y="360" width="140" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 3 -->
+        <mxCell id="phase3" value="Phase 3&#xa;Rules erzeugen&#xa;(Matrix + PDF → OSCAL)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="860" y="240" width="200" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Output -->
+        <mxCell id="output1" value="bs-ki-de.yaml&#xa;(OSCAL Catalog)" style="shape=document;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="240" width="180" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Phase 4 -->
+        <mxCell id="phase4" value="Phase 4&#xa;Verifikation&#xa;(NIST JSON-Schema)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="420" width="180" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Schema input -->
+        <mxCell id="schema" value="NIST OSCAL&#xa;JSON-Schema" style="shape=parallelogram;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="920" y="420" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Result -->
+        <mxCell id="result" value="✅ Valid" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1420" y="430" width="100" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Arrows -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="input1" target="phase1" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="input2" target="phase2" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="phase1" target="mid1" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="phase2" target="mid2" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="mid1" target="phase3" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="mid2" target="phase3" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="phase3" target="output1" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="output1" target="phase4" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="schema" target="phase4" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="phase4" target="result" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Title -->
+        <mxCell id="title" value="Who Makes the Rules – Pipeline" style="text;html=1;fontSize=18;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="560" y="20" width="400" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Legend -->
+        <mxCell id="leg1" value="Grün = Input/Output" style="text;html=1;fontSize=10;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="520" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg2" value="Blau = Verarbeitungsphase" style="text;html=1;fontSize=10;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="545" width="180" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg3" value="Orange = Zwischenergebnis" style="text;html=1;fontSize=10;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="570" width="180" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg4" value="Rot = Validierung" style="text;html=1;fontSize=10;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="595" width="150" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
