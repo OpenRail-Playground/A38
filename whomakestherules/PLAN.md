@@ -26,9 +26,9 @@ whomakestherules/
 
 **Hinweis:** Ein OSCAL Catalog ist eine Datei mit verschachtelten Groups/Controls. Wir splitten NICHT in eine Datei pro Regel, sondern halten alles in einem Catalog – das ist OSCAL-konform und validierbar.
 
-## Format-Entscheidung: Leichtgewichtiges OSCAL
+## Format-Entscheidung: OSCAL4Rail
 
-**Entscheidung:** Wir nutzen ein OSCAL-kompatibles Catalog-Format, halten es aber leichtgewichtig und erweiterbar für weitere Regelwerke (TSI, Ril 420, etc.).
+**Entscheidung:** Wir nutzen **OSCAL4Rail** – ein leichtgewichtiges OSCAL-Catalog-Profil für Eisenbahn-Regelwerke. Details siehe [OSCAL4Rail.md](OSCAL4Rail.md).
 
 **Warum OSCAL:**
 - Offizielles JSON-Schema von NIST zur Validierung (YAML validierbar über JSON-Schema)
@@ -144,7 +144,7 @@ print('✅ Valid OSCAL Catalog')
 
 ## Offene Entscheidungen (Team)
 
-- [x] **Format:** Leichtgewichtiges OSCAL Catalog (YAML, validierbar gegen NIST JSON-Schema)
+- [x] **Format:** OSCAL4Rail – leichtgewichtiges OSCAL Catalog Profil (siehe [OSCAL4Rail.md](OSCAL4Rail.md))
 - [x] **Granularität:** Ein Catalog pro Regelwerk, ein Control pro Regel (Matrix-Zeile)
 - [ ] **Sprachen:** Nur DE oder auch FR/IT parallel?
 - [ ] **Tooling:** Python-Script oder Pipeline?
