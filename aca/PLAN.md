@@ -6,8 +6,8 @@ Challenge 2 – Automatic Contract Analysis (ACA)
 
 | Name | Organisation |
 |------|-------------|
-| Rebeca Perez | SBB |
-| Simon Freihart | SBB |
+| Simon Nölle | SBB |
+| Samuel Engel | SBB |
 | Jens Grote | DB |
 
 ## Intent
