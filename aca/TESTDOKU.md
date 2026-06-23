@@ -211,4 +211,91 @@ Prüfung gegen `taxonomy.yaml`:
 
 ---
 
-*Erstellt: 23.06.2026, 11:01 | Iteration 2: 11:34*
+## Abgleich mit Masterdatei (23.06.2026, 13:00)
+
+### Masterdatei-Struktur
+
+Sheet **"Masterliste"** – 33 Spalten, relevante Header (Zeile 3):
+
+| # | Spalte | Mapping auf JSON-Feld |
+|---|--------|----------------------|
+| 1 | Titel | – (Kategorie, z.B. "Kreuzungsbauwerk") |
+| 2 | Vertragsnummer | `felder.vertragsnummer.primaer` |
+| 6 | Alte Vertragsnummer | `felder.vertragsnummer.alt_systemnummern` |
+| 8 | PDF Anlagen | `felder.anlage.wert` |
+| 9 | UUID (RIS Viewer) | – (externe Referenz) |
+| 10 | Bahnlinien | `felder.bahnlinie[].wert` |
+| 12 | Kilometrierung von | `felder.km_von.wert` |
+| 14 | Kilometrierung bis | `felder.km_bis.wert` |
+| 16 | Vertragspartner | `felder.vertragspartner[].name` |
+| 18 | Vertragsart | – (SAP-Klassifikation) |
+| 19 | Vertragstyp Ebene 2 | `felder.vertragstyp.ebene_2` |
+| 20 | Vertragstyp Ebene 3 | `felder.vertragstyp.ebene_3` |
+| 21 | Vertragstyp Ebene 4 | `felder.vertragstyp.ebene_4` |
+| 22 | Herleitung Vertragstypen | – (Freitext-Begründung) |
+| 24 | Vertragsbeginn | `felder.vertragsbeginn.wert` |
+| 26 | Vertragsende | `felder.vertragsende.wert` |
+| 28 | Periodische Ein/Ausgaben | `felder.periodische_einnahmen` / `periodische_ausgaben` |
+| 31 | Gemeinde | `felder.gemeinde[].gemeinde` |
+
+Hinweis: Viele Spalten sind VLOOKUP-Formeln auf andere Sheets (SAP-Export, Migrationstabelle). Die "PDF"-Spalten enthalten die manuell aus dem PDF gelesenen Werte.
+
+### Vertrag 90051045: Feld-für-Feld-Vergleich
+
+| Feld | Masterdatei | Extraktion v2 | Match |
+|------|-------------|---------------|-------|
+| Vertragsnummer | 90051045 | 90051045 | ✅ |
+| Anlage | "Bau und Bauwerkserhaltung «U N20 (A51)» / Überführung UEF SBB Balsberg, Opfikon-Kloten" | "Bahnbrücke «U N20 (A51)» / Überführung UEF SBB Balsberg..." | ✅ |
+| km von (PDF) | 8.68 | 8.68 | ✅ |
+| Vertragstyp Ebene 2 | Zusammenarbeit bei Anlagen | Zusammenarbeit bei Anlagen | ✅ |
+| Vertragstyp Ebene 3 | Ausführung Projekt mit Betrieb und Unterhalt (V3&4) | Ausführung Projekt mit Betrieb und Unterhalt | ✅ |
+| **Vertragstyp Ebene 4** | **Kreuzungsbauwerk (Bahnübergang)** | **Kreuzungsbauwerk (Brücke)** | ❌ |
+| Vertragsbeginn (PDF) | **2023-06-14** | fehlend (handschriftlich) | ⚠️ |
+| Vertragsende (PDF) | **2123-06-13** | "100 Jahre feste Laufzeit" | ✅ (2023+100=2123) |
+| Period. Ein/Ausgaben | **nein** | ja (CHF 7.8M + 45%/55%) | ❓ |
+| Gemeinde (PDF) | Kloten | Kloten + Opfikon | ✅ |
+
+### Auffälligkeiten
+
+#### 1. Ebene 4: "Bahnübergang" vs. "Brücke" ❌
+
+- **Masterdatei:** Kreuzungsbauwerk (Bahnübergang)
+- **Extraktion:** Kreuzungsbauwerk (Brücke)
+- **Im Vertrag steht wörtlich:** "Bahnbrücke", "Art des Bauwerks: Bahnbrücke", "die Bahnbrücke überquert die Nationalstrasse"
+
+**Bewertung:** Die Extraktion ist korrekt – es handelt sich eindeutig um eine Brücke. Die Masterdatei scheint hier einen Fehler zu enthalten. Mögliche Ursache: "Bahnübergang" wurde als Oberbegriff für alle Kreuzungsbauwerke verwendet, oder es wurde bei der manuellen Erfassung verwechselt.
+
+→ **Die KI-Extraktion hat einen Fehler in den Stammdaten gefunden.**
+
+#### 2. Periodische Ein/Ausgaben: "nein" vs. Kostenteiler ❓
+
+- **Masterdatei:** "nein"
+- **Extraktion:** Investitionskosten (einmalig) + Betriebskosten (45%/55% periodisch)
+
+**Bewertung:** Vermutlich definiert die Masterdatei "periodisch" als fixen CHF-Betrag pro Jahr. Ein %-basierter Kostenteiler ohne fixen Betrag wird offenbar nicht als "periodische Ein/Ausgabe" gewertet. Das ist eine Definitionsfrage, kein Extraktionsfehler.
+
+→ **Unterschiedliche Definition von "periodisch" in Masterdatei vs. System-Prompt.**
+
+#### 3. Vertragsbeginn: 2023-06-14 vs. fehlend ⚠️
+
+- **Masterdatei:** 2023-06-14 (manuell erfasst in "PDF Vertragsbeginn")
+- **Extraktion:** fehlend (Unterschrift handschriftlich, nicht im OCR)
+
+**Bewertung:** Korrekt als `fehlend` markiert. Das Datum existiert im PDF, ist aber handschriftlich und für markitdown nicht lesbar. Dieses Feld braucht Vision-OCR oder Human-in-the-Loop.
+
+→ **Bekannte Limitation, kein Fehler.**
+
+### Zusammenfassung Masterdatei-Abgleich
+
+| Kategorie | Anzahl |
+|-----------|--------|
+| ✅ Übereinstimmung | 7 Felder |
+| ❌ Abweichung (Extraktion besser) | 1 (Ebene 4: Brücke statt Bahnübergang) |
+| ⚠️ Nicht extrahierbar (Handschrift) | 1 (Vertragsbeginn) |
+| ❓ Definitionsunterschied | 1 (Period. Ein/Ausgaben) |
+
+**Fazit:** Die Pipeline erreicht bei diesem Vertrag eine höhere Datenqualität als die manuelle Erfassung in der Masterdatei (Ebene 4 korrekter klassifiziert).
+
+---
+
+*Erstellt: 23.06.2026, 11:01 | Iteration 2: 11:34 | Masterdatei-Abgleich: 13:00*

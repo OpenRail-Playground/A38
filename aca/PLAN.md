@@ -82,8 +82,8 @@ Ebene 1: Infrastrukturverträge (fix)
 ### Phase 1: Grundlagen (1–2h) ✅
 - [x] Taxonomie-Schema erstellen (`taxonomy.yaml`)
 - [x] System-Prompt v1.0 reviewen (liegt fertig vor)
-- [ ] JSON-Schema aus System-Prompt Abschnitt 8 ableiten
-- [ ] Masterdatei-Header lesen → Zielstruktur verstehen
+- [x] JSON-Schema = System-Prompt Abschnitt 8 + `taxonomy.yaml` für Vertragstyp-Validierung
+- [ ] Masterdatei-Header lesen → Mapping auf JSON-Felder verstehen
 
 ### Phase 2: Walking Skeleton – 1 Vertrag End-to-End (2–3h) ✅
 - [x] PDF gewählt: 90051045 (KBW/DE, ASTRA/SBB Brücke Balsberg)
