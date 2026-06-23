@@ -1,0 +1,65 @@
+catalog:
+  uuid: "72fcc28b-b64a-4035-8e5c-20b1699f146b"
+  metadata:
+    title: "Nationaler Branchenstandard Kundeninformation (BS-KI)"
+    published: "2026-01-01T00:00:00Z"
+    last-modified: "2026-06-23T10:14:00Z"
+    version: "1.0"
+    oscal-version: "1.1.3"
+    props:
+      - name: country
+        value: "CH"
+      - name: language
+        value: "de"
+      - name: source-url
+        value: "https://www.oev-info.ch/de/branchenstandard/nationaler-branchenstandard-kundeninformation"
+      - name: source-document
+        value: "BS-KI_DE.pdf"
+  groups:
+    - id: bs-ki-2
+      title: "Allgemeine Informationsinhalte der Kundeninformation"
+      controls:
+        - id: bs-ki-2.1
+          title: "Aktuelle Uhrzeit"
+          parts:
+            - name: statement
+              prose: |
+                Bei Haltestellen mit weniger als 800 Ein- und Aussteigern pro Tag kann auf die Angabe der
+                Uhrzeit verzichtet werden.
+
+                Die aktuelle Uhrzeit ist für die Kundschaft ein zentrales Element zur Orientierung. Sie kann analog
+                oder digital dargestellt werden (Informationen zur Darstellung siehe Abschnitt 6.5).
+            - name: guidance
+              title: "Spezifisch am und im Fahrzeug – Fahrzeug innen"
+              prose: |
+                Nur wenn im Fahrzeug eine Linienverlaufsanzeige vorhanden ist, muss die aktuelle Uhrzeit
+                angezeigt werden.
+          props:
+            - name: source-chapter
+              value: "2.1"
+            - name: source-page
+              value: "16"
+            # Haltestelle
+            - name: applicability
+              value: "verbindlich"
+              class: "haltestelle.bahn"
+              remarks: "v e – verbindlich für abgeltungsberechtigt, empfohlen für eigenwirtschaftlich"
+            - name: applicability
+              value: "empfohlen"
+              class: "haltestelle.bus-tram-metro"
+            - name: applicability
+              value: "empfohlen"
+              class: "haltestelle.schiff"
+            - name: applicability
+              value: "empfohlen"
+              class: "haltestelle.seilbahn"
+            # Fahrzeug Innen
+            - name: applicability
+              value: "verbindlich"
+              class: "fahrzeug-innen.bahn"
+            - name: applicability
+              value: "verbindlich"
+              class: "fahrzeug-innen.bus-tram-metro"
+            - name: applicability
+              value: "verbindlich"
+              class: "fahrzeug-innen.schiff"
