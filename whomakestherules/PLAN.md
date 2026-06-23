@@ -141,11 +141,26 @@ print('✅ Valid OSCAL Catalog')
 ### Phase 3: OSCAL4Rail Catalog erzeugen
 - [x] OSCAL4Rail-Konzept dokumentiert + benannt
 - [x] NIST JSON-Schema v1.1.3 heruntergeladen
-- [x] 4 Controls als OSCAL Catalog erzeugt
+- [x] 42 Controls als OSCAL Catalog erzeugt (vollständige Bewertungsmatrix)
 - [x] Validierung gegen Schema: ✅ bestanden
 - [x] Versioning & Diff-Strategie definiert (Kapitel-ID = stabiler Anker, nicht Seitenzahl)
-- [ ] Alle Controls aus Matrix + PDF zusammenführen
+- [ ] Ausführungsbestimmungen + Anhänge als `guidance`-Parts integrieren (Option 2)
+- [ ] Übergangsdokumente als verlinkte Ressourcen im `back-matter` (Option 3)
 - [ ] Nach manueller Verifikation: Automatisierungsscript bauen
+
+### Zusätzliche Quellen – Integrationsstrategie
+
+| Datei | Integration | Ziel |
+|-------|-------------|------|
+| `AB_3.6_DE.pdf` (Ausführungsbestimmung 3.6) | **Option 2:** Als `guidance`-Part in Control bs-ki-3.6 | Detail-Regeln zur Liniennummer |
+| `BS-KI_Anhang1_Ereignistexte_DE.pdf` | **Option 2:** Als `guidance`-Part in Control bs-ki-2.5 | Standardsätze für Ereignismeldungen |
+| `BS-KI_Anhang2_OnDemand_DE.pdf` | **Option 2:** Als eigener Control oder `guidance` | On-Demand-spezifische Regeln |
+| `Ergaenzungen_Uebergangsdokument_DE.pdf` | **Option 3:** `back-matter` Ressource | Ergänzungen zu Übergangsfristen |
+| `Uebergangsdokument_DE.pdf` | **Option 3:** `back-matter` Ressource | Zeitliche Gültigkeit / Übergangsfristen |
+
+**Option 2 (Anhänge/AB):** Inhalt wird wörtlich als `guidance`-Part in den zugehörigen Control eingebettet – gehört semantisch zur Regel.
+
+**Option 3 (Übergangsdokumente):** Werden als `back-matter` → `resources` referenziert mit Titel, UUID und Beschreibung. Kein eigener Regelinhalt, sondern Metadaten zur zeitlichen Gültigkeit.
 
 ### Phase 4: Verifikation
 - [ ] 4 Testcases manuell gegen PDF + Matrix prüfen

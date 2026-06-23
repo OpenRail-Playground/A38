@@ -1,5 +1,15 @@
 # Automatic Contract Analysis (ACA) – Arbeitsplan
 
+## Team: ConTextractors
+
+Challenge 2 – Automatic Contract Analysis (ACA)
+
+| Name | Organisation |
+|------|-------------|
+| Rebeca Perez | SBB |
+| Simon Freihart | SBB |
+| Jens Grote | DB |
+
 ## Intent
 
 **Problem:** Die SBB verwaltet tausende Infrastrukturverträge (Kreuzungsbauwerke, Finanzierungsvereinbarungen, Bahnhofverträge, Betrieb & Nutzung). Die Verträge liegen als PDFs vor – von handschriftlich ergänzten Dokumenten ab 1926 bis zu aktuellen Finanzierungsvereinbarungen. Die Vertragsdaten müssen manuell in SAP/ContrAct erfasst werden.

@@ -4,10 +4,10 @@ Two challenges, one team — making railway regulations machine-readable and con
 
 ## Challenges
 
-| Challenge | Directory | Description |
-|-----------|-----------|-------------|
-| **Who Makes the Rules** | [`whomakestherules/`](whomakestherules/) | Transforming railway safety regulations into structured, machine-readable formats |
-| **Automatic Contract Analysis** | [`aca/`](aca/) | Automated analysis of railway contracts |
+| Challenge | Team | Directory | Description |
+|-----------|------|-----------|-------------|
+| **Who Makes the Rules** | A38 | [`whomakestherules/`](whomakestherules/) | Transforming railway safety regulations into structured, machine-readable formats (OSCAL4Rail) |
+| **Automatic Contract Analysis** | ConTextractors | [`aca/`](aca/) | Automated extraction of structured data from railway infrastructure contracts (PDF → JSON) |
 
 ## Background
 
