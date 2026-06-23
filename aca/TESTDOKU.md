@@ -63,6 +63,8 @@ JSON (results/90051045.json)
 ### Vertragsbeginn (Feld 8)
 - **Extraktion:** `fehlend`
 - **Realität:** Datum steht bei den Unterschriften (letzte Unterschrift zählt), ist aber **handschriftlich/Bild** im PDF
+- **Vertragsreferenz:** Ziff. 29, S. 12: *„Diese Vereinbarung [...] tritt mit der Unterzeichnung durch alle Parteien in Kraft."* – Unterschriftsseite S. 13 (Zürich, Bern, Winterthur) – Daten handschriftlich eingetragen, nicht im OCR lesbar.
+- **Masterdatei:** 2023-06-14 (manuell in Spalte "PDF Vertragsbeginn" erfasst)
 - **Bewertung:** `fehlend` ist korrekt – markitdown kann Handschrift/Bilder nicht lesen
 - **Fazit:** Erwartetes Verhalten, kein Fehler der Pipeline. Für diese Felder braucht es OCR mit Handschrift-Erkennung oder Human-in-the-Loop.
 
@@ -74,7 +76,9 @@ JSON (results/90051045.json)
 
 **Soll (aus Vertrag):**
 - **Investitionskosten (einmalig):** SBB CHF 8.0 Mio. / ASTRA CHF 7.8 Mio. – Kostenteilung, ASTRA zahlt an SBB ✓ soweit korrekt
+  - Vertragsreferenz: Ziff. 15, S. 6: *„Die gesamten Investitionskosten [...] werden auf CHF 15.8 Mio. geschätzt (Genauigkeitsgrad von +/-10% [...] Preisbasis März, 2022)"* und *„leistet das ASTRA eine Vorteilsanrechnung [...] von einem Globalbetrag CHF 7.8 Mio."*
 - **Betriebskosten (periodisch, %):** SBB 45% / ASTRA 55% – **NICHT EXTRAHIERT**
+  - Vertragsreferenz: Ziff. 17, S. 7: *„Arbeiten zur Instandsetzung oder Erneuerung des Bauwerks"* → Tabelle: *„Anteil der SBB AG: 45% / Anteil des ASTRA: 55%"* und *„Der Kosteinteiler basiert auf den Flächen der Brücke: [...] TOTAL (540m²) [...] SBB 245m² / ASTRA 295m²"*
 
 **Fehleranalyse:**
 1. Die Betriebskosten-Prozente (45% SBB / 55% ASTRA) stehen in Ziff. 17 (Seiten 7-8) – diese waren im verkürzten Input (nur 380 Zeilen) nicht enthalten
@@ -261,9 +265,13 @@ Hinweis: Viele Spalten sind VLOOKUP-Formeln auf andere Sheets (SAP-Export, Migra
 
 - **Masterdatei:** Kreuzungsbauwerk (Bahnübergang)
 - **Extraktion:** Kreuzungsbauwerk (Brücke)
-- **Im Vertrag steht wörtlich:** "Bahnbrücke", "Art des Bauwerks: Bahnbrücke", "die Bahnbrücke überquert die Nationalstrasse"
+- **Im Vertrag steht wörtlich:**
+  - Ziff. 4, S. 3: *„Art des Bauwerks: Bahnbrücke"*
+  - Ziff. 4, S. 3: *„Die Bahnbrücke überquert die Nationalstrasse A51"*
+  - S. 1, Titel: *„den Bau und die Bauwerkserhaltung «U N20 (A51)» (SBB) / Überführung UEF SBB Balsberg"*
+  - Ziff. 1, S. 2: *„Das Bauwerk wurde im Jahr 1949 [...] unter der bestehenden einspurigen Bahnstrecke gebaut."* (= Bahn überquert Strasse = Brücke, nicht Bahnübergang)
 
-**Bewertung:** Die Extraktion ist korrekt – es handelt sich eindeutig um eine Brücke. Die Masterdatei scheint hier einen Fehler zu enthalten. Mögliche Ursache: "Bahnübergang" wurde als Oberbegriff für alle Kreuzungsbauwerke verwendet, oder es wurde bei der manuellen Erfassung verwechselt.
+**Bewertung:** Die Extraktion ist korrekt – es handelt sich eindeutig um eine Brücke (Bahn überquert Strasse von oben). Ein "Bahnübergang" wäre eine niveaugleiche Kreuzung mit Schrankenanlage. Die Masterdatei enthält hier einen Klassifikationsfehler.
 
 → **Die KI-Extraktion hat einen Fehler in den Stammdaten gefunden.**
 
@@ -271,6 +279,11 @@ Hinweis: Viele Spalten sind VLOOKUP-Formeln auf andere Sheets (SAP-Export, Migra
 
 - **Masterdatei:** "nein"
 - **Extraktion:** Investitionskosten (einmalig) + Betriebskosten (45%/55% periodisch)
+- **Im Vertrag steht:**
+  - Ziff. 15, S. 6: Investitionskosten CHF 15.8 Mio. (einmalig) – Globalbetrag ASTRA CHF 7.8 Mio.
+  - Ziff. 17, S. 7: *„Die Investitionsfolgekosten für diese Massnahmen werden nach dem folgenden Verteilschlüssel getragen: SBB AG 45% / ASTRA 55%"* (periodisch, bei Bedarf)
+  - Ziff. 17, S. 7: *„Das Bauwerk ist [...] periodisch (alle 5 Jahre) zu inspizieren"*
+  - Ziff. 17, S. 8: *„Das ASTRA zahlt den Betrag [...] im Zusammenhang mit dem Bauwerkserhalt, gegen Vorlage einer Rechnung."*
 
 **Bewertung:** Vermutlich definiert die Masterdatei "periodisch" als fixen CHF-Betrag pro Jahr. Ein %-basierter Kostenteiler ohne fixen Betrag wird offenbar nicht als "periodische Ein/Ausgabe" gewertet. Das ist eine Definitionsfrage, kein Extraktionsfehler.
 
@@ -280,8 +293,12 @@ Hinweis: Viele Spalten sind VLOOKUP-Formeln auf andere Sheets (SAP-Export, Migra
 
 - **Masterdatei:** 2023-06-14 (manuell erfasst in "PDF Vertragsbeginn")
 - **Extraktion:** fehlend (Unterschrift handschriftlich, nicht im OCR)
+- **Im Vertrag steht:**
+  - Ziff. 29, S. 12: *„Sie tritt mit der Unterzeichnung durch alle Parteien in Kraft."*
+  - S. 13: Unterschriftsfelder für Zürich (SBB), Bern (SBB), Winterthur (ASTRA/Otto Noger) – Daten sind handschriftlich eingetragen
+  - Dokumenten-Code S. 1: *„20230702 l-NAT-PAG-PSV-VEM"* (Hinweis auf Juli 2023, aber kein verbindliches Vertragsdatum)
 
-**Bewertung:** Korrekt als `fehlend` markiert. Das Datum existiert im PDF, ist aber handschriftlich und für markitdown nicht lesbar. Dieses Feld braucht Vision-OCR oder Human-in-the-Loop.
+**Bewertung:** Korrekt als `fehlend` markiert. Das Datum 2023-06-14 wurde von einem Menschen aus dem handschriftlichen Eintrag gelesen. Für markitdown nicht lesbar.
 
 → **Bekannte Limitation, kein Fehler.**
 
