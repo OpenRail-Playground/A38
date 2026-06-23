@@ -976,6 +976,81 @@ catalog:
 
 
             Die Liniennummer ist je Verkehrsmittelkategorie unterschiedlich aufgebaut (siehe Abschnitt 3.6.3).'
+        - name: guidance
+          title: AB BS-KI 3.6 – Definition der Linie
+          prose: 'Die folgenden Grundsätze gelten:
+
+            •  Auf der Linie darf es maximal drei unterschiedliche Fahrtvarianten geben.
+
+            •  Pro Fahrtvariante müssen mindestens 80% der Via der Stammstrecke bedient werden.
+
+            •  Fehlende Via aufgrund von Teilstrecken werden nicht mitgerechnet.
+
+            •  Unterschiedliche Reihenfolgen innerhalb der Nachbarhaltestellen (z.B. Halt 7 wird zu 8 und Halt 8 wird zu 7)
+            werden nicht mitgerechnet.
+
+            •  Früh- und Spätkurse dürfen darüber hinaus maximal 20% zusätzliche Via (zur Stammstrecke) anfahren, ohne dass
+            sie als separate Fahrvariante gezählt werden.
+
+            •  Verstärkungsfahrten (z.B. während der HVZ oder für Schülerverkehr) dürfen von der Haltepolitik abweichen und
+            zählen nicht zu den drei Fahrtvarianten.
+
+            •  Ausfransungen (Y-Linien) sind nicht erlaubt.
+
+            •  Einzelfahrten, welche linienübergreifend fahren (z.B. Pässe Rundfahrten) werden als eigenständige Linie definiert.
+
+            •  Ergänzende integrale Angebote (z.B. Skibus) sind eigenständige Linie.'
+        - name: guidance
+          title: AB BS-KI 3.6 – Änderung der Liniennummer
+          prose: Grundsätzlich gelten die Liniennummer und Linienbezeichnung, wie sie in den Konzessionen verfügt sind. Wenn
+            es zur besseren Kommunikation gegenüber den Kunden erforderlich ist, können Liniennummern und Linienbezeichnungen
+            in Absprache mit dem BAV geändert werden, ohne dass eine Konzessionsänderung notwendig ist (Art. 17 VPB). Voraussetzung
+            ist, dass der Bestand der Linie weiterhin der erteilten Konzession entspricht. Diesbezügliche Anfragen sind an
+            das BAV zu richten. Die Änderung erfolgt jeweils zum Fahrplanwechsel.
+        - name: guidance
+          title: AB BS-KI 3.6 – CH-Liniennummer (CHLNR)
+          prose: 'Die CH-Liniennummer setzt sich wie folgt zusammen:
+
+            <Präfix>.<Region>.<Liniennummer>:<Attribut>
+
+
+            Präfix – charakterisiert die Verkehrsart:
+
+            b = Bahn, Zahnradbahn und deren Ersatzverkehr
+
+            c = Autoverlad (ohne Transport von Fussgänger)
+
+            n = Schiff
+
+            r = Bus, Tram und Metro, sowie Schiff, Seilbahnen und Zahnradbahnen, wenn diese in das städtische Liniennetz integriert
+            sind
+
+            f = Seilbahn'
+        - name: guidance
+          title: AB BS-KI 3.6 – Regionen Bahn
+          prose: 'Nummer  Region
+
+            0  Fernverkehr, andere nationale Angebote
+
+            1  Arc Lémanique
+
+            2  Région Fribourg
+
+            3  Region Bern
+
+            4  Arc jurassien und Kanton Solothurn
+
+            5  Region Nordwestschweiz (TNW-AG)
+
+            6  Region Zentralschweiz
+
+            7  Region Zürich (ZVV)
+
+            8  Region Ostschweiz (Ostwind)
+
+            9  Region Graubünden
+
+            t  Ticino'
         props:
         - name: source-chapter
           value: '3.6'
@@ -994,6 +1069,9 @@ catalog:
         - name: applicability
           value: verbindlich
           class: daten.einlieferung
+        - name: source-document
+          value: AB_3.6_DE.pdf
+          remarks: Ausführungsbestimmung Abschnitt 3.6, Version 3. Dezember 2025
       - id: bs-ki-3.7-uebersicht
         title: Ziel (Übersicht aller Fahrten der Haltestelle  ("Fahrplan"))
         parts:
@@ -1725,6 +1803,81 @@ catalog:
 
 
             Die Liniennummer ist je Verkehrsmittelkategorie unterschiedlich aufgebaut (siehe Abschnitt 3.6.3).'
+        - name: guidance
+          title: AB BS-KI 3.6 – Definition der Linie
+          prose: 'Die folgenden Grundsätze gelten:
+
+            •  Auf der Linie darf es maximal drei unterschiedliche Fahrtvarianten geben.
+
+            •  Pro Fahrtvariante müssen mindestens 80% der Via der Stammstrecke bedient werden.
+
+            •  Fehlende Via aufgrund von Teilstrecken werden nicht mitgerechnet.
+
+            •  Unterschiedliche Reihenfolgen innerhalb der Nachbarhaltestellen (z.B. Halt 7 wird zu 8 und Halt 8 wird zu 7)
+            werden nicht mitgerechnet.
+
+            •  Früh- und Spätkurse dürfen darüber hinaus maximal 20% zusätzliche Via (zur Stammstrecke) anfahren, ohne dass
+            sie als separate Fahrvariante gezählt werden.
+
+            •  Verstärkungsfahrten (z.B. während der HVZ oder für Schülerverkehr) dürfen von der Haltepolitik abweichen und
+            zählen nicht zu den drei Fahrtvarianten.
+
+            •  Ausfransungen (Y-Linien) sind nicht erlaubt.
+
+            •  Einzelfahrten, welche linienübergreifend fahren (z.B. Pässe Rundfahrten) werden als eigenständige Linie definiert.
+
+            •  Ergänzende integrale Angebote (z.B. Skibus) sind eigenständige Linie.'
+        - name: guidance
+          title: AB BS-KI 3.6 – Änderung der Liniennummer
+          prose: Grundsätzlich gelten die Liniennummer und Linienbezeichnung, wie sie in den Konzessionen verfügt sind. Wenn
+            es zur besseren Kommunikation gegenüber den Kunden erforderlich ist, können Liniennummern und Linienbezeichnungen
+            in Absprache mit dem BAV geändert werden, ohne dass eine Konzessionsänderung notwendig ist (Art. 17 VPB). Voraussetzung
+            ist, dass der Bestand der Linie weiterhin der erteilten Konzession entspricht. Diesbezügliche Anfragen sind an
+            das BAV zu richten. Die Änderung erfolgt jeweils zum Fahrplanwechsel.
+        - name: guidance
+          title: AB BS-KI 3.6 – CH-Liniennummer (CHLNR)
+          prose: 'Die CH-Liniennummer setzt sich wie folgt zusammen:
+
+            <Präfix>.<Region>.<Liniennummer>:<Attribut>
+
+
+            Präfix – charakterisiert die Verkehrsart:
+
+            b = Bahn, Zahnradbahn und deren Ersatzverkehr
+
+            c = Autoverlad (ohne Transport von Fussgänger)
+
+            n = Schiff
+
+            r = Bus, Tram und Metro, sowie Schiff, Seilbahnen und Zahnradbahnen, wenn diese in das städtische Liniennetz integriert
+            sind
+
+            f = Seilbahn'
+        - name: guidance
+          title: AB BS-KI 3.6 – Regionen Bahn
+          prose: 'Nummer  Region
+
+            0  Fernverkehr, andere nationale Angebote
+
+            1  Arc Lémanique
+
+            2  Région Fribourg
+
+            3  Region Bern
+
+            4  Arc jurassien und Kanton Solothurn
+
+            5  Region Nordwestschweiz (TNW-AG)
+
+            6  Region Zentralschweiz
+
+            7  Region Zürich (ZVV)
+
+            8  Region Ostschweiz (Ostwind)
+
+            9  Region Graubünden
+
+            t  Ticino'
         props:
         - name: source-chapter
           value: '3.6'
@@ -1774,6 +1927,9 @@ catalog:
         - name: applicability
           value: verbindlich
           class: daten.einlieferung
+        - name: source-document
+          value: AB_3.6_DE.pdf
+          remarks: Ausführungsbestimmung Abschnitt 3.6, Version 3. Dezember 2025
       - id: bs-ki-3.7-fahrt
         title: Ziel (Informationen zur Fahrt)
         parts:
@@ -2817,6 +2973,81 @@ catalog:
 
 
             Die Liniennummer ist je Verkehrsmittelkategorie unterschiedlich aufgebaut (siehe Abschnitt 3.6.3).'
+        - name: guidance
+          title: AB BS-KI 3.6 – Definition der Linie
+          prose: 'Die folgenden Grundsätze gelten:
+
+            •  Auf der Linie darf es maximal drei unterschiedliche Fahrtvarianten geben.
+
+            •  Pro Fahrtvariante müssen mindestens 80% der Via der Stammstrecke bedient werden.
+
+            •  Fehlende Via aufgrund von Teilstrecken werden nicht mitgerechnet.
+
+            •  Unterschiedliche Reihenfolgen innerhalb der Nachbarhaltestellen (z.B. Halt 7 wird zu 8 und Halt 8 wird zu 7)
+            werden nicht mitgerechnet.
+
+            •  Früh- und Spätkurse dürfen darüber hinaus maximal 20% zusätzliche Via (zur Stammstrecke) anfahren, ohne dass
+            sie als separate Fahrvariante gezählt werden.
+
+            •  Verstärkungsfahrten (z.B. während der HVZ oder für Schülerverkehr) dürfen von der Haltepolitik abweichen und
+            zählen nicht zu den drei Fahrtvarianten.
+
+            •  Ausfransungen (Y-Linien) sind nicht erlaubt.
+
+            •  Einzelfahrten, welche linienübergreifend fahren (z.B. Pässe Rundfahrten) werden als eigenständige Linie definiert.
+
+            •  Ergänzende integrale Angebote (z.B. Skibus) sind eigenständige Linie.'
+        - name: guidance
+          title: AB BS-KI 3.6 – Änderung der Liniennummer
+          prose: Grundsätzlich gelten die Liniennummer und Linienbezeichnung, wie sie in den Konzessionen verfügt sind. Wenn
+            es zur besseren Kommunikation gegenüber den Kunden erforderlich ist, können Liniennummern und Linienbezeichnungen
+            in Absprache mit dem BAV geändert werden, ohne dass eine Konzessionsänderung notwendig ist (Art. 17 VPB). Voraussetzung
+            ist, dass der Bestand der Linie weiterhin der erteilten Konzession entspricht. Diesbezügliche Anfragen sind an
+            das BAV zu richten. Die Änderung erfolgt jeweils zum Fahrplanwechsel.
+        - name: guidance
+          title: AB BS-KI 3.6 – CH-Liniennummer (CHLNR)
+          prose: 'Die CH-Liniennummer setzt sich wie folgt zusammen:
+
+            <Präfix>.<Region>.<Liniennummer>:<Attribut>
+
+
+            Präfix – charakterisiert die Verkehrsart:
+
+            b = Bahn, Zahnradbahn und deren Ersatzverkehr
+
+            c = Autoverlad (ohne Transport von Fussgänger)
+
+            n = Schiff
+
+            r = Bus, Tram und Metro, sowie Schiff, Seilbahnen und Zahnradbahnen, wenn diese in das städtische Liniennetz integriert
+            sind
+
+            f = Seilbahn'
+        - name: guidance
+          title: AB BS-KI 3.6 – Regionen Bahn
+          prose: 'Nummer  Region
+
+            0  Fernverkehr, andere nationale Angebote
+
+            1  Arc Lémanique
+
+            2  Région Fribourg
+
+            3  Region Bern
+
+            4  Arc jurassien und Kanton Solothurn
+
+            5  Region Nordwestschweiz (TNW-AG)
+
+            6  Region Zentralschweiz
+
+            7  Region Zürich (ZVV)
+
+            8  Region Ostschweiz (Ostwind)
+
+            9  Region Graubünden
+
+            t  Ticino'
         props:
         - name: source-chapter
           value: '3.6'
@@ -2835,6 +3066,9 @@ catalog:
         - name: applicability
           value: verbindlich
           class: fahrzeug-innen.seilbahn
+        - name: source-document
+          value: AB_3.6_DE.pdf
+          remarks: Ausführungsbestimmung Abschnitt 3.6, Version 3. Dezember 2025
       - id: bs-ki-3.7-anschluss
         title: Ziel (Informationen zu Anschlüssen)
         parts:
