@@ -16,7 +16,7 @@
 
 **Pause. Blick ins Publikum.**
 
-> "This is what SBB does manually. For 5,000 contracts. In German, French, and Italian. Some handwritten. Some from 1926."
+> "This is what SBB does manually. For 10,000 contracts. In German, French, and Italian. Some handwritten. Some from 1926."
 
 **Aktion:** Ordner wegtragen / zur Seite schieben.
 
@@ -24,7 +24,7 @@
 
 **Folie:** Screenshot Masterdatei (Excel mit 33 Spalten, manuell befüllt)
 
-> "This is what humans did: they read 5,000 PDFs and filled in this spreadsheet. Manually. Column by column."
+> "This is what humans did: they read 10,000 PDFs and filled in this spreadsheet. Manually. Column by column."
 
 **Folie:** Unsere JSON-Extraktion (Ergebnis mit Qualitätskennzeichen)
 
