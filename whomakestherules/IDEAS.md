@@ -5,6 +5,7 @@
 - Rebeca
 - Simon
 - Jens
+- Jonathan
 
 ## Challenge
 
