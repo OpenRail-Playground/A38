@@ -1,16 +1,26 @@
-<mxfile host="app.diagrams.net" modified="2026-06-23T08:15:00.000Z" agent="Cortex Code" version="24.0.0">
-  <diagram id="workflow" name="BS-KI Pipeline">
-    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+<mxfile host="app.diagrams.net" modified="2026-06-23T11:29:00.000Z" agent="A38 Team" version="24.0.0">
+  <diagram id="workflow" name="OSCAL4Rail Pipeline">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
 
+        <!-- Title -->
+        <mxCell id="title" value="OSCAL4Rail – Pipeline &amp; Versioning" style="text;html=1;fontSize=20;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="560" y="20" width="500" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ===== EXTRACTION PIPELINE (top half) ===== -->
+        <mxCell id="section1" value="Extraction Pipeline (deterministic)" style="text;html=1;fontSize=14;fontStyle=5;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="70" width="350" height="30" as="geometry" />
+        </mxCell>
+
         <!-- Inputs -->
-        <mxCell id="input1" value="Matrix_BS-KI_DE.xlsx" style="shape=document;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+        <mxCell id="input1" value="Matrix_BS-KI_DE.xlsx&#xa;(Bewertungsmatrix)" style="shape=document;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="40" y="120" width="180" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="input2" value="BS-KI_DE.pdf" style="shape=document;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="40" y="360" width="180" height="80" as="geometry" />
+        <mxCell id="input2" value="BS-KI_DE.pdf&#xa;(Regelwerk, 64 Seiten)" style="shape=document;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="320" width="180" height="80" as="geometry" />
         </mxCell>
 
         <!-- Phase 1 -->
@@ -19,44 +29,44 @@
         </mxCell>
 
         <!-- Phase 2 -->
-        <mxCell id="phase2" value="Phase 2&#xa;PDF extrahieren&#xa;(pdfplumber/markitdown)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="320" y="360" width="180" height="80" as="geometry" />
+        <mxCell id="phase2" value="Phase 2&#xa;PDF extrahieren&#xa;(markitdown)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="320" width="180" height="80" as="geometry" />
         </mxCell>
 
         <!-- Intermediate results -->
-        <mxCell id="mid1" value="matrix.json" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;size=10;" vertex="1" parent="1">
+        <mxCell id="mid1" value="Applicability&#xa;pro Control&#xa;(v/e/–)" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;size=10;" vertex="1" parent="1">
           <mxGeometry x="600" y="120" width="140" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="mid2" value="Kapitel-Texte&#xa;(pro Regel)" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;size=10;" vertex="1" parent="1">
-          <mxGeometry x="600" y="360" width="140" height="80" as="geometry" />
+        <mxCell id="mid2" value="Wörtliche Zitate&#xa;pro Kapitel&#xa;(statement + guidance)" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;size=10;" vertex="1" parent="1">
+          <mxGeometry x="600" y="320" width="160" height="80" as="geometry" />
         </mxCell>
 
         <!-- Phase 3 -->
-        <mxCell id="phase3" value="Phase 3&#xa;Rules erzeugen&#xa;(Matrix + PDF → OSCAL)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="860" y="240" width="200" height="80" as="geometry" />
+        <mxCell id="phase3" value="Phase 3&#xa;OSCAL4Rail Catalog&#xa;erzeugen" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="880" y="220" width="200" height="80" as="geometry" />
         </mxCell>
 
         <!-- Output -->
-        <mxCell id="output1" value="bs-ki-de.yaml&#xa;(OSCAL Catalog)" style="shape=document;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="1160" y="240" width="180" height="80" as="geometry" />
+        <mxCell id="output1" value="bs-ki-de.yaml&#xa;(OSCAL4Rail Catalog)" style="shape=document;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="220" width="180" height="80" as="geometry" />
         </mxCell>
 
         <!-- Phase 4 -->
-        <mxCell id="phase4" value="Phase 4&#xa;Verifikation&#xa;(NIST JSON-Schema)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="1160" y="420" width="180" height="80" as="geometry" />
+        <mxCell id="phase4" value="Phase 4&#xa;Schema-Validierung&#xa;(NIST JSON-Schema)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="380" width="180" height="80" as="geometry" />
         </mxCell>
 
         <!-- Schema input -->
-        <mxCell id="schema" value="NIST OSCAL&#xa;JSON-Schema" style="shape=parallelogram;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="920" y="420" width="160" height="60" as="geometry" />
+        <mxCell id="schema" value="NIST OSCAL&#xa;Catalog Schema&#xa;v1.1.3" style="shape=parallelogram;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="920" y="390" width="170" height="60" as="geometry" />
         </mxCell>
 
         <!-- Result -->
-        <mxCell id="result" value="✅ Valid" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="1420" y="430" width="100" height="60" as="geometry" />
+        <mxCell id="result" value="✅ Valid&#xa;OSCAL4Rail" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1440" y="385" width="120" height="70" as="geometry" />
         </mxCell>
 
-        <!-- Arrows -->
+        <!-- Extraction Arrows -->
         <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="input1" target="phase1" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -88,23 +98,84 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <!-- Title -->
-        <mxCell id="title" value="Who Makes the Rules – Pipeline" style="text;html=1;fontSize=18;fontStyle=1;align=center;" vertex="1" parent="1">
-          <mxGeometry x="560" y="20" width="400" height="40" as="geometry" />
+        <!-- ===== VERSIONING & DIFF (bottom half) ===== -->
+        <mxCell id="section2" value="Versioning &amp; Change Tracking" style="text;html=1;fontSize=14;fontStyle=5;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="540" width="350" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Old version -->
+        <mxCell id="old_ver" value="bs-ki-de.yaml&#xa;v1.0&#xa;(archiviert)" style="shape=document;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;fontStyle=0;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="40" y="600" width="180" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- New version -->
+        <mxCell id="new_ver" value="bs-ki-de.yaml&#xa;v2.0&#xa;(aktuell)" style="shape=document;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="740" width="180" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Diff process -->
+        <mxCell id="diff_proc" value="Semantischer Diff&#xa;auf Control-Ebene&#xa;(ID = Kapitel-Nr.)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="660" width="200" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Diff categories -->
+        <mxCell id="diff_result" value="Änderungs-Kategorien:&#xa;• statement geändert&#xa;• applicability verschärft/gelockert&#xa;• control NEU&#xa;• control ENTFALLEN" style="shape=note;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="680" y="640" width="240" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- Changelog output -->
+        <mxCell id="changelog" value="CHANGELOG.md&#xa;(automatisch generiert)" style="shape=document;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="660" width="180" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Git -->
+        <mxCell id="git" value="Git&#xa;(Versionierung)" style="shape=hexagon;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;fontStyle=1;size=0.15;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="670" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Diff arrows -->
+        <mxCell id="d1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="old_ver" target="diff_proc" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="new_ver" target="diff_proc" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d3" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="diff_proc" target="diff_result" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d4" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="diff_result" target="changelog" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d5" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="changelog" target="git" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Stable ID callout -->
+        <mxCell id="callout" value="Stabiler Anker:&#xa;Control-ID = Kapitel-Nr.&#xa;(bs-ki-2.1, bs-ki-3.6)&#xa;&#xa;NICHT: Seitenzahl" style="shape=callout;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;perimeter=calloutPerimeter;position2=0.5;base=15;size=20;" vertex="1" parent="1">
+          <mxGeometry x="360" y="800" width="200" height="100" as="geometry" />
         </mxCell>
 
         <!-- Legend -->
-        <mxCell id="leg1" value="Grün = Input/Output" style="text;html=1;fontSize=10;align=left;" vertex="1" parent="1">
-          <mxGeometry x="40" y="520" width="150" height="20" as="geometry" />
+        <mxCell id="leg_title" value="Legende:" style="text;html=1;fontSize=11;fontStyle=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="940" width="80" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="leg2" value="Blau = Verarbeitungsphase" style="text;html=1;fontSize=10;align=left;" vertex="1" parent="1">
-          <mxGeometry x="40" y="545" width="180" height="20" as="geometry" />
+        <mxCell id="leg1" value="Grün = Input/Output (Dokumente)" style="text;html=1;fontSize=10;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="960" width="220" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="leg3" value="Orange = Zwischenergebnis" style="text;html=1;fontSize=10;align=left;" vertex="1" parent="1">
-          <mxGeometry x="40" y="570" width="180" height="20" as="geometry" />
+        <mxCell id="leg2" value="Blau = Verarbeitungsschritt" style="text;html=1;fontSize=10;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="980" width="180" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="leg4" value="Rot = Validierung" style="text;html=1;fontSize=10;align=left;" vertex="1" parent="1">
-          <mxGeometry x="40" y="595" width="150" height="20" as="geometry" />
+        <mxCell id="leg3" value="Orange = Zwischenergebnis / Daten" style="text;html=1;fontSize=10;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1000" width="220" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg4" value="Rot = Validierung / Quality Gate" style="text;html=1;fontSize=10;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1020" width="200" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg5" value="Lila = Externe Standards / Tools" style="text;html=1;fontSize=10;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1040" width="200" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg6" value="Grau = Archivierte Version" style="text;html=1;fontSize=10;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1060" width="200" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
