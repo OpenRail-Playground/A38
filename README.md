@@ -1,6 +1,13 @@
-# Our Cool Project
+# A38
 
-<!-- TODO: Shortly explain what this project is about -->
+Two challenges, one team — making railway regulations machine-readable and contracts automatically analyzable.
+
+## Challenges
+
+| Challenge | Directory | Description |
+|-----------|-----------|-------------|
+| **Who Makes the Rules** | [`whomakestherules/`](whomakestherules/) | Transforming railway safety regulations into structured, machine-readable formats |
+| **Automatic Contract Analysis** | [`aca/`](aca/) | Automated analysis of railway contracts |
 
 ## Background
 
@@ -10,12 +17,6 @@
 
 This project has been initiated during the [Hack4Rail 2026](https://hack4rail.org/), a joint hackathon organised by the railway companies SBB, ÖBB, and DB in partnership with the OpenRail Association.
 
-## Install
-
-<!-- TODO: Explain how a user can install the software -->
-
 ## License
-
-<!-- If you decide for another license, please change it here, and exchange the LICENSE file -->
 
 The content of this repository is licensed under the [Apache 2.0 license](LICENSE).
