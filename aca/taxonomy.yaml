@@ -1,0 +1,116 @@
+schema_version: "1.0"
+metadata:
+  title: "SBB Infrastrukturverträge – Vertragstyp-Taxonomie"
+  organization: "SBB AG"
+  version: "1.0"
+  last_modified: "2026-06-23"
+  source: "Grundlagen/2026-03-25 Vertragstyp Ebenen.xlsx"
+  languages: ["de", "fr", "it"]
+
+# Ebene 1 ist fix
+ebene_1: "Infrastrukturverträge"
+
+# Baustein-Pools (Ebene 4) – disjunkt, werden von Ebene 3 referenziert
+baustein_pools:
+
+  zusammenarbeit:
+    description: "Objekttypen für Zusammenarbeit bei Anlagen"
+    bausteine:
+      - id: kbw_bruecke
+        title: "Kreuzungsbauwerk (Brücke)"
+      - id: kbw_bahnuebergang
+        title: "Kreuzungsbauwerk (Bahnübergang)"
+      - id: oev_wege
+        title: "Öffentliche Verkehrswege ohne Kreuzung"
+      - id: bahnhof
+        title: "Bahnhof"
+      - id: bahntechnik
+        title: "Bahntechnik- und Steuerung"
+      - id: naturrisiken
+        title: "Naturrisiken"
+      - id: durchleitung
+        title: "Durchleitung"
+      - id: rahmenvereinbarung
+        title: "Rahmenvereinbarung"
+      - id: multiprojekt
+        title: "Multiprojekt"
+
+  nutzungsvertraege:
+    description: "Nutzungsarten bei Grundstücknutzung"
+    bausteine:
+      - id: pflegevereinbarung
+        title: "Pflegevereinbarung"
+      - id: flaechennutzung
+        title: "Flächennutzung"
+      - id: wandbemalung
+        title: "Wandbemalung"
+      - id: gebrauchsleihe
+        title: "Gebrauchsleihe"
+
+  bauten_dritter:
+    description: "Bautentypen Dritter auf SBB-Areal"
+    bausteine:
+      - id: kleinbauten
+        title: "Kleinbauten"
+      - id: anker
+        title: "Anker"
+
+# Ebene 2 → Ebene 3 → erlaubte Bausteine (aus Pool)
+ebene_2:
+
+  - id: zusammenarbeit
+    title: "Zusammenarbeit bei Anlagen"
+    ebene_3:
+      - id: vorstudie
+        title: "Vorstudie"
+        phase_code: "Vertrag 1"
+        baustein_pool: zusammenarbeit
+        erlaubte_bausteine: alle
+
+      - id: projektierung
+        title: "Zusammenarbeitsgrundsätze und Projektierung"
+        phase_code: "Vertrag 2"
+        baustein_pool: zusammenarbeit
+        erlaubte_bausteine: alle
+
+      - id: ausfuehrung
+        title: "Ausführung Projekt"
+        phase_code: "Vertrag 3"
+        baustein_pool: zusammenarbeit
+        erlaubte_bausteine: alle
+
+      - id: ausfuehrung_betrieb
+        title: "Ausführung Projekt mit Betrieb und Unterhalt"
+        phase_code: "Vertrag 3&4"
+        baustein_pool: zusammenarbeit
+        erlaubte_bausteine: alle
+
+      - id: betrieb_unterhalt
+        title: "Betrieb und Unterhalt"
+        phase_code: "Vertrag 4"
+        baustein_pool: zusammenarbeit
+        erlaubte_bausteine:
+          - kbw_bruecke
+          - kbw_bahnuebergang
+          - oev_wege
+          - bahnhof
+          - bahntechnik
+          - naturrisiken
+          - durchleitung
+          - rahmenvereinbarung
+          # multiprojekt NICHT erlaubt bei V4
+
+  - id: grundstuecknutzung
+    title: "Grundstücknutzung"
+    ebene_3:
+      - id: nutzungsvertraege
+        title: "Nutzungsverträge"
+        phase_code: null
+        baustein_pool: nutzungsvertraege
+        erlaubte_bausteine: alle
+
+      - id: bauten_dritter
+        title: "Bauten Dritter"
+        phase_code: null
+        baustein_pool: bauten_dritter
+        erlaubte_bausteine: alle
