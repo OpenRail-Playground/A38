@@ -1,3 +1,6 @@
 ~$*
 *.tmp
 .DS_Store
+
+# PowerPoint-Vorlagen (nicht ins Repo)
+*.potx
