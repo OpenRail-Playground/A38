@@ -63,3 +63,193 @@ catalog:
             - name: applicability
               value: "verbindlich"
               class: "fahrzeug-innen.schiff"
+
+        - id: bs-ki-2.2
+          title: "Name der Haltestelle"
+          parts:
+            - name: statement
+              prose: |
+                Die Beschriftung der Haltestelle mit ihrem Namen (gemäss Abschnitt 6.4) ist das Grundelement
+                der räumlichen Orientierung (siehe auch Abschnitt 2.4). Sie dient sowohl der Bestätigung, dass
+                sich die Haltestelle tatsächlich an diesem Ort befindet, als auch der Bestätigung, an der richtigen
+                Haltestelle zu sein.
+
+                Es ist sicherzustellen, dass die Beschriftung beim Zugang zur Haltestelle und, soweit sinnvoll, aus
+                dem Fahrzeug heraus ersichtlich ist. Der Name der Haltestelle kann dazu einmal oder mehrfach
+                angebracht werden.
+          props:
+            - name: source-chapter
+              value: "2.2"
+            - name: source-page
+              value: "16"
+            # Haltestelle
+            - name: applicability
+              value: "verbindlich"
+              class: "haltestelle.bahn"
+            - name: applicability
+              value: "verbindlich"
+              class: "haltestelle.bus-tram-metro"
+            - name: applicability
+              value: "verbindlich"
+              class: "haltestelle.schiff"
+            - name: applicability
+              value: "verbindlich"
+              class: "haltestelle.seilbahn"
+            # Daten
+            - name: applicability
+              value: "verbindlich"
+              class: "daten.einlieferung"
+
+        - id: bs-ki-2.5
+          title: "Ereignisinformationen"
+          parts:
+            - name: statement
+              prose: |
+                Vorfälle, welche Abweichungen vom geplanten Betrieb zur Folge haben, werden als Ereignisse
+                bezeichnet. Ereignisse können geplant (z.B. Baustellen) oder ungeplant (z.B. Störungen,
+                insbesondere Unfälle oder Naturereignisse) sein. Die Kundschaft ist im Ereignisfall nur dann
+                handlungsfähig, wenn sie die nötigen Informationen über das Ereignis erhält. Dazu gehören z.B.
+                alternative Reisemöglichkeiten, Dauer oder Auswirkungen.
+            - name: guidance
+              title: "Spezifisch an der Haltestelle"
+              prose: |
+                Über geplante Ereignisse muss die Kundschaft an der Haltestelle mindestens optisch informiert
+                werden (siehe Abschnitt 7.3). Bei geplanten Ereignissen, die eine längere Zeit andauern, kann auf
+                die akustische Ausgabe verzichtet werden, um den Lärmschutz von Anwohnenden zu
+                gewährleisten.
+
+                Bei ungeplanten Ereignissen informieren die TU im Rahmen ihrer Möglichkeiten (Prozesse,
+                Systeme). Das Ziel ist, möglichst rasch eine möglichst grosse Kundschaft zu erreichen. Die
+                Betriebsabwicklung und Störungsbehebung sind insbesondere bei knappen Ressourcen jedoch
+                vorrangig zu gewährleisten.
+            - name: guidance
+              title: "Spezifisch am und im Fahrzeug – Fahrzeug innen"
+              prose: |
+                Wenn eine Fahrtverlaufsanzeige vorhanden ist, muss die Ereignisinformation angezeigt werden.
+
+                Die minimale Schriftgrösse für die Überschrift (z.B. «Störung») beträgt 35 mm.
+          props:
+            - name: source-chapter
+              value: "2.5"
+            - name: source-page
+              value: "18"
+            # Haltestelle
+            - name: applicability
+              value: "verbindlich"
+              class: "haltestelle.bahn"
+            - name: applicability
+              value: "verbindlich"
+              class: "haltestelle.bus-tram-metro"
+            - name: applicability
+              value: "verbindlich"
+              class: "haltestelle.schiff"
+            - name: applicability
+              value: "verbindlich"
+              class: "haltestelle.seilbahn"
+            # Fahrzeug Innen
+            - name: applicability
+              value: "verbindlich"
+              class: "fahrzeug-innen.bahn"
+            - name: applicability
+              value: "verbindlich"
+              class: "fahrzeug-innen.bus-tram-metro"
+            - name: applicability
+              value: "verbindlich"
+              class: "fahrzeug-innen.schiff"
+            # Daten
+            - name: applicability
+              value: "verbindlich"
+              class: "daten.einlieferung"
+
+    - id: bs-ki-3
+      title: "Fahrtbezogene Inhalte der Kundeninformation"
+      groups:
+        - id: bs-ki-3.2
+          title: "Informationen zur Fahrt"
+          controls:
+            - id: bs-ki-3.6
+              title: "Liniennummer"
+              parts:
+                - name: statement
+                  prose: |
+                    Die Liniennummer ist die gegenüber der Kundschaft angezeigte Identifikation einer Linie. Die
+                    Liniennummer muss innerhalb einer Region pro Verkehrsmittelkategoriegruppe gemäss 3.5
+                    eindeutig sein. Im Fernverkehr muss diese innerhalb der ganzen Schweiz eindeutig sein. Zwei
+                    gleiche Liniennummern benachbarter Regionen bzw. Verkehrsmittelkategoriegruppen gemäss 3.5
+                    dürfen sich nicht berühren. Die Regionen sind in den Ausführungsbestimmungen geregelt.
+
+                    Die Liniennummer ist je Verkehrsmittelkategorie unterschiedlich aufgebaut (siehe Abschnitt 3.6.3).
+                - name: guidance
+                  title: "Definition der Linie"
+                  prose: |
+                    Eine Linie umfasst in der Regel eine sogenannte Stammstrecke – also den Streckenabschnitt, der
+                    von den meisten Fahrten dieser Linie befahren wird. Fahrten, die zwar auf derselben
+                    Stammstrecke verkehren, aber nicht alle vorgesehenen Zwischenhalte (Via) bedienen, gelten als
+                    Fahrtvarianten dieser Linie.
+
+                    Wenn nur ein Teilstück einer solchen Fahrtvariante bedient wird, spricht man von einer Teilstrecke.
+                - name: guidance
+                  title: "Vergabe der Liniennummer"
+                  prose: |
+                    Die Liniennummer wird in Abstimmung mit den Transportunternehmen und den Kantonen durch
+                    das BAV in der Konzession vergeben.
+
+                    Bei der Angebotsklassifizierung IR und IC wird die Liniennummer in Abstimmung mit den
+                    Transportunternehmen und SBB Personenverkehr durch das BAV in der Konzession vergeben.
+              props:
+                - name: source-chapter
+                  value: "3.6"
+                - name: source-page
+                  value: "29"
+                # Haltestelle (Übersicht aller Fahrten / Informationen zur Fahrt / Anschlüsse)
+                - name: applicability
+                  value: "verbindlich"
+                  class: "haltestelle.bahn"
+                  remarks: "v e – verbindlich für abgeltungsberechtigt, empfohlen für eigenwirtschaftlich"
+                - name: applicability
+                  value: "verbindlich"
+                  class: "haltestelle.bus-tram-metro"
+                  remarks: "v e"
+                - name: applicability
+                  value: "empfohlen"
+                  class: "haltestelle.schiff"
+                - name: applicability
+                  value: "verbindlich"
+                  class: "haltestelle.seilbahn"
+                  remarks: "v e"
+                # Fahrzeug Aussen Front
+                - name: applicability
+                  value: "verbindlich"
+                  class: "fahrzeug-aussen.front.bahn"
+                  remarks: "v e"
+                - name: applicability
+                  value: "verbindlich"
+                  class: "fahrzeug-aussen.front.bus-tram-metro"
+                # Fahrzeug Aussen Seite
+                - name: applicability
+                  value: "verbindlich"
+                  class: "fahrzeug-aussen.seite.bahn"
+                - name: applicability
+                  value: "verbindlich"
+                  class: "fahrzeug-aussen.seite.bus-tram-metro"
+                - name: applicability
+                  value: "empfohlen"
+                  class: "fahrzeug-aussen.seite.schiff"
+                # Fahrzeug Aussen Heck
+                - name: applicability
+                  value: "verbindlich"
+                  class: "fahrzeug-aussen.heck.bus-tram-metro"
+                # Fahrzeug Innen
+                - name: applicability
+                  value: "verbindlich"
+                  class: "fahrzeug-innen.bahn"
+                - name: applicability
+                  value: "verbindlich"
+                  class: "fahrzeug-innen.bus-tram-metro"
+                - name: applicability
+                  value: "verbindlich"
+                  class: "fahrzeug-innen.schiff"
+                # Daten
+                - name: applicability
+                  value: "verbindlich"
+                  class: "daten.einlieferung"
