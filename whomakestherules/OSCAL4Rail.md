@@ -36,6 +36,76 @@ It enables:
 
 OSCAL gives us all of this for free, while we only use the lightweight Catalog layer.
 
+## Versioning & Diff Strategy
+
+**Problem:** Wenn eine neue Version des Regelwerks erscheint, muss erkennbar sein: Was hat sich geändert?
+
+**Lösung:** Die Control-ID ist der stabile Anker über Versionen hinweg. Nicht die Seitenzahl.
+
+### Stable Identifiers
+
+```
+Control-ID = <regulation-prefix>-<chapter.section>
+Beispiel:   bs-ki-2.1, bs-ki-3.6
+```
+
+Die ID leitet sich aus der **Kapitelnummer** des Quelldokuments ab. Kapitelstrukturen sind über Versionen hinweg deutlich stabiler als Seitenzahlen.
+
+### Diff-Ebenen
+
+| Ebene | Was wird verglichen | Bedeutung |
+|-------|--------------------|-----------| 
+| **Statement** | `parts[name=statement].prose` | Inhaltliche Änderung der Regel |
+| **Applicability** | `props[name=applicability]` | Verbindlichkeit geändert (verschärft/gelockert) |
+| **Guidance** | `parts[name=guidance].prose` | Erläuterungen geändert |
+| **Structure** | Neue/entfallene Controls oder Groups | Neue Regel oder Regel gestrichen |
+
+### Workflow bei neuer Dokument-Version
+
+```
+BS-KI v1.0 (bs-ki-de.yaml)     BS-KI v2.0 (bs-ki-de.yaml)
+         │                                │
+         └────── git diff ────────────────┘
+                     │
+                     ▼
+         Semantischer Diff auf Control-Ebene:
+         - bs-ki-2.1: statement geändert (Schwellwert 800 → 500)
+         - bs-ki-2.5: applicability verschärft (e → v für Seilbahn)
+         - bs-ki-4.1: NEU (Control hinzugefügt)
+         - bs-ki-3.8: ENTFALLEN (Control gelöscht)
+```
+
+### Dateikonvention
+
+```
+rules/
+├── bs-ki-de.yaml              # Aktuelle Version (HEAD)
+└── history/
+    └── bs-ki-de_v1.0.yaml     # Archivierte Version vor Update
+```
+
+Bei einem Update:
+1. Aktuelle Datei nach `history/` kopieren (mit Versionsnummer)
+2. Neue Version in `bs-ki-de.yaml` eintragen
+3. `git diff` zeigt die Änderungen
+4. Changelog generieren (automatisierbar)
+
+### Was sich NICHT als Referenz eignet
+
+| Referenz | Warum instabil |
+|----------|---------------|
+| Seitenzahl | Ändert sich bei jeder Formatierung |
+| Absatznummer | Abhängig von Rendering |
+| Position in PDF | Nicht semantisch |
+
+### Was stabil ist
+
+| Referenz | Warum stabil |
+|----------|-------------|
+| Kapitelnummer (2.1, 3.6) | Bewusste Strukturentscheidung des Autors |
+| Titel des Kapitels | Identifiziert den Inhalt semantisch |
+| Inhalt (prose) | IST die Regel – Änderung = echte Regeländerung |
+
 ## OSCAL4Rail Catalog Format
 
 Each regulation becomes an OSCAL Catalog. Each rule becomes a Control within that Catalog.
@@ -76,13 +146,15 @@ catalog:
 
 ### Rail-specific extensions (via `props`)
 
-| Property | Purpose | Example |
-|----------|---------|---------|
-| `source-chapter` | Chapter reference in source document | `"2.1"` |
-| `source-page` | Page number in source PDF | `"16"` |
-| `applicability` | Obligation level per channel × transport mode | `value: "verbindlich", class: "haltestelle.bahn"` |
-| `country` | Country scope | `"CH"`, `"DE"`, `"AT"`, `"EU"` |
-| `language` | Document language | `"de"`, `"fr"`, `"it"` |
+| Property | Purpose | Stability | Example |
+|----------|---------|-----------|---------|
+| `source-chapter` | Chapter reference in source document | **Stable** – primary identifier | `"2.1"` |
+| `source-page` | Page number in source PDF | Unstable – hint only | `"16"` |
+| `source-version` | Version of the source document | Per-catalog | `"1.0"` |
+| `source-date` | Publication date of source | Per-catalog | `"2026-01"` |
+| `applicability` | Obligation level per channel × transport mode | **Diffable** | `value: "verbindlich", class: "haltestelle.bahn"` |
+| `country` | Country scope | Per-catalog | `"CH"`, `"DE"`, `"AT"`, `"EU"` |
+| `language` | Document language | Per-catalog | `"de"`, `"fr"`, `"it"` |
 
 ### Applicability classes (channel.transport-mode)
 
