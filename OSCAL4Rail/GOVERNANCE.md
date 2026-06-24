@@ -48,3 +48,7 @@ Each regulation catalog has a designated **Catalog Maintainer** organisation res
 ## OpenRail Association Incubation
 
 OSCAL4Rail follows the [OpenRail Association incubation process](https://github.com/OpenRailAssociation/technical-committee/blob/main/docs/incubation/process/index.md).
+
+### Next Step
+
+**End of July 2026:** Meeting with Max Mehl and Cornelius Schumacher (DB / OpenRail Association OSS leads) to review the incubation proposal and clarify details for formal submission to the Technical Committee.
