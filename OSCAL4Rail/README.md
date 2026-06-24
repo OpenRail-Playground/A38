@@ -42,14 +42,16 @@ python3 tools/validate.py catalogs/bs-ki/de/bs-ki-de.yaml
 | **Reference** | [docs/reference/format.md](docs/reference/format.md) | OSCAL4Rail format specification |
 | **Contributing** | [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute |
 
-## Existing Catalogs
+## Example Implementations
 
-| Catalog | Language | Status | Source |
-|---------|----------|--------|--------|
-| `catalogs/bs-ki/de` | German | ✅ 42 controls | [BS-KI v1.0](https://www.oev-info.ch/de/branchenstandard/nationaler-branchenstandard-kundeninformation) |
-| `catalogs/bs-ki/fr` | French | 🔜 planned | BS-KI v1.0 |
-| `catalogs/bs-ki/it` | Italian | 🔜 planned | BS-KI v1.0 |
-| `catalogs/tsi-tat` | English | 🔜 planned | EU TSI Telematics |
+| Implementation | Language | Status | Source |
+|----------------|----------|--------|--------|
+| `examples/bs-ki/de` | German | ✅ 42 controls | [BS-KI v1.0](https://www.oev-info.ch/de/branchenstandard/nationaler-branchenstandard-kundeninformation) |
+| `examples/bs-ki/fr` | French | 🔜 planned | BS-KI v1.0 |
+| `examples/bs-ki/it` | Italian | 🔜 planned | BS-KI v1.0 |
+| `examples/tsi-tat` | English | 🔜 planned | EU TSI Telematics |
+
+> **Note:** These are example implementations demonstrating how OSCAL4Rail works in practice. They are not official catalogs published by the respective standards bodies (KKI, ERA). Official catalogs would be published directly by standards bodies once they adopt OSCAL4Rail.
 
 ## License
 

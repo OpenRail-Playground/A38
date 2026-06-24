@@ -26,7 +26,7 @@ OSCAL4Rail solves this by:
 - Enabling **semantic diff** across versions: what changed, what was added, what was removed
 - Making regulations **queryable by AI agents** and **verifiable against IT systems**
 
-The project originated at **Hack4Rail 2026** (joint hackathon by SBB, ÖBB, DB and the OpenRail Association), where team A38 built the first working prototype in 24 hours: a complete OSCAL4Rail catalog for the Swiss "Branchenstandard Kundeninformation" (BS-KI) with 42 controls, validated against the official NIST OSCAL JSON Schema.
+The project originated at **Hack4Rail 2026** (joint hackathon by SBB, ÖBB, DB and the OpenRail Association), where team A38 built the first working prototype in 24 hours: a complete OSCAL4Rail **example implementation** for the Swiss "Branchenstandard Kundeninformation" (BS-KI) with 42 controls, validated against the official NIST OSCAL JSON Schema.
 
 ---
 
@@ -43,7 +43,7 @@ The project originated at **Hack4Rail 2026** (joint hackathon by SBB, ÖBB, DB a
 ## Which organizations are sponsoring/contributing to the project?
 
 - **Deutsche Bahn / DB Systel GmbH** (project lead, tooling)
-- **SBB** (BS-KI catalog, domain expertise) – participation to be confirmed
+- **SBB** (BS-KI example implementation, domain expertise) – participation to be confirmed
 - **ÖBB** – participation to be confirmed
 - **NIST** (indirect: OSCAL base standard, CC0)
 
@@ -65,7 +65,7 @@ The `OSCAL4Rail/` directory from https://github.com/OpenRail-Playground/A38 will
 
 Contents:
 - Tooling (`tools/`: extract.py, validate.py, diff.py)
-- Catalogs (`catalogs/bs-ki/de/`)
+- Example implementations (`examples/bs-ki/de/`)
 - Documentation (`docs/`: arc42, tutorials, how-tos, examples)
 - OSS governance files (LICENSE, CONTRIBUTING, GOVERNANCE, MAINTAINERS, CODE_OF_CONDUCT)
 
@@ -139,7 +139,7 @@ Planning is done via GitHub Issues and the project roadmap in the README. All di
 
 **Short-term (Q3 2026):**
 - Extract OSCAL4Rail into a standalone repository
-- Complete BS-KI catalog (DE/FR/IT)
+- Complete BS-KI example implementation (DE/FR/IT)
 - Build diff and changelog tooling
 - Add CI/CD pipeline (GitHub Actions: validate on every PR)
 
@@ -197,7 +197,7 @@ No direct competitors for an open, railway-specific, OSCAL-based standard. Adjac
 | JSON Schema (Draft 7) | Validation |
 | Semantic Versioning | Catalog releases |
 | Conventional Commits | Contribution workflow |
-| BS-KI v1.0 | First implemented regulation catalog |
+| BS-KI v1.0 | First example implementation |
 | TSI Telematics (EU 2026/253) | Planned catalog |
 
 ---
