@@ -58,11 +58,13 @@ LLM extraction: mature (Claude Sonnet 4, GPT-4). PDF parsing (markitdown): produ
 
 ### What are the next steps? What do you need?
 
-1. Extend extraction to further contract types (FinVer, Bahnhofverträge, Grundstücknutzung)
-2. Automated quality measurement against master reference file
-3. Multi-language support (FR/IT)
-4. Human-in-the-loop workflow for low-confidence fields
-5. SAP/ContrAct prefill integration (API)
-6. Establish as open-source project within OpenRail Association – reusable for other railways with similar contract management challenges
+A ready-to-use prototype has been delivered. The challenge owners can start further implementation as early as next week and complete the contract classification process within the next months.
 
-**Need:** Access to broader contract corpus. SBB domain expertise for validation. LLM API budget for batch processing. Collaboration with SAP/ContrAct team for integration path.
+1. Challenge owners continue with the prototype immediately
+2. Extend extraction to all contract types (FinVer, Bahnhofverträge, Grundstücknutzung)
+3. Batch processing of ~5,000 contracts with quality measurement
+4. Multi-language support (FR/IT)
+5. Human-in-the-loop workflow for low-confidence fields
+6. SAP/ContrAct prefill integration
+
+**Need:** LLM API budget for batch processing. SBB domain expertise for ongoing validation. Collaboration with SAP/ContrAct team for integration path.
