@@ -35,7 +35,7 @@ Each regulation catalog has a designated **Catalog Maintainer** organisation res
 
 | Catalog | Maintainer |
 |---------|-----------|
-| `bs-ki` | SBB / KKI |
+| `bs-ki` | to be coordinated with KKI / SBB |
 | `tsi-tat` | (to be assigned) |
 
 ## Versioning and Releases
