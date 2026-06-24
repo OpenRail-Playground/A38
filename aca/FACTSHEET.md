@@ -38,7 +38,7 @@ Manual data entry into SAP/ContrAct. Previous Claude-based extraction attempt (2
 
 ### What is the economic benefit?
 
-~5,000 contracts to be digitised. Manual effort: estimated 30-60 min per contract. Automated extraction reduces this to minutes with human-in-the-loop verification for edge cases. Enables proactive contract management (expiry alerts, missing successors).
+~10,000+ contracts from 150 years to be digitised. Manual effort: estimated 30-60 min per contract. Automated extraction reduces this to minutes with human-in-the-loop verification for edge cases. Enables proactive contract management (expiry alerts, missing successors).
 
 ### Which alternatives are out of the question and why?
 
@@ -62,7 +62,7 @@ A ready-to-use prototype has been delivered. The challenge owners can start furt
 
 1. Challenge owners continue with the prototype immediately
 2. Extend extraction to all contract types (FinVer, Bahnhofverträge, Grundstücknutzung)
-3. Batch processing of ~5,000 contracts with quality measurement
+3. Batch processing of 10,000+ contracts with quality measurement
 4. Multi-language support (FR/IT)
 5. Human-in-the-loop workflow for low-confidence fields
 6. SAP/ContrAct prefill integration
