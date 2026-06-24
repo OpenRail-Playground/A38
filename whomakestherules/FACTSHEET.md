@@ -9,7 +9,7 @@
   - Simon Engel (ÖBB)
   - Jens Grote (DB)
   - Rebeca Perez (SBB)
-  - Jonatha Wulf (DB)
+  - Jonathan Wolf (DB)
   - Simon Freihart (SBB)
   - Simon Noelle (ÖBB)
 
