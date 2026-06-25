@@ -53,6 +53,20 @@ python3 tools/validate.py catalogs/bs-ki/de/bs-ki-de.yaml
 
 > **Note:** These are example implementations demonstrating how OSCAL4Rail works in practice. They are not official catalogs published by the respective standards bodies (KKI, ERA). Official catalogs would be published directly by standards bodies once they adopt OSCAL4Rail.
 
+## Relationship to Law-as-Code / Rulemapping
+
+OSCAL4Rail and the SPRIND "Law as Code" initiative (including Rulemapping) solve **different problems for different audiences** at different phases in the lifecycle of a regulation:
+
+| Phase | Who | Tool | Question |
+|-------|-----|------|----------|
+| **Create** | Legislators, standards bodies | Rulemapping | "How do I formulate this rule precisely? What conditions, exceptions?" |
+| **Manage** | Compliance teams, IT architects | OSCAL4Rail | "Which rules apply? What changed? Is our implementation still conformant?" |
+| **Verify** | AI agents, automated checks | OSCAL4Rail + tooling | "Does system X comply with control Y across 10,000 assets?" |
+
+Rulemapping models **decision logic** (interactive decision trees for individual cases). OSCAL4Rail models **regulatory content** (verbatim rules, versioned catalogs, regulatory cascades from EU → national → company level).
+
+They are not competing — they complement each other across the regulation lifecycle. See [ADR-006](docs/adr/ADR-006-oscal4rail-vs-rulemapping.md) for the full analysis.
+
 ## License
 
 - **OSCAL4Rail tooling and documentation:** [Apache 2.0](LICENSE)

@@ -147,8 +147,8 @@ Planning is done via GitHub Issues and the project roadmap in the README. All di
 - Extend to EU TSI Telematics regulation
 - Engage standards bodies (KKI, ERA) for official adoption
 - Publish tooling as installable Python package
-- Contact SPRIND Law-as-Code initiative — position OSCAL4Rail as sectoral reference implementation
-- Pilot Rulemapping methodology on one BS-KI control to evaluate decision-logic integration
+- Contact SPRIND Law-as-Code initiative — clarify differentiation and explore potential upstream/downstream relationship
+- ~~Pilot Rulemapping methodology on one BS-KI control~~ ✅ Done (2026-06-25, see [ADR-006](docs/adr/ADR-006-oscal4rail-vs-rulemapping.md))
 
 **Long-term:**
 - Regulation authors write natively in OSCAL4Rail (PDF generated from YAML)
@@ -177,7 +177,7 @@ Planning is done via GitHub Issues and the project roadmap in the README. All di
 4. **OpenRail DNA**: Open, collaborative, railway-specific, public interest.
 5. **Multiplier effect**: Once catalogs exist for BST-KI and TSI, dozens of IT systems can use them.
 6. **AI-ready**: Machine-readable regulations enable the next generation of AI compliance agents in the railway sector.
-7. **Law-as-Code alignment**: OSCAL4Rail is a sectoral implementation of the SPRIND "Law as Code" initiative — already functional. It covers 4 of 5 foundational elements defined by the federal initiative (legal code format, open-source tools, central repository, training materials). This positions OpenRail as a pioneer in domain-specific Law-as-Code adoption.
+7. **Law-as-Code clarity**: OSCAL4Rail is clearly differentiated from the SPRIND "Law as Code" initiative. While both make regulations machine-readable, they serve different audiences and lifecycle phases: Rulemapping helps legislators *formulate* rules (citizen-facing decision trees), OSCAL4Rail helps compliance teams *manage and verify* rules at scale (versioned catalogs, regulatory cascades, automated checking). They are not competing — potential upstream/downstream relationship where regulations modeled in Rulemapping could feed into OSCAL4Rail catalogs. See [ADR-006](docs/adr/ADR-006-oscal4rail-vs-rulemapping.md).
 
 ---
 
@@ -190,8 +190,8 @@ No direct competitors for an open, railway-specific, OSCAL-based standard. Adjac
 | NIST OSCAL | Base standard (public domain) — OSCAL4Rail is a domain profile |
 | OSRD (OpenRail) | Infrastructure simulation — complementary, not competing |
 | ERA RINF / TAF-TSI | EU data standards for infrastructure/traffic — different domain, potentially linkable |
-| SPRIND "Law as Code" | Federal initiative for machine-readable legislation — OSCAL4Rail is a sectoral implementation. Complementary: SPRIND defines the political framework, OSCAL4Rail provides a working domain-specific solution. See [ADR-005](docs/adr/ADR-005-law-as-code-relationship.md) |
-| Rulemapping (Rulemapping Group) | Methodology for translating legal text into decision trees — complementary: Rulemapping captures decision logic, OSCAL4Rail captures requirements and obligations. Potential integration for applicability modeling |
+| SPRIND "Law as Code" | Federal initiative for machine-readable legislation. Different problem space: SPRIND/Rulemapping targets legislators and citizen-facing decision support (e.g. "Do I need a building permit?"). OSCAL4Rail targets compliance management at scale (e.g. "Which of 10,000 rules apply to my systems and what changed?"). They address different phases in the regulation lifecycle: Rulemapping helps *create* rules, OSCAL4Rail helps *manage and verify* them. See [ADR-006](docs/adr/ADR-006-oscal4rail-vs-rulemapping.md) |
+| Rulemapping (Rulemapping Group) | Methodology for translating legal text into interactive decision trees for individual-case decisions. Different audience (legislators, citizens) and different purpose (single-case yes/no) than OSCAL4Rail (mass compliance, versioning, cascades). Possible interface: regulations modeled in Rulemapping could feed into OSCAL4Rail catalogs as upstream source |
 | Commercial compliance tools | Proprietary, vendor lock-in, not railway-specific |
 
 ---
