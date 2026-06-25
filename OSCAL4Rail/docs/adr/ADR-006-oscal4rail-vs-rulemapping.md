@@ -99,89 +99,99 @@ Jede Ebene **spezialisiert** die darüber liegende – sie darf konkretisieren, 
 
 ## Kernbefund
 
-**OSCAL4Rail und Rulemapping adressieren unterschiedliche Fragen am selben Regelwerk:**
+**OSCAL4Rail und Rulemapping lösen fundamental verschiedene Probleme.**
 
-| Frage | Wer antwortet |
-|-------|--------------|
-| *Was* steht in der Regel? (Verbatim-Text) | OSCAL4Rail |
-| *Für wen* gilt sie? (Kanal, Verkehrsträger, Obligation) | OSCAL4Rail |
-| *Wie bindend* ist sie? (verbindlich/empfohlen) | OSCAL4Rail |
-| *Was hat sich geändert?* (Diff Version A → B) | OSCAL4Rail |
-| *Wie hängen Regeln hierarchisch zusammen?* (EU → Tochter) | OSCAL4Rail |
-| *Widerspricht Umsetzung X der Oberregel?* | OSCAL4Rail (geplant) |
-| *Unter welchen Bedingungen* gilt die Regel? | **Rulemapping** |
-| *Welche Ausnahmen* gibt es? | **Rulemapping** |
-| *Ist mein konkreter Fall betroffen?* (Entscheidungspfad) | **Rulemapping** |
+### Unterschiedliche Einsatzzwecke
 
-### Wichtig: Nicht jede Regel braucht einen Entscheidungsbaum
+| Dimension | Rulemapping | OSCAL4Rail |
+|-----------|-------------|------------|
+| **Zielgruppe** | Bürger, Sachbearbeiter, Juristen, Gesetzgeber | IT-Architekten, Compliance-Teams, Normungsgremien |
+| **Kernfrage** | „Trifft diese Regel auf *meinen Einzelfall* zu?" | „Wie verwalte ich *10.000 Regeln* über 5 Ebenen mit Änderungsverfolgung?" |
+| **Interaktion** | Mensch geht interaktiv durch Entscheidungsbaum | Maschine prüft automatisiert gegen Katalog |
+| **Ergebnis** | Ein Ja/Nein für einen konkreten Fall | Compliance-Report über alle Systeme und Regeln |
+| **Skala** | Ein Gesetz, ein Fall | Hunderte Regelwerke, tausende Controls, über Jahre |
+| **Analogie** | Berater am Schalter / Self-Service-Webseite | Wirtschaftsprüfer mit Checkliste |
 
-Viele Regeln sind einfache, binäre Aussagen:
+### Rulemapping: Bürger-Staat-Dialog
+
+Typische Rulemapping-Use-Cases:
+- „Brauche ich für meinen Anbau eine Baugenehmigung?" → Grundfläche? Höhe? Bebauungsplan? → Ja/Nein
+- „Brauche ich ein Visum für Thailand?" → Aufenthaltsdauer? Zweck? Nationalität? → Ja, Typ X / Nein
+- „Welche Steuerformulare muss ich ausfüllen?" → Selbständig? Kinder? Einkommen? → Anlage N + KAP
+
+Das ist ein **interaktiver Einzelfall-Entscheidungsbaum** – ein Mensch geht den Baum durch und bekommt eine Antwort.
+
+### OSCAL4Rail: Regulierungs-Management über Ebenen und Zeit
+
+Typische OSCAL4Rail-Use-Cases:
+- „Wir betreiben 4.700 Haltestellen und 12 IT-Systeme. Welche 42 Regeln gelten jeweils?"
+- „Was hat sich seit letztem Jahr geändert? Welche Regeln sind verschärft, gelockert, neu, weggefallen?"
+- „Ist unsere Umsetzung (DB Systel: CVSS-basiert) noch konform zur Oberregel (DB Richtlinie: BSI Grundschutz)?"
+- „Die TSI wurde aktualisiert – welche unserer Systeme sind betroffen?"
+
+Das ist **automatisierte Massenprüfung mit Versionsverwaltung** – kein Mensch geht interaktiv durch einen Baum.
+
+### Keine Konkurrenz – verschiedene Welten
+
+Die beiden Ansätze *können* sich an einer Schnittstelle berühren: Wenn ein Gesetzgeber per Rulemapping ein Gesetz modelliert, *könnte* das Ergebnis als Input in einen OSCAL-Katalog einfließen. Aber das ist eine **Übergabe**, keine Integration im Sinne von „beide arbeiten am selben Artefakt".
+
+| | Rulemapping-Welt | Übergabe | OSCAL4Rail-Welt |
+|---|-----------------|----------|-----------------|
+| Akteur | Gesetzgeber/Jurist | → publiziert → | Compliance-Team/IT-Architekt |
+| Artefakt | Entscheidungsbaum (Rulemap) | → wird zu → | Control im Katalog (OSCAL) |
+| Zweck | „So entscheidest du" | | „Das musst du einhalten" |
+
+### Nicht jede Regel braucht einen Entscheidungsbaum
+
+Viele Regeln sind einfache, binäre Aussagen ohne jede Entscheidungslogik:
 - „Code muss in Git öffentlich lesbar abgelegt werden."
 - „Architekturentscheidungen müssen dokumentiert und veröffentlicht sein."
 - „Systeme müssen gepatcht werden."
 
-Für solche Regeln ist OSCAL4Rail mit `statement` + `obligation` ausreichend. Rulemapping bringt **nur dort Mehrwert**, wo es tatsächlich Bedingungslogik gibt (Schwellenwerte, Ausnahmen, kontextabhängige Anwendbarkeit).
+Hier gibt es nichts zu „entscheiden" – es gilt, Punkt. Kein Schwellenwert, keine Ausnahme, kein Baum. Das ist die Mehrheit aller Regeln.
 
-Der BS-KI 2.1 Pilot-Test (mit Schwellenwert ≥800 Fahrgäste und mehrdimensionaler Applicability) ist ein *komplexer* Fall – kein universeller Blueprint.
+Der BS-KI 2.1 Pilot-Test (mit Schwellenwert ≥800 Fahrgäste und mehrdimensionaler Applicability) ist ein *ungewöhnlich komplexer* Fall – kein Regelfall.
 
 ---
 
 ## Entscheidung
 
-**OSCAL4Rail ist das tragende Rückgrat. Rulemapping ist eine optionale Ergänzung für Regeln mit komplexer Entscheidungslogik.**
+**OSCAL4Rail und Rulemapping lösen verschiedene Probleme für verschiedene Zielgruppen. Sie sind weder Konkurrenten noch zwingend zu integrieren.**
 
-```
-┌────────────────────────────────────────────────────────────┐
-│                    OSCAL4Rail (immer)                        │
-│                                                             │
-│  Catalog ──→ Profile ──→ Component Definition               │
-│  (EU/TSI)    (DB Konzern)  (DB Systel / DB InfraGO)        │
-│                                                             │
-│  Jeder Control:                                             │
-│  ├── statement (Verbatim)                                   │
-│  ├── props (Applicability, Obligation)                      │
-│  ├── diff (Change Tracking über Git)                        │
-│  └── link rel="decision-logic" ──┐  (nur wenn nötig)       │
-│                                   │                         │
-│  ┌────────────────────────────────▼──────────────────┐     │
-│  │  Rulemapping (optional, bei komplexer Logik)       │     │
-│  │  Entscheidungsbaum: Bedingungen, Ausnahmen,        │     │
-│  │  Schwellenwerte, invertierte Pfade                 │     │
-│  └────────────────────────────────────────────────────┘     │
-└────────────────────────────────────────────────────────────┘
-```
+- **OSCAL4Rail** ist das Werkzeug für **Regulierungs-Management**: Kataloge verwalten, Versionen tracken, Kaskaden abbilden, Compliance maschinell prüfen.
+- **Rulemapping** ist das Werkzeug für **Einzelfall-Entscheidungen**: Bürger-Self-Service, Sachbearbeiter-Unterstützung, interaktive Prüfung.
 
-### Technische Integration
+### Möglicher Berührungspunkt
+
+Dort wo ein Regelwerk tatsächlich komplexe Bedingungslogik enthält (Schwellenwerte, Ausnahmen, kontextabhängige Anwendbarkeit), *könnte* ein Rulemapping-Entscheidungsbaum als ergänzendes Artefakt neben dem OSCAL4Rail-Control existieren. Das ist aber die Ausnahme, nicht die Regel.
 
 ```yaml
-# Einfache Regel – kein Rulemapping nötig
-controls:
-  - id: db-ril-sec-4.2
-    title: "Code-Ablage"
-    parts:
-      - name: statement
-        prose: "Code muss in Git öffentlich lesbar in der DB abgelegt werden."
-    props:
-      - name: applicability
-        value: verbindlich
-        class: alle-systeme
-
-# Komplexe Regel – Rulemapping als Ergänzung
+# Nur bei komplexer Bedingungslogik – nicht der Standard
 controls:
   - id: bs-ki-2.1
     title: "Aktuelle Uhrzeit"
     parts:
       - name: statement
         prose: "Bei Haltestellen mit weniger als 800 Ein- und Aussteigern..."
-    props:
-      - name: applicability
-        value: verbindlich
-        class: haltestelle.bahn
     links:
       - href: "rulemaps/bs-ki-2.1.xml"
         rel: "decision-logic"
         text: "Entscheidungsbaum: Anwendbarkeitsbedingungen"
 ```
+
+### Was OSCAL4Rail NICHT von Rulemapping übernimmt
+
+- Kein interaktiver Bürger-Dialog
+- Kein Einzelfall-Entscheidungsbaum als Kernkonzept
+- Keine Übernahme des Rulemapping-Formats als primäres Datenmodell
+
+### Was OSCAL4Rail allein leistet (und Rulemapping nicht kann)
+
+- Regulierungskaskade (EU → National → Konzern → Tochter)
+- Semantischer Diff über Versionen
+- Konformitätsprüfung zwischen Ebenen
+- Schema-validierte Kataloge mit stabilen Identifikatoren
+- Change Tracking: was ist neu, weggefallen, verschärft, gelockert
 
 ---
 
@@ -189,25 +199,22 @@ controls:
 
 ### Positiv
 
-- OSCAL4Rail bleibt einfach und schlank für die Mehrheit aller Regeln
-- Entscheidungslogik wird nur dort hinzugefügt, wo sie tatsächlich existiert (YAGNI)
-- Die Regulierungskaskade (EU → Tochter) wird durch OSCAL4Rail's Schichtenmodell getragen – etwas das Rulemapping nicht kann
-- Change Tracking über Versionen bleibt Git-basiert und deterministisch
-- Beide Ansätze bleiben unabhängig nutzbar (lose Kopplung über `link`)
-- Attraktiv für SPRIND: konkreter sektoraler Integrationsfall
+- Klare Positionierung: OSCAL4Rail muss sich nicht an Rulemapping messen lassen – anderer Zweck
+- OSCAL4Rail bleibt schlank und fokussiert auf Regulierungs-Management
+- Kein Druck, Rulemapping-Integration als Feature zu bauen
+- Gegenüber SPRIND/OpenRail klar kommunizierbar: „Verschiedene Werkzeuge, verschiedene Probleme, möglicher Berührungspunkt an der Schnittstelle Gesetzgeber → Compliance-Team"
+- Die Regulierungskaskade und Change Tracking sind USPs von OSCAL4Rail, die Rulemapping nicht adressiert
 
 ### Negativ / Risiken
 
-- Rulemapping-Format ist proprietär und nicht schema-validierbar → Mitigation: auf RUML-Publikation warten oder eigenes XSD definieren
-- Doppelte Pflege bei komplexen Regeln (Text in OSCAL4Rail, Logik in Rulemap) → Mitigation: Rulemap ist optional, OSCAL4Rail bleibt SSOT für den Regeltext
-- Numerische IDs in Rulemap erschweren stabile Referenzierung → Mitigation: Dateinamen-Konvention `rulemaps/<control-id>.xml`
+- Rulemapping könnte fälschlicherweise als Konkurrent wahrgenommen werden → Mitigation: dieser ADR als klare Kommunikationsgrundlage
+- Bei SPRIND-Kontaktaufnahme muss die Differenzierung sauber erklärt werden, um nicht in einen „wer ist besser"-Vergleich zu geraten
 
 ### Offen / noch zu klären
 
-- Wird RUML als offener Standard publiziert? (Monitoring)
-- Wie verhält sich die Integration bei Katalog-Updates? (Prozess definieren)
-- Konformitätsprüfung über Kaskaden-Ebenen: wie konkret implementieren?
-- Konsistenz-/Widerspruchserkennung zwischen Katalogen: wie konkret implementieren?
+- Ist eine Übergabe-Schnittstelle (Rulemapping → OSCAL4Rail) in der Praxis relevant oder rein theoretisch?
+- Wird RUML als offener Standard publiziert? (Monitoring, aber keine Abhängigkeit)
+- Gibt es Regelwerke mit so viel Bedingungslogik, dass eine systematische Verknüpfung sinnvoll wird?
 
 ---
 
