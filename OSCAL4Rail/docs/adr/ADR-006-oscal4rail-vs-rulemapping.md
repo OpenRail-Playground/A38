@@ -195,6 +195,57 @@ controls:
 
 ---
 
+### Ergänzung auf Prozessebene – nicht auf Datenebene
+
+Die Ergänzung von Rulemapping und OSCAL4Rail liegt nicht darin, beide Formate zusammenzuschalten, sondern darin, dass sie **verschiedene Phasen im Lebenszyklus einer Regel** bedienen:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  PHASE 1: Regel erstellen (Regelschreiber)                   │
+│                                                              │
+│  Gesetzgeber / Normungsgremium / Fachexperte                 │
+│  ├── schreibt Gesetz/Vorschrift                              │
+│  └── modelliert Entscheidungslogik im Rulemap Builder        │
+│       → „Wann gilt was? Welche Bedingungen? Ausnahmen?"      │
+│                                                              │
+│  Werkzeug: Rulemapping                                       │
+│  Artefakt: Entscheidungsbaum (Rulemap)                       │
+└──────────────────────────────┬──────────────────────────────┘
+                               │ publiziert Regeltext
+                               ▼
+┌─────────────────────────────────────────────────────────────┐
+│  PHASE 2: Regel verwalten (Compliance-Team)                  │
+│                                                              │
+│  OSCAL4Rail liest den publizierten Regeltext                 │
+│  ├── extrahiert verbatim Controls                            │
+│  ├── ordnet Applicability zu                                 │
+│  ├── bildet Kaskade ab (EU → National → Konzern → Tochter)  │
+│  └── trackt Änderungen über Versionen                        │
+│                                                              │
+│  Werkzeug: OSCAL4Rail                                        │
+│  Artefakt: Katalog mit Controls                              │
+└──────────────────────────────┬──────────────────────────────┘
+                               │ Katalog bereitgestellt
+                               ▼
+┌─────────────────────────────────────────────────────────────┐
+│  PHASE 3: Regel prüfen (IT-Architekten / AI-Agents)          │
+│                                                              │
+│  Automatisierte Compliance-Prüfung:                          │
+│  ├── Welche Controls gelten für mein System?                 │
+│  ├── Ist meine Umsetzung konform?                            │
+│  └── Was hat sich seit letzter Prüfung geändert?             │
+│                                                              │
+│  Werkzeug: MCP-Agents / Compliance-Tooling                   │
+│  Artefakt: Compliance-Report                                 │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Zwei Werkzeuge, zwei Phasen:**
+- Rulemapping hilft dem **Ersteller** der Regel, sie präzise und widerspruchsfrei zu formulieren
+- OSCAL4Rail hilft dem **Anwender** der Regel, sie maschinell zu verwalten und zu prüfen
+
+---
+
 ## Konsequenzen
 
 ### Positiv
