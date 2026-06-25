@@ -147,11 +147,15 @@ Planning is done via GitHub Issues and the project roadmap in the README. All di
 - Extend to EU TSI Telematics regulation
 - Engage standards bodies (KKI, ERA) for official adoption
 - Publish tooling as installable Python package
+- Contact SPRIND Law-as-Code initiative — position OSCAL4Rail as sectoral reference implementation
+- Pilot Rulemapping methodology on one BS-KI control to evaluate decision-logic integration
 
 **Long-term:**
 - Regulation authors write natively in OSCAL4Rail (PDF generated from YAML)
 - Cross-regulation compliance checking
 - Integration with AI compliance agents
+- Consume official legal code from SPRIND infrastructure once available (replacing PDF extraction)
+- Engage EBA/ERA for machine-readable publication of railway-specific regulations
 
 ---
 
@@ -173,18 +177,21 @@ Planning is done via GitHub Issues and the project roadmap in the README. All di
 4. **OpenRail DNA**: Open, collaborative, railway-specific, public interest.
 5. **Multiplier effect**: Once catalogs exist for BST-KI and TSI, dozens of IT systems can use them.
 6. **AI-ready**: Machine-readable regulations enable the next generation of AI compliance agents in the railway sector.
+7. **Law-as-Code alignment**: OSCAL4Rail is a sectoral implementation of the SPRIND "Law as Code" initiative — already functional. It covers 4 of 5 foundational elements defined by the federal initiative (legal code format, open-source tools, central repository, training materials). This positions OpenRail as a pioneer in domain-specific Law-as-Code adoption.
 
 ---
 
 ## Are there competing products or projects?
 
-No direct competitors for an open, railway-specific, OSCAL-based standard. Adjacent projects:
+No direct competitors for an open, railway-specific, OSCAL-based standard. Adjacent and complementary projects:
 
 | Project | Relationship |
 |---------|-------------|
 | NIST OSCAL | Base standard (public domain) — OSCAL4Rail is a domain profile |
 | OSRD (OpenRail) | Infrastructure simulation — complementary, not competing |
 | ERA RINF / TAF-TSI | EU data standards for infrastructure/traffic — different domain, potentially linkable |
+| SPRIND "Law as Code" | Federal initiative for machine-readable legislation — OSCAL4Rail is a sectoral implementation. Complementary: SPRIND defines the political framework, OSCAL4Rail provides a working domain-specific solution. See [ADR-005](docs/adr/ADR-005-law-as-code-relationship.md) |
+| Rulemapping (Rulemapping Group) | Methodology for translating legal text into decision trees — complementary: Rulemapping captures decision logic, OSCAL4Rail captures requirements and obligations. Potential integration for applicability modeling |
 | Commercial compliance tools | Proprietary, vendor lock-in, not railway-specific |
 
 ---

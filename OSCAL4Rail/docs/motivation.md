@@ -69,6 +69,37 @@ When a new version of BS-KI is published, OSCAL4Rail can automatically detect:
 
 This gives compliance teams a precise, actionable changelog — not "the document was updated".
 
+## Regulatory Context: Law-as-Code and the Railway Sector
+
+OSCAL4Rail does not exist in isolation. Across Europe, a fundamental shift is underway: regulations should no longer be published only as text, but simultaneously as machine-readable, executable code.
+
+### SPRIND "Law as Code" Initiative
+
+The German Federal Agency for Disruptive Innovation (SPRIND) has launched a strategic initiative to make all German legislation hybrid-publishable (text + code) by 2028. The initiative defines five foundational elements: a legal code format definition, open-source editors, AI-assisted translation, a central repository, and training programs.
+
+OSCAL4Rail is a **sectoral implementation of this vision** — applied specifically to railway regulations. Where SPRIND works top-down (legislator publishes code), OSCAL4Rail works bottom-up (railway companies extract and validate existing regulations). Both approaches converge toward the same goal: deterministic, machine-verifiable rules.
+
+### Rulemapping Methodology
+
+The Rulemapping Group provides a methodology for translating legal text into visual decision trees that capture application logic: "Under which conditions does this rule apply? What exceptions exist?" This complements OSCAL4Rail's applicability model, which captures *what* is required and *how binding* it is, but not the full decision logic of *when* it applies.
+
+### Layered Relationship
+
+```
+Law-as-Code (SPRIND)          = political framework, format standardization
+  └── Rulemapping             = methodology for decision logic extraction
+        └── OSCAL4Rail        = domain-specific catalog format for railways
+              └── AI Agents   = consume catalogs for compliance verification
+```
+
+### Future Convergence
+
+Once regulatory bodies (EBA, ERA, BAV) publish regulations as official legal code, OSCAL4Rail can consume these directly — replacing the current PDF extraction pipeline with a validated upstream source. Until then, OSCAL4Rail provides the railway sector with machine-readable regulations *today*, without waiting for institutional change.
+
+See [ADR-005](adr/ADR-005-law-as-code-relationship.md) for detailed technical alignment.
+
+---
+
 ## Vision
 
 OSCAL4Rail should become the **open standard for machine-readable railway regulations** under the OpenRail Association — enabling:
