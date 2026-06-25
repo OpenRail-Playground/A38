@@ -1,9 +1,0 @@
-KI: Claude, Opus 4.8 Max
-
-Für die Challenge wurden drei Dateien erstellt: 
-
-1. Der System-Prompt für die automatische Vertragsextraktion. Der Inhalt kommt 1:1 als System-Nachricht in den LLM-API-Call, der Vertragstext (bzw. die gescannten Seiten) als User-Nachricht. Das erwartete Ausgabeformat ist das JSON in Abschnitt 8, mit Beispiel in Abschnitt 9.
-
-2. Das Word-Dokument: Erklärt die fachliche Extraktionslogik (Vorgehen je Dokumenttyp, Feld- und Vertragstyp-Entscheidungen, Sonderfälle, Qualitätskriterien) als Vorlage für die SAP-Umsetzung — Begleitdokument zum System-Prompt.
-
-3. Das Extraktionsergebnis — 28 Verträge × 13 Felder, farblich nach Qualität codiert, mit Quellenangabe je Feld. Als HTML (Browser) und als Excel mit drei Blättern (Daten, Legende, Fussnoten). Datengrundlage für den menschlichen Plausibilitätscheck.
