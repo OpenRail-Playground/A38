@@ -6,12 +6,12 @@
 - **Challenge Owner:** (Challenge Owner von oev-info/KKI)
 - **Team name:** A38
 - **Team Members:**
-  - Simon Engel (ÖBB)
+  - Samuel Engel (SBB)
   - Jens Grote (DB)
   - Rebeca Perez (SBB)
   - Jonathan Wolf (DB)
   - Simon Freihart (SBB)
-  - Simon Noelle (ÖBB)
+  - Simon Noelle (SBB)
 
 ## Slide 2 – Challenge & Solution
 
