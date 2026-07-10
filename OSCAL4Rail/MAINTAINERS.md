@@ -9,6 +9,9 @@
 | Simon Freihart | SBB | [@simon-frei](https://github.com/simon-frei) | Maintainer |
 | Rebeca Perez | SBB | [@perezre](https://github.com/perezre) | Maintainer |
 | Jonathan Wolf | DB Engineering & Consulting | [@Serigalan](https://github.com/Serigalan) | Maintainer |
+| Florian Hofmann | DB Systel GmbH | - | Maintainer |
+
+
 
 ## Inspiration
 
