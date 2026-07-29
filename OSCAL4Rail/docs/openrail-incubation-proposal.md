@@ -22,7 +22,11 @@ OSCAL4Rail is an open standard and toolset for making railway governance machine
 
 OSCAL4Rail solves this by:
 - Extending the **NIST OSCAL** standard (public domain, CC0 1.0) with a **railway-specific profile** — additional schema constraints, ID conventions, applicability model
-- Defining a **4-layer framework**: (1) Catalog — machine-readable regulations, (2) Rules — applicability logic using the **Rulemapping** format (which controls apply in which context), (3) Change Impact — what changed between versions, (4) Assessment — railway profile over the [NIST OSCAL Assessment Layer](https://pages.nist.gov/OSCAL/learn/concepts/layer/assessment/) (Assessment Plan, Assessment Results, POA&M) for compliance verification by humans or AI agents
+- Defining a **4-layer framework** that extends NIST OSCAL with railway-specific additions:
+  - (1) **Catalog** — railway profile over [NIST OSCAL Control Layer](https://pages.nist.gov/OSCAL/learn/concepts/layer/control/) (Catalog + Profile model), extended with ID conventions, applicability model, multilingual support
+  - (2) **Rules** — applicability logic using the **Rulemapping** format: which controls apply in which context? **Not part of NIST OSCAL — this is new.**
+  - (3) **Change Impact** — structured, machine-readable change notifications when regulations are updated. **Not part of NIST OSCAL — this is new.**
+  - (4) **Assessment** — railway profile over [NIST OSCAL Assessment Layer](https://pages.nist.gov/OSCAL/learn/concepts/layer/assessment/) (Assessment Plan, Assessment Results, POA&M) for compliance verification by humans or AI agents. **Note: existing internal governance documents (e.g. Konzernrichtlinien) do not yet contain assessment information — this layer adds it.**
 - Embracing **Law-as-Code** principles: regulations are code — versioned, diffable, testable, deployable
 - **Future-ready for Law-as-Code ecosystem**: Railway regulation bodies (ERA, EBA, BAV) currently publish as PDF only. The emerging Law-as-Code stack (SPRIND initiative → Rulemapping Group tooling → OpenCode.de hosting) aims to change this. Once regulations are published as machine-readable Rulemapping artifacts, OSCAL4Rail is designed to consume them as authoritative upstream — replacing today's PDF extraction pipeline
 - Requiring **verbatim quotes** from source documents — no paraphrasing, no interpretation
@@ -205,12 +209,17 @@ No direct competitors for an open, railway-specific, OSCAL-based standard. Adjac
 
 | Standard | Role |
 |----------|------|
-| NIST OSCAL 1.1.3 | Base schema — extended with railway-specific profile (ID conventions, applicability, multilingual) |
-| Rulemapping (RUML) | Adopted rules format for Layer 2 (applicability logic) |
+| NIST OSCAL 1.1.3 | Base schema — Layer 1 (Catalog/Profile) and Layer 4 (Assessment Plan/Results/POA&M) are railway profiles over existing NIST models |
+| Rulemapping (RUML) | Adopted rules format for Layer 2 (applicability logic) — **not part of NIST OSCAL** |
 | JSON Schema (Draft 7) | Validation (NIST schema + OSCAL4Rail constraints) |
 | Semantic Versioning | Catalog releases |
 | Conventional Commits | Contribution workflow |
 | BS-KI v1.0 | Public example catalog (proof of concept) |
+
+**What OSCAL4Rail adds on top of NIST OSCAL:**
+- Layer 2 (Rules): Applicability logic — NIST OSCAL has no concept of "which controls apply to my specific context"
+- Layer 3 (Change Impact): Structured diff — NIST OSCAL has no built-in versioning/change notification at control level
+- Layer 4 (Assessment): Existing internal governance (Konzernrichtlinien etc.) does not yet contain assessment information — OSCAL4Rail adds the structure to make them assessable
 
 **Primary use case (first step):** Railway companies use OSCAL4Rail to publish their **internal IT governance** — company-level adaptations of legal requirements (e.g. DB Konzernrichtlinien, SBB internal standards) — in a machine-readable, deterministic, and AI-agent-ready format. This is an internal-facing standard for compliance automation, not an external publication format for legislators.
 
