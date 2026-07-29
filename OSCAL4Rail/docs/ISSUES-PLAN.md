@@ -18,6 +18,7 @@
 | `layer:rules` | 🟢 grün | Layer 2: Rules |
 | `layer:change` | 🟠 orange | Layer 3: Change Impact |
 | `layer:assessment` | 🟣 lila | Layer 4: Assessment |
+| `layer:cascade` | 🔴 rot | Regulatory Cascade (cross-layer: Catalog + Assessment) |
 | `type:spec` | ⬜ grau | Spezifikation/Schema |
 | `type:tooling` | 🟤 braun | CLI/Tooling |
 | `type:docs` | 📄 weiß | Dokumentation |
@@ -435,24 +436,39 @@ Update arc42 and create a clear "Why OSCAL4Rail" page that explains the 4-layer 
 
 ---
 
-### Issue #16: Regulatory Cascade Model
+### Issue #16: Regulatory Cascade Model (Railway USP)
 
-**Title:** `spec: Formalize regulatory cascade (EU → National → Industry → Company)`
-**Labels:** `layer:catalog`, `type:spec`, `priority:medium`
-**Milestone:** `v1.0.0 – Framework Release`
+**Title:** `spec: Formalize Regulatory Cascade Model (6–7 levels, conformance constraints, impact propagation)`
+**Labels:** `layer:cascade`, `type:spec`, `priority:high`
+**Milestone:** `v0.1.1 – Catalog Profile`
 
 **Description:**
 
-Formalize how OSCAL4Rail models the inheritance/specialization hierarchy:
-- EU (TSI, ERA) → National (EBO, BSKG) → Industry (BS-KI) → Company (Ril, Guidelines)
+The Regulatory Cascade is the defining railway-specific innovation — the reason it's "4Rail" and not just "OSCAL+". Formalize how OSCAL4Rail models the inheritance/specialization hierarchy across 6–7 levels:
 
-Each level specializes but must not contradict the parent. This is a core USP.
+```
+International → EU → National → Agency → Industry → Company → System/Team
+```
+
+Key constraints:
+- Each level may only specialize, never contradict its parent (conformance downward)
+- Changes cascade: when a parent changes, all children must adapt
+- Impact propagates: which downstream catalogs/systems are affected by an upstream change?
+- Cross-border: parallel cascade branches share a common parent (e.g. DE and CH both implement same TSI)
+- Multimodal: regulations cover rail, bus, tram, cable cars, ships
+- Multi-domain: vehicles, infrastructure, procurement, maintenance, passenger information
+
+This touches both the **Catalog schema** (how to express parent-child relationships between catalogs) and the **Assessment schema** (conformance checking: "Is child still conformant to parent?").
 
 **Acceptance Criteria:**
-- [ ] `docs/reference/cascade-model.md`
-- [ ] OSCAL Profile model adapted for regulatory cascade
-- [ ] Conformance checking concept: "Is child still conformant to parent?"
-- [ ] Example: EU TSI → CH BS-KI → SBB implementation
+- [ ] `docs/reference/cascade-model.md` – Specification
+- [ ] Catalog schema: `parent-catalog` reference field (link to upstream catalog)
+- [ ] Cascade levels taxonomy defined (International, EU, National, Agency, Industry, Company, System)
+- [ ] Conformance constraint model: what "must not contradict" means formally
+- [ ] Impact propagation concept: upstream change → which downstream catalogs affected?
+- [ ] Cross-border model: parallel branches sharing a common EU parent
+- [ ] Example: ISO 27001 → EU TSI → CH LEisenbG → BS-KI → SBB internal standard
+- [ ] Integration with Assessment Layer: conformance as an assessable property
 
 ---
 
@@ -508,7 +524,8 @@ Formal architecture decision: What is part of the OSCAL4Rail framework (schemas,
 ## Zusammenfassung: Reihenfolge
 
 ```
-v0.1.1 (Catalog Profile)
+v0.1.1 (Catalog Profile + Cascade)
+  #16 Regulatory Cascade Model (Railway USP) ──▶ feeds into #22 and #11
   #22 Catalog Railway Profile Spec ──▶ #23 Constraints Schema ──▶ #24 Validator
                                    └──▶ #25 TSI Example (minimal)
 
@@ -521,11 +538,10 @@ v0.3.0 (Change Layer)
   #6 Change Spec ──▶ #7 Change Schema ──▶ #8 Diff Tooling ──▶ #9 Example
 
 v0.4.0 (Assessment Layer)
-  #10 Assessment Spec ──▶ #11 Assessment Schema ──▶ #12 Example
+  #10 Assessment Spec ──▶ #11 Assessment Schema (incl. cascade conformance) ──▶ #12 Example
 
 v1.0.0 (Framework Release)
   #13 CLI Tool
   #14 CI/CD
   #15 Framework Docs
-  #16 Cascade Model
 ```
