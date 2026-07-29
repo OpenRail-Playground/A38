@@ -71,23 +71,27 @@ Layers 2 (Rules) and 3 (Change Impact) are generic and reusable for other sector
 | Priority | Goal |
 |----------|------|
 | G-1 | Make internal IT governance of railway companies machine-readable and deterministic |
-| G-2 | Verbatim quoting of every rule from its source document |
-| G-3 | Schema validation against NIST OSCAL JSON Schema + railway-specific constraints |
-| G-4 | Stable identifiers for rules to enable diff and change tracking across versions |
-| G-5 | Applicability logic (Rules Layer): determine which controls apply in which context |
-| G-6 | Change Impact: structured notifications when regulations are updated |
-| G-7 | Assessment: compliance verification by AI agents and human reviewers |
-| G-8 | Extensibility to any railway regulation (TSI, national standards, company rules) |
-| G-9 | Multilingual support (DE/FR/IT/EN) |
+| G-2 | Model the regulatory cascade (EU → National → Agency → Industry → Company) with conformance constraints |
+| G-3 | Support cross-border operations: one system complying with multiple national implementations simultaneously |
+| G-4 | Verbatim quoting of every rule from its source document |
+| G-5 | Schema validation against NIST OSCAL JSON Schema + railway-specific constraints |
+| G-6 | Stable identifiers for rules to enable diff and change tracking across versions |
+| G-7 | Applicability logic (Rules Layer): determine which controls apply in which context |
+| G-8 | Change Impact: structured notifications when regulations are updated, with impact propagation across cascade levels |
+| G-9 | Assessment: compliance verification by AI agents and human reviewers |
+| G-10 | Extensibility across domains: vehicles, infrastructure, procurement, maintenance, passenger information |
+| G-11 | Multimodal: rail, bus, tram, cable cars, ships |
+| G-12 | Multilingual support (DE/FR/IT/EN) |
 
 ### 1.3 Stakeholders
 
 | Role | Organisation | Interest |
 |------|-------------|----------|
-| Standards bodies | KKI, BAV (CH), ERA (EU) | Publish regulations in machine-readable format |
-| Railway companies | SBB, DB, ÖBB, SNCF, ... | Consume regulations, check compliance |
-| IT departments | All railways | Implement passenger information systems |
-| Compliance teams | All railways | Track regulatory changes |
+| Railway companies | SBB, DB, ÖBB, SNCF, ... | Publish internal governance as machine-readable catalogs; manage regulatory cascade |
+| IT & Engineering departments | All railways | Comply with regulations across vehicles, infrastructure, procurement, maintenance, passenger info |
+| Compliance teams | All railways | Track regulatory changes across cascade levels; cross-border conformance |
+| Standards bodies | KKI, BAV (CH), EBA (DE), ERA (EU) | Potential future upstream: publish regulations in machine-readable format |
+| AI agent developers | All railways | Consume catalogs for automated compliance verification |
 | OpenRail Association | OpenRail | Host and maintain as OSS project |
 
 ---
@@ -125,26 +129,39 @@ Layers 2 (Rules) and 3 (Change Impact) are generic and reusable for other sector
 ### 3.1 Business Context
 
 ```
-┌─────────────────┐         ┌──────────────────────────────────────┐
-│  Standards Body  │──PDF──▶│                                      │
-│  (KKI, BAV, ERA) │──XLSX─▶│           OSCAL4Rail                 │
-└─────────────────┘         │                                      │──YAML──▶  Railway IT Systems
-                             │  Extraction + Validation Pipeline    │──JSON──▶  Compliance Tools
-┌─────────────────┐         │                                      │──Diff──▶  Change Notifications
-│  Previous        │──YAML─▶│                                      │
-│  Catalog Version │         └──────────────────────────────────────┘
-└─────────────────┘
+                    REGULATORY CASCADE
+                    ==================
+┌──────────────┐
+│  EU (ERA)    │──TSI──┐
+└──────────────┘       │
+┌──────────────┐       ▼
+│  National    │──Law──┐    ┌─────────────────────────────────────────┐
+│  (EBA/BAV)   │       │    │            OSCAL4Rail Framework          │
+└──────────────┘       ▼    │                                         │
+┌──────────────┐       ┌───▶│  Layer 1: Catalog (NIST OSCAL Profile)  │
+│  Industry    │──Std──┤    │  Layer 2: Rules (Rulemapping format)    │──▶ AI Agents
+│  (KKI)       │       │    │  Layer 3: Change Impact (diff/notify)   │──▶ Compliance Teams
+└──────────────┘       │    │  Layer 4: Assessment (Plan/Results)      │──▶ IT Systems
+┌──────────────┐       │    │                                         │
+│  Company     │──Ril──┘    │  Cascade: conformance ↓ / impact ↑      │──▶ Change Notifications
+│  (DB, SBB)   │            └─────────────────────────────────────────┘
+└──────────────┘
 ```
+
+Cross-border: A train operating DE↔CH↔AT must comply with all three national implementations of the same EU directive simultaneously. OSCAL4Rail models this as parallel cascade branches sharing a common EU parent.
 
 ### 3.2 Technical Context
 
 | Interface | Direction | Format | Description |
 |-----------|-----------|--------|-------------|
-| PDF regulations | Input | PDF | Source regulation documents |
+| PDF regulations | Input | PDF | Source regulation documents (until upstream publishes machine-readable) |
 | Excel matrix | Input | XLSX | Applicability matrix (v/e/–) |
+| Rulemapping artifacts | Input | RUML/XML | Applicability rules (Layer 2) |
 | OSCAL Catalog | Output | YAML | Machine-readable regulation catalog |
-| NIST JSON Schema | Validation | JSON Schema | Official OSCAL schema v1.1.3 |
-| Git repository | Storage | Git | Version control and diff |
+| Change Notification | Output | YAML | Structured diff between versions |
+| Assessment Results | Output | YAML | Compliance findings per system |
+| NIST JSON Schema | Validation | JSON Schema | Official OSCAL schema v1.1.3 + OSCAL4Rail constraints |
+| Git repository | Storage | Git | Version control, cascade hierarchy, diff |
 
 ---
 
