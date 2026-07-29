@@ -58,17 +58,19 @@ These company-level adaptations of legal requirements are today scattered across
 The defining railway-specific innovation is not the generic layers (Rules, Change Impact — those are reusable for any regulated sector). It's the **regulatory cascade with conformance constraints and impact propagation** across 5–6 hierarchy levels:
 
 ```
-EU            TSI Telematics (EU 2026/253)                ← ERA
+International   ISO, EN standards (e.g. ISO 27001, EN 50126)   ← ISO, CEN/CENELEC
+                    │ referenced by
+EU              TSI, EU Directives (e.g. EU 2026/253)          ← ERA, EU Commission
                     │ specializes (must not contradict)
-National      e.g. EBO, AEG (DE) / LEisenbG (CH)        ← EBA / BAV
+National        e.g. EBO, AEG (DE) / LEisenbG (CH)            ← EBA / BAV
                     │ concretizes
-Agency        e.g. EBA-Verfügungen, BAV-Rundschreiben    ← Federal agency
+Agency          e.g. EBA-Verfügungen, BAV-Rundschreiben        ← Federal agency
                     │ adapts
-Industry      e.g. BS-KI (CH), Ril 420 (DE)             ← Industry bodies
+Industry        e.g. BS-KI (CH), Ril 420 (DE), DIN norms      ← Industry bodies, DIN
                     │ implements
-Company       e.g. Internal standards, guidelines        ← CIO, EA
+Company         e.g. Internal standards, guidelines            ← CIO, EA
                     │ operationalizes
-System/Team   e.g. Architecture decisions, ADRs          ← Dev teams
+System/Team     e.g. Architecture decisions, ADRs              ← Dev teams
 ```
 
 Key properties:
@@ -77,7 +79,7 @@ Key properties:
 - **Impact propagates**: "TSI 4.2.1 changed" → which national rules? → which company standards? → which IT systems?
 - **Cross-border operations**: trains cross national boundaries — a single vehicle must comply with multiple national implementations of the same EU directive simultaneously
 - **Multimodal and multi-domain**: regulations cover rail, bus, tram, cable cars, ships — as well as technical specifications for vehicles, infrastructure, procurement, maintenance, and passenger information
-- **5–6 levels deep**: significantly deeper than most other regulated industries
+- **6–7 levels deep**: significantly deeper than most other regulated industries
 
 ### Why NIST OSCAL as base?
 
