@@ -22,11 +22,26 @@ OSCAL4Rail is an open standard and toolset for making railway governance machine
 
 OSCAL4Rail solves this by:
 - Extending the **NIST OSCAL** standard (public domain, CC0 1.0) with a **railway-specific profile** — additional schema constraints, ID conventions, applicability model
-- Defining a **4-layer framework** that extends NIST OSCAL with railway-specific additions:
+- Defining a **4-layer framework** that extends NIST OSCAL:
   - (1) **Catalog** — railway profile over [NIST OSCAL Control Layer](https://pages.nist.gov/OSCAL/learn/concepts/layer/control/) (Catalog + Profile model), extended with ID conventions, applicability model, multilingual support
-  - (2) **Rules** — applicability logic using the **Rulemapping** format: which controls apply in which context? **Not part of NIST OSCAL — this is new.**
-  - (3) **Change Impact** — structured, machine-readable change notifications when regulations are updated. **Not part of NIST OSCAL — this is new.**
-  - (4) **Assessment** — railway profile over [NIST OSCAL Assessment Layer](https://pages.nist.gov/OSCAL/learn/concepts/layer/assessment/) (Assessment Plan, Assessment Results, POA&M) for compliance verification by humans or AI agents. **Note: existing internal governance documents (e.g. Konzernrichtlinien) do not yet contain assessment information — this layer adds it.**
+  - (2) **Rules** — applicability logic using the **Rulemapping** format: which controls apply in which context? *Generic layer — reusable beyond railway. Not part of NIST OSCAL.*
+  - (3) **Change Impact** — structured, machine-readable change notifications when regulations are updated. *Generic layer — reusable beyond railway. Not part of NIST OSCAL.*
+  - (4) **Assessment** — railway profile over [NIST OSCAL Assessment Layer](https://pages.nist.gov/OSCAL/learn/concepts/layer/assessment/) (Assessment Plan, Assessment Results, POA&M). Existing governance documents do not yet contain assessment information — this layer adds it.
+- **What makes it "4Rail" — the Regulatory Cascade Model** with conformance constraints and impact propagation across 5–6 hierarchy levels:
+  ```
+  EU            TSI Telematics (EU 2026/253)           ← ERA
+                      │ specializes (must not contradict)
+  National      EBO, AEG, BSKG (DE) / LEisenbG (CH)  ← EBA / BAV
+                      │ concretizes
+  Agency        EBA-Verfügungen, BAV-Rundschreiben    ← Federal agency
+                      │ adapts
+  Industry      BS-KI (CH), Ril 420 (DE)              ← KKI, DB Netz
+                      │ implements
+  Company       Konzernrichtlinien, Foundations, UX    ← CIO, EA
+                      │ operationalizes
+  System/Team   Architecture Decisions (ADRs)         ← Dev team
+  ```
+  Key properties: (a) conformance flows downward — each level may only specialize, never contradict its parent; (b) changes cascade — when a TSI changes, all downstream levels must adapt; (c) impact propagates — "TSI 4.2.1 changed" → which national rules? → which company standards? → which IT systems?
 - Embracing **Law-as-Code** principles: regulations are code — versioned, diffable, testable, deployable
 - **Future-ready for Law-as-Code ecosystem**: Railway regulation bodies (ERA, EBA, BAV) currently publish as PDF only. The emerging Law-as-Code stack (SPRIND initiative → Rulemapping Group tooling → OpenCode.de hosting) aims to change this. Once regulations are published as machine-readable Rulemapping artifacts, OSCAL4Rail is designed to consume them as authoritative upstream — replacing today's PDF extraction pipeline
 - Requiring **verbatim quotes** from source documents — no paraphrasing, no interpretation

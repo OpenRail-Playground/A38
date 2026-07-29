@@ -53,6 +53,30 @@ The first step is not external regulation — it's making **internal IT governan
 
 These company-level adaptations of legal requirements are today scattered across PDFs — interpreted individually, applied inconsistently, invisible to automated systems. OSCAL4Rail makes them deterministic and AI-agent-ready.
 
+### What makes it "4Rail" — the Regulatory Cascade
+
+The defining railway-specific innovation is not the generic layers (Rules, Change Impact — those are reusable for any regulated sector). It's the **regulatory cascade with conformance constraints and impact propagation** across 5–6 hierarchy levels:
+
+```
+EU            TSI Telematics (EU 2026/253)           ← ERA
+                    │ specializes (must not contradict)
+National      EBO, AEG, BSKG (DE) / LEisenbG (CH)  ← EBA / BAV
+                    │ concretizes
+Agency        EBA-Verfügungen, BAV-Rundschreiben    ← Federal agency
+                    │ adapts
+Industry      BS-KI (CH), Ril 420 (DE)              ← KKI, DB Netz
+                    │ implements
+Company       Konzernrichtlinien, Foundations, UX    ← CIO, EA
+                    │ operationalizes
+System/Team   Architecture Decisions (ADRs)         ← Dev team
+```
+
+Key properties:
+- **Conformance flows downward**: each level may only specialize, never contradict its parent
+- **Changes cascade**: when a TSI changes → all downstream levels must adapt
+- **Impact propagates**: "TSI 4.2.1 changed" → which national rules? → which company standards? → which IT systems?
+- **5–6 levels deep**: significantly deeper than most other regulated industries
+
 ### Why NIST OSCAL as base?
 
 OSCAL was chosen because:

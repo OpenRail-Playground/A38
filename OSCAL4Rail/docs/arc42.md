@@ -34,9 +34,35 @@ Railway companies translate legal requirements into internal IT governance (Konz
 OSCAL4Rail makes railway governance **machine-readable, deterministic, and AI-agent-ready** through four layers:
 
 1. **Catalog** — railway profile over [NIST OSCAL Control Layer](https://pages.nist.gov/OSCAL/learn/concepts/layer/control/) (Catalog + Profile). Extended with ID conventions, applicability model, multilingual support.
-2. **Rules** — applicability logic using the [Rulemapping](https://rulemapping.org/) format: which controls apply in which context? **Not part of NIST OSCAL — this is new.**
-3. **Change Impact** — structured, machine-readable change notifications when regulations are updated. **Not part of NIST OSCAL — this is new.**
+2. **Rules** — applicability logic using the [Rulemapping](https://rulemapping.org/) format: which controls apply in which context? *Generic layer — reusable beyond railway. Not part of NIST OSCAL.*
+3. **Change Impact** — structured, machine-readable change notifications when regulations are updated. *Generic layer — reusable beyond railway. Not part of NIST OSCAL.*
 4. **Assessment** — railway profile over [NIST OSCAL Assessment Layer](https://pages.nist.gov/OSCAL/learn/concepts/layer/assessment/) (Assessment Plan, Assessment Results, POA&M). Adds assessment structure that existing governance documents do not yet contain.
+
+**What makes it "4Rail" — the Regulatory Cascade Model:**
+
+The defining railway-specific innovation is the regulatory cascade with conformance constraints and impact propagation across 5–6 hierarchy levels:
+
+```
+EU            TSI Telematics (EU 2026/253)           ← ERA
+                    │ specializes (must not contradict)
+National      EBO, AEG, BSKG (DE) / LEisenbG (CH)  ← EBA / BAV
+                    │ concretizes
+Agency        EBA-Verfügungen, BAV-Rundschreiben    ← Federal agency
+                    │ adapts
+Industry      BS-KI (CH), Ril 420 (DE)              ← KKI, DB Netz
+                    │ implements
+Company       Konzernrichtlinien, Foundations, UX    ← CIO, EA
+                    │ operationalizes
+System/Team   Architecture Decisions (ADRs)         ← Dev team
+```
+
+Key properties:
+- **Conformance flows downward**: each level may only specialize, never contradict its parent
+- **Changes cascade**: when a TSI changes → national law adapts → industry standard adapts → company guidelines adapt → systems must update
+- **Impact propagates**: "TSI 4.2.1 changed" → which national rules affected? → which company standards? → which IT systems?
+- **5–6 levels deep**: significantly deeper than most other regulated industries
+
+Layers 2 (Rules) and 3 (Change Impact) are generic and reusable for other sectors (automotive, energy, banking). The cascade model with its conformance constraints is the railway-specific USP.
 
 ### 1.2 Goals
 
