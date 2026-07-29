@@ -27,22 +27,30 @@
 
 ### 1.1 Purpose
 
-OSCAL4Rail is a lightweight profile of the [NIST OSCAL](https://pages.nist.gov/OSCAL/) (Open Security Controls Assessment Language) standard, adapted for railway governance and regulations.
+OSCAL4Rail is a 4-layer framework extending [NIST OSCAL](https://pages.nist.gov/OSCAL/) for railway governance and regulations.
 
-Railway regulations (safety rules, passenger information standards) are scattered across heterogeneous PDF/Word documents. Rules are free text – and worse: they are interpreted by individuals based on their personal context, leading to inconsistent, non-deterministic application across organisations and countries. Changes between versions are invisible.
+Railway companies translate legal requirements into internal IT governance (Konzernrichtlinien, internal standards). These company-level adaptations are today scattered across PDFs and Word documents — interpreted individually, applied inconsistently, invisible to automated systems.
 
-OSCAL4Rail makes railway regulations **machine-readable, schema-validated, versionable, and diffable**.
+OSCAL4Rail makes railway governance **machine-readable, deterministic, and AI-agent-ready** through four layers:
+
+1. **Catalog** — railway profile over [NIST OSCAL Control Layer](https://pages.nist.gov/OSCAL/learn/concepts/layer/control/) (Catalog + Profile). Extended with ID conventions, applicability model, multilingual support.
+2. **Rules** — applicability logic using the [Rulemapping](https://rulemapping.org/) format: which controls apply in which context? **Not part of NIST OSCAL — this is new.**
+3. **Change Impact** — structured, machine-readable change notifications when regulations are updated. **Not part of NIST OSCAL — this is new.**
+4. **Assessment** — railway profile over [NIST OSCAL Assessment Layer](https://pages.nist.gov/OSCAL/learn/concepts/layer/assessment/) (Assessment Plan, Assessment Results, POA&M). Adds assessment structure that existing governance documents do not yet contain.
 
 ### 1.2 Goals
 
 | Priority | Goal |
 |----------|------|
-| G-1 | Deterministic extraction of rules from PDF/Excel sources into validated YAML |
+| G-1 | Make internal IT governance of railway companies machine-readable and deterministic |
 | G-2 | Verbatim quoting of every rule from its source document |
-| G-3 | Schema validation against official NIST OSCAL JSON Schema |
+| G-3 | Schema validation against NIST OSCAL JSON Schema + railway-specific constraints |
 | G-4 | Stable identifiers for rules to enable diff and change tracking across versions |
-| G-5 | Extensibility to any railway regulation (TSI, national standards, company rules) |
-| G-6 | Multilingual support (DE/FR/IT/EN) |
+| G-5 | Applicability logic (Rules Layer): determine which controls apply in which context |
+| G-6 | Change Impact: structured notifications when regulations are updated |
+| G-7 | Assessment: compliance verification by AI agents and human reviewers |
+| G-8 | Extensibility to any railway regulation (TSI, national standards, company rules) |
+| G-9 | Multilingual support (DE/FR/IT/EN) |
 
 ### 1.3 Stakeholders
 
@@ -136,22 +144,29 @@ OSCAL4Rail makes railway regulations **machine-readable, schema-validated, versi
 
 ## 5. Building Block View
 
-### 5.1 Level 1 – System Overview
+### 5.1 Level 1 – 4-Layer Architecture
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                      OSCAL4Rail                          │
-├───────────────┬──────────────────┬──────────────────────┤
-│  Extraction   │  Catalog Builder │  Validation & Diff   │
-│  Pipeline     │                  │                      │
-│               │                  │                      │
-│  parse_matrix │  build_catalog   │  validate.py         │
-│  extract_pdf  │  (groups+controls│  diff_catalogs       │
-│               │   +back-matter)  │  changelog_gen       │
-└───────────────┴──────────────────┴──────────────────────┘
+┌─────────────────────────────────────────────────────────────────────┐
+│                          OSCAL4Rail Framework                        │
+├─────────────────┬──────────────────┬────────────────┬───────────────┤
+│  Layer 1        │  Layer 2         │  Layer 3       │  Layer 4      │
+│  CATALOG        │  RULES           │  CHANGE IMPACT │  ASSESSMENT   │
+│                 │                  │                │               │
+│  NIST OSCAL     │  Rulemapping     │  Structured    │  NIST OSCAL   │
+│  Control Layer  │  format          │  diff/notify   │  Assessment   │
+│  + Railway      │  (NEW - not in   │  (NEW - not in │  Layer +      │
+│  Profile        │   NIST OSCAL)    │   NIST OSCAL)  │  Railway      │
+│                 │                  │                │  Profile      │
+├─────────────────┼──────────────────┼────────────────┼───────────────┤
+│  Catalog Model  │  Applicability   │  Change        │  Assessment   │
+│  Profile Model  │  Rules           │  Notifications │  Plan         │
+│  Control Mapping│  Context Filters │  Changelog Gen │  Results      │
+│                 │  AMC Refs        │                │  POA&M        │
+└─────────────────┴──────────────────┴────────────────┴───────────────┘
 ```
 
-### 5.2 Level 2 – Extraction Pipeline
+### 5.2 Level 2 – Extraction Pipeline (Layer 1 tooling)
 
 | Component | Responsibility | Technology |
 |-----------|---------------|-----------|
