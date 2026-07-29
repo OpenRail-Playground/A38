@@ -20,7 +20,7 @@ Railway regulations (safety rules, passenger information standards, infrastructu
 
 OSCAL4Rail solves this by:
 - Extending the **NIST OSCAL** standard (public domain, CC0 1.0) with a **railway-specific profile** — additional schema constraints, ID conventions, applicability model
-- Defining a **4-layer framework**: (1) Catalog — machine-readable regulations, (2) Rules — applicability logic using **Rulemapping** methodology (which controls apply in which context), (3) Change Impact — what changed between versions, (4) Assessment — compliance verification by humans or AI agents
+- Defining a **4-layer framework**: (1) Catalog — machine-readable regulations, (2) Rules — applicability logic using the **Rulemapping** format (which controls apply in which context), (3) Change Impact — what changed between versions, (4) Assessment — compliance verification by humans or AI agents
 - Embracing **Law-as-Code** principles: regulations are code — versioned, diffable, testable, deployable
 - **Future-ready for Law-as-Code ecosystem**: Railway regulation bodies (ERA, EBA, BAV) currently publish as PDF only. The emerging Law-as-Code stack (SPRIND initiative → Rulemapping Group tooling → OpenCode.de hosting) aims to change this. Once regulations are published as machine-readable Rulemapping artifacts, OSCAL4Rail is designed to consume them as authoritative upstream — replacing today's PDF extraction pipeline
 - Requiring **verbatim quotes** from source documents — no paraphrasing, no interpretation
@@ -143,7 +143,7 @@ Planning is done via GitHub Issues and the project roadmap in the README. All di
 - Extract OSCAL4Rail into standalone repository (`OpenRailAssociation/oscal4rail`)
 - **Catalog Profile**: Extend OSCAL schema for railway-specific requirements (ID conventions, applicability model, multilingual support)
 - **Example Catalog**: One publicly available regulation (BS-KI) as proof of concept
-- **Rules Layer**: Define applicability format using **Rulemapping** methodology — which controls apply in which context?
+- **Rules Layer**: Define applicability format using the **Rulemapping** format — which controls apply in which context?
 - CI/CD pipeline (GitHub Actions: validate schemas and examples on every PR)
 
 **Mid-term (Q4 2026 – Q1 2027):**
@@ -180,7 +180,7 @@ Planning is done via GitHub Issues and the project roadmap in the README. All di
 4. **OpenRail DNA**: Open, collaborative, railway-specific, public interest.
 5. **Multiplier effect**: Once catalogs exist for BST-KI and TSI, dozens of IT systems can use them.
 6. **AI-ready**: Machine-readable regulations enable the next generation of AI compliance agents in the railway sector.
-7. **Law-as-Code ecosystem**: OSCAL4Rail is clearly positioned within the emerging Law-as-Code ecosystem: **SPRIND** funds the initiative, **Rulemapping Group** (€12M, 2025) builds the tooling to translate legal text into executable decision trees, **OpenCode.de** will host the artifacts. OSCAL4Rail complements this stack as the **sectoral governance layer for railway**: Rulemapping helps legislators *formulate* individual rules, OSCAL4Rail helps compliance teams *manage, version, and verify* thousands of rules at scale. They are not competing — Rulemapping output is a natural upstream source for OSCAL4Rail catalogs. See [ADR-006](docs/adr/ADR-006-oscal4rail-vs-rulemapping.md).
+7. **Law-as-Code ecosystem**: OSCAL4Rail is clearly positioned within the emerging Law-as-Code ecosystem: **SPRIND** funds the initiative, **Rulemapping Group** (€12M, 2025) defines the rules format, **OpenCode.de** hosts the artifacts. OSCAL4Rail **adopts Rulemapping as its rules format** (Layer 2) and complements the stack as the sectoral governance layer for railway: Rulemapping defines *how individual rules are expressed*, OSCAL4Rail *manages, versions, and verifies* thousands of rules at scale. See [ADR-006](docs/adr/ADR-006-oscal4rail-vs-rulemapping.md).
 
 ---
 
@@ -193,7 +193,8 @@ No direct competitors for an open, railway-specific, OSCAL-based standard. Adjac
 | NIST OSCAL | Base standard (public domain) — OSCAL4Rail is a domain profile |
 | OSRD (OpenRail) | Infrastructure simulation — complementary, not competing |
 | ERA RINF / TEL TSI | EU data standards for infrastructure/telematics — data is machine-readable (RDF/XML), but regulation text remains PDF. Potentially linkable |
-| SPRIND "Law as Code" + Rulemapping Group + OpenCode.de | Same ecosystem, different layers: SPRIND funds the initiative, Rulemapping Group (€12M, 2025) builds tooling for legislators to create executable decision trees, OpenCode.de hosts the artifacts. OSCAL4Rail is the **downstream consumer** for railway: once regulations are published as Rulemapping artifacts, OSCAL4Rail can ingest them instead of extracting from PDF. Different lifecycle phase: Rulemapping = *create rules*, OSCAL4Rail = *manage, version, verify rules at scale*. See [ADR-006](docs/adr/ADR-006-oscal4rail-vs-rulemapping.md) |
+| SPRIND "Law as Code" + OpenCode.de | SPRIND funds the initiative for machine-readable legislation, OpenCode.de hosts the artifacts. OSCAL4Rail is a **sectoral implementation** for railway. Once regulation bodies publish machine-readable, OSCAL4Rail consumes them as upstream instead of extracting from PDF |
+| Rulemapping (Rulemapping Group) | **Used by OSCAL4Rail** as the rules format for Layer 2 (Rules): Rulemapping decision trees define applicability logic (which controls apply in which context). Not competing — adopted as the rules format within the framework. See [ADR-006](docs/adr/ADR-006-oscal4rail-vs-rulemapping.md) |
 | Commercial compliance tools | Proprietary, vendor lock-in, not railway-specific |
 
 ---
