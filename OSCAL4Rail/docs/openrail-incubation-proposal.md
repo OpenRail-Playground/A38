@@ -53,7 +53,7 @@ The project originated at **Hack4Rail 2026** (joint hackathon by SBB, ÖBB, DB a
 
 Currently: https://github.com/OpenRail-Playground/A38/tree/main/OSCAL4Rail
 
-Target: A dedicated repository under the OpenRail Association GitHub organization.
+Target: https://github.com/OpenrailAssociation/oscal4rail
 
 ---
 
@@ -138,10 +138,11 @@ Planning is done via GitHub Issues and the project roadmap in the README. All di
 ## What is the project's roadmap?
 
 **Short-term (Q3 2026):**
-- Extract OSCAL4Rail into a standalone repository
-- Complete BS-KI example implementation (DE/FR/IT)
-- Build diff and changelog tooling
-- Add CI/CD pipeline (GitHub Actions: validate on every PR)
+- Extract OSCAL4Rail into standalone repository (`OpenRailAssociation/oscal4rail`)
+- v0.1.1 – Catalog Profile: Formalize railway-specific conventions, constraint schema, extended validator
+- v0.2.0 – Rules Layer: Applicability specification, AMC format, OpenCode/Rulemapping interface
+- Second catalog example (TSI Telematics, minimal – proving generality beyond BS-KI)
+- CI/CD pipeline (GitHub Actions: validate all schemas and examples on every PR)
 
 **Mid-term (Q4 2026 – Q1 2027):**
 - Extend to EU TSI Telematics regulation
