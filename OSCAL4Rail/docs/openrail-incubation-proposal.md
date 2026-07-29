@@ -19,12 +19,14 @@ OSCAL4Rail is an open standard and toolset for making railway regulations machin
 Railway regulations (safety rules, passenger information standards, infrastructure requirements) are scattered across thousands of PDF and Word documents. They are written as free text and interpreted individually by each reader — leading to inconsistent, non-deterministic application across organisations and countries. Changes between versions are invisible at the rule level.
 
 OSCAL4Rail solves this by:
-- Adapting the **NIST OSCAL Catalog** model (public domain, CC0 1.0) as a lightweight profile for railway regulations
-- Providing a **deterministic extraction pipeline**: PDF + Excel matrix → validated, machine-readable YAML
+- Extending the **NIST OSCAL** standard (public domain, CC0 1.0) with a **railway-specific profile** — additional schema constraints, ID conventions, applicability model
+- Defining a **4-layer framework**: (1) Catalog — machine-readable regulations, (2) Rules — applicability logic using **Rulemapping** methodology (which controls apply in which context), (3) Change Impact — what changed between versions, (4) Assessment — compliance verification by humans or AI agents
+- Embracing **Law-as-Code** principles: regulations are code — versioned, diffable, testable, deployable
+- Aligning with **OpenCode** governance: when legislators publish machine-readable rules via official channels, OSCAL4Rail can consume them as authoritative upstream source
 - Requiring **verbatim quotes** from source documents — no paraphrasing, no interpretation
 - Giving every rule a **stable identifier** derived from the chapter number (not the page number)
-- Enabling **semantic diff** across versions: what changed, what was added, what was removed
-- Making regulations **queryable by AI agents** and **verifiable against IT systems**
+- Providing **one public example catalog** (Swiss BS-KI) as proof of concept — the framework is regulation-agnostic
+- Making regulations **queryable by AI agents** and **verifiable against IT systems** (Meaningful Human Control)
 
 The project originated at **Hack4Rail 2026** (joint hackathon by SBB, ÖBB, DB and the OpenRail Association), where team A38 built the first working prototype in 24 hours: a complete OSCAL4Rail **example implementation** for the Swiss "Branchenstandard Kundeninformation" (BS-KI) with 42 controls, validated against the official NIST OSCAL JSON Schema.
 
@@ -139,24 +141,25 @@ Planning is done via GitHub Issues and the project roadmap in the README. All di
 
 **Short-term (Q3 2026):**
 - Extract OSCAL4Rail into standalone repository (`OpenRailAssociation/oscal4rail`)
-- v0.1.1 – Catalog Profile: Formalize railway-specific conventions, constraint schema, extended validator
-- v0.2.0 – Rules Layer: Applicability specification, AMC format, OpenCode/Rulemapping interface
-- Second catalog example (TSI Telematics, minimal – proving generality beyond BS-KI)
-- CI/CD pipeline (GitHub Actions: validate all schemas and examples on every PR)
+- **Catalog Profile**: Extend OSCAL schema for railway-specific requirements (ID conventions, applicability model, multilingual support)
+- **Example Catalog**: One publicly available regulation (BS-KI) as proof of concept
+- **Rules Layer**: Define applicability format using **Rulemapping** methodology — which controls apply in which context? Interface to OpenCode governance artifacts.
+- CI/CD pipeline (GitHub Actions: validate schemas and examples on every PR)
 
 **Mid-term (Q4 2026 – Q1 2027):**
-- Extend to EU TSI Telematics regulation
+- **Assessment Engine**: Build assessment tooling for AI agents and human reviewers (Meaningful Human Control)
+- **Change Impact Layer**: Structured, machine-readable change notifications when regulations are updated
+- **OpenCode alignment**: Consume regulations published via OpenCode governance infrastructure as authoritative upstream source
 - Engage standards bodies (KKI, ERA) for official adoption
+- Contact SPRIND Law-as-Code initiative — position OSCAL4Rail as sectoral implementation for railway
 - Publish tooling as installable Python package
-- Contact SPRIND Law-as-Code initiative — clarify differentiation and explore potential upstream/downstream relationship
 - ~~Pilot Rulemapping methodology on one BS-KI control~~ ✅ Done (2026-06-25, see [ADR-006](docs/adr/ADR-006-oscal4rail-vs-rulemapping.md))
 
 **Long-term:**
-- Regulation authors write natively in OSCAL4Rail (PDF generated from YAML)
-- Cross-regulation compliance checking
-- Integration with AI compliance agents
-- Consume official legal code from SPRIND infrastructure once available (replacing PDF extraction)
-- Engage EBA/ERA for machine-readable publication of railway-specific regulations
+- Regulation authors write natively in machine-readable format (Law-as-Code: YAML source, PDF generated)
+- Cross-regulation compliance checking (regulatory cascade: EU → National → Industry → Company)
+- Full OpenCode integration: regulations published officially as code, OSCAL4Rail as the railway governance layer
+- Integration with AI compliance agents (automated assessment with Meaningful Human Control)
 
 ---
 
