@@ -231,8 +231,20 @@ No framework dependencies. Minimal, portable, inspectable.
 
 ## What is the project's plan for growing in maturity if accepted?
 
-1. **Stage 1 → Stage 2:** Complete tooling suite, add CI/CD, grow maintainer team, publish first version with multiple catalogs
-2. **Stage 2 → Stage 3:** Formal adoption by at least one standards body for official catalog publication; proven use by at least two railway companies
+1. **Stage 1 → Stage 2:**
+   - Railway-specific OSCAL profile schema complete and validated
+   - Rules Layer defined (Rulemapping format adopted)
+   - Assessment Engine usable by AI agents and human reviewers
+   - Change Impact format specified
+   - CI/CD pipeline validates all artifacts on every PR
+   - At least 2 active maintainers from different organisations
+   - One public example catalog (BS-KI) demonstrating all 4 layers
+   
+2. **Stage 2 → Stage 3:**
+   - At least two railway companies using OSCAL4Rail for internal IT governance (e.g. publishing Konzernrichtlinien in OSCAL4Rail format)
+   - Proven integration with AI compliance agents in production
+   - Alignment with SPRIND Law-as-Code output format (once defined)
+   - Engagement with ERA or national rail authority for upstream adoption
 
 ---
 
