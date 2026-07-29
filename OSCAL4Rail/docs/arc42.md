@@ -43,17 +43,17 @@ OSCAL4Rail makes railway governance **machine-readable, deterministic, and AI-ag
 The defining railway-specific innovation is the regulatory cascade with conformance constraints and impact propagation across 5–6 hierarchy levels:
 
 ```
-EU            TSI Telematics (EU 2026/253)           ← ERA
+EU            TSI Telematics (EU 2026/253)                ← ERA
                     │ specializes (must not contradict)
-National      EBO, AEG, BSKG (DE) / LEisenbG (CH)  ← EBA / BAV
+National      e.g. EBO, AEG (DE) / LEisenbG (CH)        ← EBA / BAV
                     │ concretizes
-Agency        EBA-Verfügungen, BAV-Rundschreiben    ← Federal agency
+Agency        e.g. EBA-Verfügungen, BAV-Rundschreiben    ← Federal agency
                     │ adapts
-Industry      BS-KI (CH), Ril 420 (DE)              ← KKI, DB Netz
+Industry      e.g. BS-KI (CH), Ril 420 (DE)             ← Industry bodies
                     │ implements
-Company       Konzernrichtlinien, Foundations, UX    ← CIO, EA
+Company       e.g. Internal standards, guidelines        ← CIO, EA
                     │ operationalizes
-System/Team   Architecture Decisions (ADRs)         ← Dev team
+System/Team   e.g. Architecture decisions, ADRs          ← Dev teams
 ```
 
 Key properties:

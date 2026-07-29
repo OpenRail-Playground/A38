@@ -29,17 +29,17 @@ OSCAL4Rail solves this by:
   - (4) **Assessment** — railway profile over [NIST OSCAL Assessment Layer](https://pages.nist.gov/OSCAL/learn/concepts/layer/assessment/) (Assessment Plan, Assessment Results, POA&M). Existing governance documents do not yet contain assessment information — this layer adds it.
 - **What makes it "4Rail" — the Regulatory Cascade Model** with conformance constraints and impact propagation across 5–6 hierarchy levels:
   ```
-  EU            TSI Telematics (EU 2026/253)           ← ERA
+  EU            TSI Telematics (EU 2026/253)                ← ERA
                       │ specializes (must not contradict)
-  National      EBO, AEG, BSKG (DE) / LEisenbG (CH)  ← EBA / BAV
+  National      e.g. EBO, AEG (DE) / LEisenbG (CH)        ← EBA / BAV
                       │ concretizes
-  Agency        EBA-Verfügungen, BAV-Rundschreiben    ← Federal agency
+  Agency        e.g. EBA-Verfügungen, BAV-Rundschreiben    ← Federal agency
                       │ adapts
-  Industry      BS-KI (CH), Ril 420 (DE)              ← KKI, DB Netz
+  Industry      e.g. BS-KI (CH), Ril 420 (DE)             ← Industry bodies
                       │ implements
-  Company       Konzernrichtlinien, Foundations, UX    ← CIO, EA
+  Company       e.g. Internal standards, guidelines        ← CIO, EA
                       │ operationalizes
-  System/Team   Architecture Decisions (ADRs)         ← Dev team
+  System/Team   e.g. Architecture decisions, ADRs          ← Dev teams
   ```
   Key properties: (a) conformance flows downward — each level may only specialize, never contradict its parent; (b) changes cascade — when a TSI changes, all downstream levels must adapt; (c) impact propagates — "TSI 4.2.1 changed" → which national rules? → which company standards? → which IT systems?; (d) **cross-border**: trains cross national boundaries — a single vehicle must comply with multiple national implementations of the same EU directive simultaneously; (e) **multimodal and multi-domain**: regulations cover rail, bus, tram, cable cars, ships — as well as technical specifications for vehicles, infrastructure, procurement, maintenance, and passenger information
 - Embracing **Law-as-Code** principles: regulations are code — versioned, diffable, testable, deployable
