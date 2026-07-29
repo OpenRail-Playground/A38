@@ -22,7 +22,7 @@ OSCAL4Rail is an open standard and toolset for making railway governance machine
 
 OSCAL4Rail solves this by:
 - Extending the **NIST OSCAL** standard (public domain, CC0 1.0) with a **railway-specific profile** — additional schema constraints, ID conventions, applicability model
-- Defining a **4-layer framework**: (1) Catalog — machine-readable regulations, (2) Rules — applicability logic using the **Rulemapping** format (which controls apply in which context), (3) Change Impact — what changed between versions, (4) Assessment — compliance verification by humans or AI agents
+- Defining a **4-layer framework**: (1) Catalog — machine-readable regulations, (2) Rules — applicability logic using the **Rulemapping** format (which controls apply in which context), (3) Change Impact — what changed between versions, (4) Assessment — railway profile over the [NIST OSCAL Assessment Layer](https://pages.nist.gov/OSCAL/learn/concepts/layer/assessment/) (Assessment Plan, Assessment Results, POA&M) for compliance verification by humans or AI agents
 - Embracing **Law-as-Code** principles: regulations are code — versioned, diffable, testable, deployable
 - **Future-ready for Law-as-Code ecosystem**: Railway regulation bodies (ERA, EBA, BAV) currently publish as PDF only. The emerging Law-as-Code stack (SPRIND initiative → Rulemapping Group tooling → OpenCode.de hosting) aims to change this. Once regulations are published as machine-readable Rulemapping artifacts, OSCAL4Rail is designed to consume them as authoritative upstream — replacing today's PDF extraction pipeline
 - Requiring **verbatim quotes** from source documents — no paraphrasing, no interpretation
@@ -149,7 +149,7 @@ Planning is done via GitHub Issues and the project roadmap in the README. All di
 - CI/CD pipeline (GitHub Actions: validate schemas and examples on every PR)
 
 **Mid-term (Q4 2026 – Q1 2027):**
-- **Assessment Engine**: Build assessment tooling for AI agents and human reviewers (Meaningful Human Control)
+- **Assessment Layer**: Railway profile over [NIST OSCAL Assessment Layer](https://pages.nist.gov/OSCAL/learn/concepts/layer/assessment/) (Assessment Plan, Assessment Results, POA&M) — usable by AI agents and human reviewers (Meaningful Human Control)
 - **Change Impact Layer**: Structured, machine-readable change notifications when regulations are updated
 - Contact **SPRIND Law-as-Code** initiative — present OSCAL4Rail as sectoral implementation for railway; align on format compatibility once SPRIND defines their output standard
 - Engage standards bodies (KKI, ERA) — today they publish PDF only; demonstrate value of machine-readable regulations
@@ -234,7 +234,7 @@ No framework dependencies. Minimal, portable, inspectable.
 1. **Stage 1 → Stage 2:**
    - Railway-specific OSCAL profile schema complete and validated
    - Rules Layer defined (Rulemapping format adopted)
-   - Assessment Engine usable by AI agents and human reviewers
+   - Assessment Layer (railway profile over NIST OSCAL Assessment Plan/Results/POA&M) usable by AI agents and human reviewers
    - Change Impact format specified
    - CI/CD pipeline validates all artifacts on every PR
    - At least 2 active maintainers from different organisations
