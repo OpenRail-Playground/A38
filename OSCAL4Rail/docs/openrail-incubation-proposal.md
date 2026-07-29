@@ -41,7 +41,7 @@ OSCAL4Rail solves this by:
                       │ operationalizes
   System/Team   Architecture Decisions (ADRs)         ← Dev team
   ```
-  Key properties: (a) conformance flows downward — each level may only specialize, never contradict its parent; (b) changes cascade — when a TSI changes, all downstream levels must adapt; (c) impact propagates — "TSI 4.2.1 changed" → which national rules? → which company standards? → which IT systems?
+  Key properties: (a) conformance flows downward — each level may only specialize, never contradict its parent; (b) changes cascade — when a TSI changes, all downstream levels must adapt; (c) impact propagates — "TSI 4.2.1 changed" → which national rules? → which company standards? → which IT systems?; (d) **cross-border**: trains cross national boundaries — a single vehicle must comply with multiple national implementations of the same EU directive simultaneously; (e) **multimodal and multi-domain**: regulations cover rail, bus, tram, cable cars, ships — as well as technical specifications for vehicles, infrastructure, procurement, maintenance, and passenger information
 - Embracing **Law-as-Code** principles: regulations are code — versioned, diffable, testable, deployable
 - **Future-ready for Law-as-Code ecosystem**: Railway regulation bodies (ERA, EBA, BAV) currently publish as PDF only. The emerging Law-as-Code stack (SPRIND initiative → Rulemapping Group tooling → OpenCode.de hosting) aims to change this. Once regulations are published as machine-readable Rulemapping artifacts, OSCAL4Rail is designed to consume them as authoritative upstream — replacing today's PDF extraction pipeline
 - Requiring **verbatim quotes** from source documents — no paraphrasing, no interpretation

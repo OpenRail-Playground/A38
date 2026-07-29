@@ -75,6 +75,8 @@ Key properties:
 - **Conformance flows downward**: each level may only specialize, never contradict its parent
 - **Changes cascade**: when a TSI changes → all downstream levels must adapt
 - **Impact propagates**: "TSI 4.2.1 changed" → which national rules? → which company standards? → which IT systems?
+- **Cross-border operations**: trains cross national boundaries — a single vehicle must comply with multiple national implementations of the same EU directive simultaneously
+- **Multimodal and multi-domain**: regulations cover rail, bus, tram, cable cars, ships — as well as technical specifications for vehicles, infrastructure, procurement, maintenance, and passenger information
 - **5–6 levels deep**: significantly deeper than most other regulated industries
 
 ### Why NIST OSCAL as base?

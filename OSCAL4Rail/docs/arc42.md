@@ -60,6 +60,8 @@ Key properties:
 - **Conformance flows downward**: each level may only specialize, never contradict its parent
 - **Changes cascade**: when a TSI changes → national law adapts → industry standard adapts → company guidelines adapt → systems must update
 - **Impact propagates**: "TSI 4.2.1 changed" → which national rules affected? → which company standards? → which IT systems?
+- **Cross-border operations**: trains cross national boundaries — a single vehicle must comply with multiple national implementations of the same EU directive simultaneously
+- **Multimodal and multi-domain**: regulations cover rail, bus, tram, cable cars, ships — as well as technical specifications for vehicles, infrastructure, procurement, maintenance, and passenger information
 - **5–6 levels deep**: significantly deeper than most other regulated industries
 
 Layers 2 (Rules) and 3 (Change Impact) are generic and reusable for other sectors (automotive, energy, banking). The cascade model with its conformance constraints is the railway-specific USP.
