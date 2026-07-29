@@ -16,7 +16,7 @@ OSCAL4Rail
 
 OSCAL4Rail is an open standard and toolset for making railway governance machine-readable, schema-validated, versionable, and diffable.
 
-**The primary use case:** Railway companies translate legal requirements into internal IT governance (e.g. DB Konzernrichtlinien, SBB internal standards, ÖBB Vorgaben). These company-level adaptations are today scattered across PDFs and Word documents — interpreted individually, applied inconsistently, invisible to automated systems. OSCAL4Rail makes them deterministic and AI-agent-ready.
+**The primary use case:** Railway companies translate legal requirements into internal IT governance (e.g. DB Konzernrichtlinien, SBB internal standards, ÖBB Vorgaben). These company-level adaptations are today scattered across PDFs and Word documents — interpreted individually, applied inconsistently, invisible to automated systems. OSCAL4Rail makes them deterministic and AI-agent-ready. Concrete examples: DB Systel Foundations (OSS technology standards, publicly available on GitHub) and DB UX Design System guidelines could be published as OSCAL4Rail catalogs.
 
 **The broader vision:** The same framework also works for the upstream regulations themselves (national laws, EU TSI, industry standards like BS-KI) — creating a complete, machine-readable regulatory cascade from EU level down to company implementation.
 
@@ -239,6 +239,7 @@ No framework dependencies. Minimal, portable, inspectable.
    - CI/CD pipeline validates all artifacts on every PR
    - At least 2 active maintainers from different organisations
    - One public example catalog (BS-KI) demonstrating all 4 layers
+   - Additional example catalogs from publicly available IT governance (e.g. DB Systel Foundations OSS standards, DB UX Design System guidelines) published as OSCAL4Rail to demonstrate internal governance use case
    
 2. **Stage 2 → Stage 3:**
    - At least two railway companies using OSCAL4Rail for internal IT governance (e.g. publishing Konzernrichtlinien in OSCAL4Rail format)
