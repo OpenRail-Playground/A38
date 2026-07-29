@@ -14,9 +14,11 @@ OSCAL4Rail
 
 ## Describe the project. What does the project do, why is it valuable, where does it come from?
 
-OSCAL4Rail is an open standard and toolset for making railway regulations machine-readable, schema-validated, versionable, and diffable.
+OSCAL4Rail is an open standard and toolset for making railway governance machine-readable, schema-validated, versionable, and diffable.
 
-Railway regulations (safety rules, passenger information standards, infrastructure requirements) are scattered across thousands of PDF and Word documents. They are written as free text and interpreted individually by each reader — leading to inconsistent, non-deterministic application across organisations and countries. Changes between versions are invisible at the rule level.
+**The primary use case:** Railway companies translate legal requirements into internal IT governance (e.g. DB Konzernrichtlinien, SBB internal standards, ÖBB Vorgaben). These company-level adaptations are today scattered across PDFs and Word documents — interpreted individually, applied inconsistently, invisible to automated systems. OSCAL4Rail makes them deterministic and AI-agent-ready.
+
+**The broader vision:** The same framework also works for the upstream regulations themselves (national laws, EU TSI, industry standards like BS-KI) — creating a complete, machine-readable regulatory cascade from EU level down to company implementation.
 
 OSCAL4Rail solves this by:
 - Extending the **NIST OSCAL** standard (public domain, CC0 1.0) with a **railway-specific profile** — additional schema constraints, ID conventions, applicability model
@@ -203,12 +205,14 @@ No direct competitors for an open, railway-specific, OSCAL-based standard. Adjac
 
 | Standard | Role |
 |----------|------|
-| NIST OSCAL 1.1.3 | Base format (Catalog model) |
-| JSON Schema (Draft 7) | Validation |
+| NIST OSCAL 1.1.3 | Base schema — extended with railway-specific profile (ID conventions, applicability, multilingual) |
+| Rulemapping (RUML) | Adopted rules format for Layer 2 (applicability logic) |
+| JSON Schema (Draft 7) | Validation (NIST schema + OSCAL4Rail constraints) |
 | Semantic Versioning | Catalog releases |
 | Conventional Commits | Contribution workflow |
-| BS-KI v1.0 | First example implementation |
-| TSI Telematics (EU 2026/253) | Planned catalog |
+| BS-KI v1.0 | Public example catalog (proof of concept) |
+
+**Primary use case (first step):** Railway companies use OSCAL4Rail to publish their **internal IT governance** — company-level adaptations of legal requirements (e.g. DB Konzernrichtlinien, SBB internal standards) — in a machine-readable, deterministic, and AI-agent-ready format. This is an internal-facing standard for compliance automation, not an external publication format for legislators.
 
 ---
 
