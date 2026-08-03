@@ -13,7 +13,7 @@ OSCAL4Rail solves this with a **4-layer framework**:
 
 | Layer | Based on | What it does |
 |-------|----------|--------------|
-| **(1) Catalog** | [NIST OSCAL Control Layer](https://pages.nist.gov/OSCAL/learn/concepts/layer/control/) | Machine-readable regulations with railway-specific profile (IDs, applicability, multilingual) |
+| **(1) Catalog** | [NIST OSCAL Control Layer](https://pages.nist.gov/OSCAL/learn/concepts/layer/control/) (Catalog + Profile + Mapping) | Machine-readable regulations, cascade as profile chain, cross-framework mapping (multilingual, cross-border) |
 | **(2) Rules** | [Rulemapping](https://rulemapping.org/) format | Applicability logic: which controls apply in which context? **New — not in NIST OSCAL.** |
 | **(3) Change Impact** | [oscal-deep-diff](https://github.com/usnistgov/oscal-deep-diff) + railway semantics | Structural diff (NIST tool) + railway classification (tightened/relaxed/added/removed) + impact propagation through cascade |
 | **(4) Assessment** | [NIST OSCAL Assessment Layer](https://pages.nist.gov/OSCAL/learn/concepts/layer/assessment/) | Compliance verification by AI agents and human reviewers (Assessment Plan, Results, POA&M) |
