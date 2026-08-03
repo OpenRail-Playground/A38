@@ -545,3 +545,300 @@ v1.0.0 (Framework Release)
   #14 CI/CD
   #15 Framework Docs
 ```
+
+
+---
+
+## Gap-Analyse: Fehlende NIST OSCAL Modelle (August 2026)
+
+> Ergebnis der Analyse gegen das vollständige NIST OSCAL v1.2.1 Modell.
+> OSCAL4Rail nutzt aktuell nur das Catalog Schema. Die folgenden NIST-Modelle fehlen komplett.
+
+### Kerninsight
+
+**Die Regulatory Cascade ist kein neues Konzept – sie ist eine Kette von OSCAL Profiles mit Control Mappings.**
+
+Jede Cascade-Ebene (EU → National → Industry → Company) ist:
+1. Ein **Profile** das Controls aus dem Upstream-Catalog selektiert/spezialisiert
+2. Ein **Control Mapping** das die Beziehung zum Upstream formalisiert
+
+Statt ein komplett neues Cascade-Modell zu definieren, können die bestehenden NIST-Mechanismen genutzt werden. Railway-spezifische Conformance-Constraints als Extension (`props` mit Namespace `ns="https://github.com/OpenRailAssociation/oscal4rail/ns"`).
+
+### NIST OSCAL Modelle – Status in OSCAL4Rail
+
+| NIST OSCAL Modell | Layer | Status | Rail-Priorität |
+|---|---|---|---|
+| Catalog | Control | ✅ Implementiert | – |
+| **Profile** | Control | ❌ Fehlt | 🔴 Kritisch |
+| **Control Mapping** | Control | ❌ Fehlt | 🔴 Hoch |
+| Component Definition | Implementation | ❌ Fehlt | 🟠 Mittel |
+| System Security Plan (SSP) | Implementation | ❌ Fehlt | 🟡 Niedrig |
+| **Assessment Plan** | Assessment | ❌ Fehlt | 🟠 Hoch |
+| **Assessment Results** | Assessment | ❌ Fehlt | 🟠 Hoch |
+| POA&M | Assessment | ❌ Fehlt | 🟡 Mittel |
+
+### NIST-Tooling das OSCAL4Rail nutzen sollte
+
+| Tool/Projekt | Repository | Relevanz für Rail |
+|---|---|---|
+| `oscal-deep-diff` | github.com/usnistgov/oscal-deep-diff | Basis für Layer 3 (Change Impact) statt Eigenentwicklung |
+| `oscal-cli` | github.com/usnistgov/oscal-cli | Validation, Profile Resolution, Conversion |
+| `compliance-trestle` | github.com/oscal-compass/compliance-trestle | Agile Authoring, Plugin-Architektur, **MCP-Server** |
+| `compliance-trestle-mcp` | github.com/oscal-compass/compliance-trestle-mcp | AI-Agent-Interface (genau OSCAL4Rail Vision) |
+| OSCAL Content | github.com/usnistgov/oscal-content | Beispiele für Profile, SSP, Assessment Results |
+
+### Evaluierungsergebnisse (2026-08-03)
+
+**compliance-trestle v4.2.0** – ✅ Empfohlen als Tooling-Basis (→ [ADR-007](../adr/ADR-007-tooling-foundation.md))
+
+- Import BS-KI Catalog: ✅ funktioniert (YAML + JSON)
+- Validate gegen OSCAL 1.2.1 Schema: ✅ funktioniert
+- Profile Resolution: ✅ funktioniert (Subset-Selektion + resolved Catalog)
+- Workspace-Struktur: alle 8 OSCAL-Modelltypen vorbereitet
+- Plugin-Architektur: FedRAMP als Referenz für `trestle-oscal4rail`
+
+**oscal-deep-diff v1.0.0** – ✅ Empfohlen als Layer-3-Basis
+
+- Erkennt Textänderungen: ✅ (800 → 500 in bs-ki-2.1)
+- Erkennt Obligation-Verschärfungen: ✅ (empfohlen → verbindlich)
+- Erkennt neue Controls: ✅ (bs-ki-2.99 als rightOnly)
+- Performance: 7ms für 42 Controls
+- Config-Aufwand: 15 Zeilen YAML für OSCAL Catalog
+- Output: JSON mit JSON-Pointern, maschinenlesbar
+
+**NIST OSCAL Schemas v1.2.1** – ✅ Importiert
+
+Alle 4 relevanten Schemas lokal verfügbar (`/work/beta/oscal-schemas/schemas/`):
+- `oscal-profile.json` (68 KB)
+- `oscal-mapping.json` (67 KB)
+- `oscal-assessment-results.json` (152 KB)
+- `oscal-component-definition.json` (82 KB)
+
+---
+
+### Issue #26: Profile Schema importieren + Cascade-als-Profile-Kette
+
+**Title:** `feat: Import OSCAL Profile Schema – model Regulatory Cascade as Profile chain`
+**Labels:** `layer:catalog`, `layer:cascade`, `type:spec`, `priority:high`
+**Milestone:** `v0.1.1 – Catalog Profile`
+
+**Description:**
+
+Das NIST OSCAL Profile-Modell ist der natürliche Mechanismus für die Regulatory Cascade. Ein Profile selektiert Controls aus einem Upstream-Catalog und kann sie spezialisieren (Parameter setzen, Guidance ergänzen) – genau was jede Cascade-Ebene tut.
+
+Statt ein eigenständiges Cascade-Modell zu erfinden (#16), die Cascade als Kette von OSCAL Profiles modellieren:
+- EU TSI Catalog → CH National Profile (selektiert + verschärft)
+- CH National Profile → BS-KI Catalog (Industry-Level)  
+- BS-KI Catalog → SBB Profile (selektiert Subset für eigene Systeme)
+
+Railway-spezifische Extensions (Conformance-Constraints, Impact-Propagation) als Props mit eigenem Namespace.
+
+**Acceptance Criteria:**
+- [ ] `schemas/oscal-profile.json` – NIST OSCAL Profile Schema v1.2.1 importiert
+- [ ] `docs/reference/cascade-as-profiles.md` – Konzept: Cascade = Profile-Kette
+- [ ] `examples/profiles/sbb-subset-bs-ki.yaml` – SBB selektiert 20 von 42 BS-KI Controls
+- [ ] Profile Resolution funktioniert (resolved Profile = neuer Catalog)
+- [ ] Railway-Extension Props definiert: `cascade-level`, `conformance-constraint`, `parent-catalog-ref`
+- [ ] ADR: Warum Profile statt eigenem Cascade-Schema
+- [ ] Validierung mit `oscal-cli` oder eigener `validate.py`
+
+**Beziehung zu #16:** Ersetzt den Custom-Ansatz aus #16 durch Nutzung des NIST-Standards. #16 wird zu einer Spezifikation der Railway-Extensions innerhalb des Profile-Modells.
+
+---
+
+### Issue #27: Control Mapping Schema importieren (v1.2.1)
+
+**Title:** `feat: Import OSCAL Control Mapping Schema – cross-framework relationships`
+**Labels:** `layer:catalog`, `type:spec`, `priority:high`
+**Milestone:** `v0.1.1 – Catalog Profile`
+
+**Description:**
+
+Das OSCAL Control Mapping Modell (ab v1.2.0) beschreibt Beziehungen zwischen Controls aus verschiedenen Frameworks. Exakt das, was Rail für Cross-Border und Multilingual braucht:
+- BS-KI 2.1 (CH) ↔ TSI TAT 4.2.1 (EU) – gleiche Anforderung, verschiedene Frameworks
+- BS-KI DE ↔ BS-KI FR – gleiche Regelung, verschiedene Sprachen
+- ISO 27001 A.8.1 ↔ interner Standard – Abdeckung nachweisen
+
+Das Mapping hat `coverage` (0-1) und `gap-summary` – ideal für Gap-Analyse.
+
+**Acceptance Criteria:**
+- [ ] `schemas/oscal-mapping.json` – NIST OSCAL Control Mapping Schema v1.2.1
+- [ ] `examples/mappings/bs-ki-de-to-fr.yaml` – Multilingual-Mapping (löst #18)
+- [ ] `examples/mappings/bs-ki-to-tsi-tat.yaml` – Cross-Framework-Mapping (minimal)
+- [ ] Coverage-Berechnung: wie viel Prozent des Upstream sind abgedeckt?
+- [ ] Gap-Summary: welche Upstream-Controls haben kein Mapping?
+- [ ] `tools/validate.py` erweitert um Mapping-Validierung
+
+**Beziehung zu #18:** Löst #18 (Multilingual Catalog Linking) als Spezialfall von Control Mapping.
+
+---
+
+### Issue #28: Assessment Results Schema importieren + Railway-Profil
+
+**Title:** `feat: Import OSCAL Assessment Results Schema – railway assessment scales`
+**Labels:** `layer:assessment`, `type:spec`, `priority:high`
+**Milestone:** `v0.4.0 – Assessment Layer`
+
+**Description:**
+
+Das NIST Assessment Results Schema ist fertig spezifiziert. OSCAL4Rail muss es nicht neu erfinden, sondern als Railway-Profile nutzen. Erweiterungen:
+- Railway-Bewertungsskala: `vollständig erfüllt` / `teilweise erfüllt` / `nicht erfüllt` / `nicht relevant` (statt nur satisfied/not-satisfied)
+- Cascade-Conformance als assessierbares Property
+- Support für AI-Agent-Assessments UND menschliche Reviews
+
+**Acceptance Criteria:**
+- [ ] `schemas/oscal-assessment-results.json` – NIST Schema v1.2.1
+- [ ] `docs/reference/assessment-format.md` – Railway Assessment Profile
+- [ ] Railway-Props definiert: `assessment-scale` mit 4 Werten, `assessor-type` (human/agent/hybrid)
+- [ ] `examples/assessment/fictional-fis-bs-ki.yaml` – Fiktives FIS gegen BS-KI
+- [ ] Zeigt: 3 Controls vollständig, 1 teilweise, 1 nicht erfüllt
+- [ ] Findings referenzieren Control-IDs aus dem Catalog
+- [ ] Validierung gegen NIST Schema + Railway Extensions
+
+**Beziehung zu #10, #11, #12:** Ersetzt #10-#12 durch Nutzung des fertigen NIST Schemas mit Railway-Extension statt Neudesign.
+
+---
+
+### Issue #29: oscal-deep-diff als Basis für Change Layer
+
+**Title:** `feat: Build Layer 3 (Change Impact) on top of oscal-deep-diff`
+**Labels:** `layer:change`, `type:tooling`, `priority:medium`
+**Milestone:** `v0.3.0 – Change Layer`
+
+**Description:**
+
+NIST hat mit `oscal-deep-diff` (github.com/usnistgov/oscal-deep-diff) bereits ein schema-agnostisches Diffing-Tool für OSCAL-Dokumente. Statt ein eigenes Diff-Tooling from scratch zu bauen, darauf aufsetzen und nur die Railway-spezifische semantische Interpretation ergänzen:
+
+- oscal-deep-diff liefert: "Feld X in Control Y hat sich von A zu B geändert"
+- OSCAL4Rail interpretiert: "Das ist eine Verschärfung (tightened)" oder "Das ist eine Lockerung (relaxed)"
+- OSCAL4Rail propagiert: "Diese Änderung betrifft folgende Downstream-Profiles/Systeme"
+
+**Acceptance Criteria:**
+- [ ] oscal-deep-diff evaluiert und als Dependency aufgenommen (oder Subset portiert)
+- [ ] `tools/diff.py` nutzt oscal-deep-diff als Backend
+- [ ] Railway-Interpretation oben drauf: Kategorisierung (added/removed/tightened/relaxed/content-changed)
+- [ ] Impact-Propagation: Change + Profile-Kette → betroffene Downstream-Catalogs
+- [ ] Eigenes Change-Notification-Schema nur für die semantische Interpretation, nicht für das Diff selbst
+
+**Beziehung zu #6, #7, #8:** Vereinfacht #6-#8 erheblich – der Diff-Kern existiert bereits.
+
+---
+
+### Issue #30: Component Definition für Railway-Systeme
+
+**Title:** `feat: Import OSCAL Component Definition – model railway IT systems`
+**Labels:** `layer:assessment`, `type:spec`, `priority:medium`
+**Milestone:** `v0.4.0 – Assessment Layer`
+
+**Description:**
+
+Das OSCAL Component Definition Modell beschreibt, wie eine Komponente (Software, Hardware, Service) Controls erfüllt. Für Rail der Brückenschlag zwischen Catalog und Assessment:
+
+- Ein Fahrgastinformationssystem (FIS) als Component → "erfüllt BS-KI 2.1, 2.2, 3.1-3.6"
+- Eine BEAM-Anwendung als Component → verknüpft mit Railway-Profile
+- Ein Fahrzeug-Display als Component → erfüllt BS-KI Fahrzeug-Controls
+
+**Acceptance Criteria:**
+- [ ] `schemas/oscal-component-definition.json` – NIST Schema v1.2.1
+- [ ] `examples/components/fictional-fis.yaml` – Fiktives FIS mit Control-Satisfaction
+- [ ] Mapping Component → Assessment: Component claims erfüllt → Assessment verifiziert
+- [ ] Railway-Props: `system-type` (FIS, DPI, IBIS, Leitsystem), `operator` (SBB, DB, ÖBB)
+- [ ] Beziehung zu Profile: Component referenziert welches Profile es erfüllen soll
+
+---
+
+### Issue #31: compliance-trestle Evaluierung + Plugin-Architektur
+
+**Title:** `research: Evaluate compliance-trestle as OSCAL4Rail tooling foundation`
+**Labels:** `type:tooling`, `priority:medium`
+**Milestone:** Backlog
+
+**Description:**
+
+Das `oscal-compass/compliance-trestle`-Projekt (IBM, Open Source, Apache 2.0) bietet:
+- Agile Authoring von OSCAL-Artefakten in Git
+- Plugin-Architektur (FedRAMP als Beispiel-Plugin)
+- MCP-Server (`compliance-trestle-mcp`) für AI-Agent-Integration
+- Profile Resolution, Validation, SSP-Authoring
+- Etablierte Community und Governance
+
+Prüfen ob ein `compliance-trestle-oscal4rail`-Plugin sinnvoller ist als eigenes CLI-Tooling (#13).
+
+**Acceptance Criteria:**
+- [ ] compliance-trestle lokal installiert und getestet
+- [ ] BS-KI Catalog in trestle-Workspace importiert
+- [ ] FedRAMP-Plugin als Referenz für eigenes Rail-Plugin analysiert
+- [ ] MCP-Server getestet (AI-Agent-Integration)
+- [ ] ADR: Eigenes CLI vs. trestle-Plugin – Vor-/Nachteile
+- [ ] Falls Plugin: Scope definieren (was macht das Plugin, was bleibt im Core)
+
+---
+
+### Konsistenzprüfung: Bestehende Issues vs. neue Gap-Issues
+
+| Bestehend | Status nach Gap-Analyse | Begründung |
+|---|---|---|
+| **#16 Cascade Model** | ⚠️ Umscopen → wird Teil von #26 | Die Cascade IST eine Profile-Kette. #16 wird zur Spezifikation der Railway-Extensions (Props) innerhalb des Profile-Modells, nicht mehr ein eigenständiges Schema. |
+| **#18 Multilingual Linking** | ✅ Gelöst durch #27 | Control Mapping löst das als Spezialfall: Mapping BS-KI DE ↔ BS-KI FR mit `relationship-type: equivalent`. Kein eigenes Konstrukt nötig. |
+| **#10 Assessment Spec** | ⚠️ Umscopen → wird Teil von #28 | Statt eigenes Schema designen → NIST Assessment Results importieren + Railway-Props als Extension. Die *Spezifikation* (`assessment-format.md`) bleibt als Deliverable, aber basiert auf NIST. |
+| **#11 Assessment Schema** | ❌ Ersetzt durch #28 | Kein eigenes `oscal4rail-assessment.schema.json` – stattdessen NIST Schema + Constraints-Schema (analog #23 für Catalog). |
+| **#12 Assessment Example** | ✅ Bleibt – wird Deliverable von #28 | Acceptance Criteria identisch, nur Schema-Basis ändert sich. |
+| **#6 Change Spec** | ⚠️ Reduzieren | Scope reduzieren: Nur die *semantische Interpretation* (tightened/relaxed) spezifizieren. Das Diff-Tooling selbst kommt von oscal-deep-diff (#29). |
+| **#7 Change Schema** | ⚠️ Reduzieren | Schema nur für die Railway-Interpretation (Change-Notification), nicht für das Diff-Ergebnis selbst. |
+| **#8 Diff Tooling** | ⚠️ Vereinfacht durch #29 | `tools/diff.py` wird Wrapper um oscal-deep-diff + Railway-Klassifikation. Kein eigener Diff-Algorithmus. |
+| **#13 CLI Tool** | ⚠️ Abhängig von #31 | Falls compliance-trestle-Plugin → kein eigenes CLI nötig. Falls nicht → eigenes CLI wie geplant. Entscheidung erst nach #31. |
+| **#22 Catalog Profile Spec** | ✅ Bleibt | Ergänzt sich mit #26: #22 definiert die Railway-Konventionen für Catalogs, #26 für Profiles. Beide in v0.1.1. |
+| **#23 Constraints Schema** | ✅ Bleibt | Muster wird auch für Profile (#26) und Assessment (#28) angewandt: NIST-Schema + OSCAL4Rail-Constraints-Schema obendrauf. |
+| **#24 Validator** | ✅ Bleibt + erweitern | `validate.py` muss zusätzlich Profile, Mapping, Assessment validieren können. |
+| **#25 TSI Example** | ✅ Bleibt | Wird durch #27 wertvoller: TSI-Catalog + Mapping zu BS-KI demonstriert Cascade. |
+| **#1-#5 Rules Layer** | ✅ Bleiben unverändert | Kein NIST-Äquivalent – Eigenentwicklung ist richtig. |
+| **#9 Change Example** | ✅ Bleibt | – |
+| **#14 CI/CD** | ✅ Bleibt | – |
+| **#15 Framework Docs** | ✅ Bleibt + erweitern | Muss nun auch Profile, Mapping, Component Definition, Assessment beschreiben. |
+| **#17 ADR-007 Scope** | ✅ Bleibt | Noch wichtiger: NIST-Schemas sind *importiert* (nicht geforkt), Railway-Extensions sind *eigener* Code. |
+| **#19 SPRIND Contact** | ✅ Bleibt | – |
+| **#20 ERA/EBA Engagement** | ✅ Bleibt | – |
+| **#21 TSI Catalog** | ✅ Bleibt | Prerequisite für #27 (Mapping) und #26 (Profile-Kette). |
+
+### Empfohlene Aktionen
+
+1. **#16 umscopen**: Issue-Titel ändern zu "Cascade Model as OSCAL Profile Extension". Deliverables: Railway-Props-Definition + Conformance-Constraint-Logik. Kein eigenständiges Cascade-Schema mehr.
+2. **#10 + #11 zusammenführen mit #28**: Ein Issue statt drei. Assessment-Spec + Schema + Railway-Extension in einem.
+3. **#18 schließen als Duplikat**: Verweis auf #27 (Control Mapping löst das).
+4. **#8 umscopen**: Titel ändern zu "Diff wrapper on oscal-deep-diff". Kein eigener Algorithmus.
+5. **#13 als "blocked by #31" markieren**: Erst evaluieren, dann entscheiden.
+
+---
+
+### Angepasste Roadmap (nach Gap-Analyse)
+
+```
+v0.1.1 (Catalog Profile + Cascade) – ANGEPASST
+  #26 Profile Schema importieren + Cascade-als-Profile-Kette (NEU)
+  #27 Control Mapping Schema importieren (NEU)
+  #16 Cascade Model → wird Railway-Extension INNERHALB #26
+  #22 Catalog Railway Profile Spec ──▶ #23 ──▶ #24
+  #25 TSI Example (minimal)
+
+v0.2.0 (Rules Layer) – unverändert
+  #17 ADR-007 Framework Scope
+  #1  Rules Spec ──▶ #2 Rules Schema ──▶ #4 Example
+  #5  OpenCode Interface
+  #3  AMC Schema
+
+v0.3.0 (Change Layer) – ANGEPASST
+  #29 oscal-deep-diff als Basis (NEU – vereinfacht #6-#8)
+  #6  Change Spec (reduziert auf semantische Interpretation)
+  #7  Change Schema (nur Railway-Interpretation, nicht Diff selbst)
+  #9  Example
+
+v0.4.0 (Assessment Layer) – ANGEPASST
+  #28 Assessment Results Schema importieren + Railway-Profil (NEU – ersetzt #10-#12)
+  #30 Component Definition (NEU)
+
+v1.0.0 (Framework Release)
+  #31 compliance-trestle Evaluierung (NEU)
+  #13 CLI Tool (ggf. als trestle-Plugin statt eigenem CLI)
+  #14 CI/CD
+  #15 Framework Docs
+```

@@ -173,57 +173,108 @@ Cross-border: A train operating DE↔CH↔AT must comply with all three national
 
 | Decision | Choice | Rationale |
 |----------|--------|-----------|
-| Base standard | NIST OSCAL Catalog | Mature, public domain, existing tooling ecosystem |
+| Base standard | NIST OSCAL v1.2.1 (all 3 layers) | Mature, public domain, existing tooling ecosystem |
+| Tooling foundation | compliance-trestle + oscal-deep-diff | Profile Resolution, Validation, Diff out-of-the-box ([ADR-007](adr/ADR-007-tooling-foundation.md)) |
+| Agent interface | compliance-trestle-mcp (MCP Server) | AI agents can invoke all OSCAL operations via standardized protocol |
+| Cascade model | OSCAL Profile chain (not custom schema) | Each cascade level = one Profile selecting from upstream Catalog |
+| Cross-framework linking | OSCAL Control Mapping (v1.2.0+) | Built-in coverage + gap-summary, solves multilingual |
+| Change detection | oscal-deep-diff + railway semantics | NIST tool for structural diff, own layer for tightened/relaxed classification |
+| Railway extensions | OSCAL props with `ns="https://github.com/OpenRailAssociation/oscal4rail/ns"` | Standard extension mechanism, no schema fork |
 | Extraction method | Deterministic (markitdown + openpyxl) | Reproducible, auditable, no LLM required |
 | Rule identifier | Chapter number (e.g. `bs-ki-2.1`) | Stable across document versions |
 | Applicability model | OSCAL `props` with `class` attribute | Schema-compliant, extensible |
 | Version strategy | One file per regulation, Git history for diffs | Leverages existing tooling |
-| Supplementary docs | `guidance` parts (ABs, Anhänge) + `back-matter` (Übergangsdokumente) | Keeps primary rule clean |
 
 ### 4.2 Quality Approach
 
 - **Correctness:** Verbatim quotes, no paraphrasing
 - **Completeness:** All matrix rows covered
-- **Validity:** Continuous validation against NIST JSON Schema
+- **Validity:** Continuous validation against NIST JSON Schema (via trestle)
 - **Traceability:** Every rule references source chapter and document
+- **Assessability:** Every control can be verified by agent or human reviewer
 
 ---
 
 ## 5. Building Block View
 
-### 5.1 Level 1 – 4-Layer Architecture
+### 5.1 Level 1 – 4-Layer Architecture + Tooling
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                          OSCAL4Rail Framework                        │
-├─────────────────┬──────────────────┬────────────────┬───────────────┤
-│  Layer 1        │  Layer 2         │  Layer 3       │  Layer 4      │
-│  CATALOG        │  RULES           │  CHANGE IMPACT │  ASSESSMENT   │
-│                 │                  │                │               │
-│  NIST OSCAL     │  Rulemapping     │  Structured    │  NIST OSCAL   │
-│  Control Layer  │  format          │  diff/notify   │  Assessment   │
-│  + Railway      │  (NEW - not in   │  (NEW - not in │  Layer +      │
-│  Profile        │   NIST OSCAL)    │   NIST OSCAL)  │  Railway      │
-│                 │                  │                │  Profile      │
-├─────────────────┼──────────────────┼────────────────┼───────────────┤
-│  Catalog Model  │  Applicability   │  Change        │  Assessment   │
-│  Profile Model  │  Rules           │  Notifications │  Plan         │
-│  Control Mapping│  Context Filters │  Changelog Gen │  Results      │
-│                 │  AMC Refs        │                │  POA&M        │
-└─────────────────┴──────────────────┴────────────────┴───────────────┘
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          OSCAL4Rail Framework                                │
+├─────────────────┬──────────────────┬────────────────┬───────────────────────┤
+│  Layer 1        │  Layer 2         │  Layer 3       │  Layer 4              │
+│  CATALOG        │  RULES           │  CHANGE IMPACT │  ASSESSMENT           │
+│                 │                  │                │                       │
+│  NIST OSCAL     │  Rulemapping     │  oscal-deep-   │  NIST OSCAL           │
+│  Catalog +      │  format          │  diff + railway│  Assessment Results   │
+│  Profile +      │  (not in NIST)   │  semantics     │  + Railway Profile    │
+│  Mapping        │                  │  (not in NIST) │                       │
+├─────────────────┼──────────────────┼────────────────┼───────────────────────┤
+│  Catalog Model  │  Applicability   │  Structural    │  Assessment Plan      │
+│  Profile Model  │  Rules           │  Diff (NIST)   │  Assessment Results   │
+│  Control Mapping│  Context Filters │  Semantic      │  POA&M                │
+│  Component Def. │  AMC Refs        │  Classification│  Component Definition │
+└─────────────────┴──────────────────┴────────────────┴───────────────────────┘
+                              │
+         ┌────────────────────┼────────────────────┐
+         ▼                    ▼                    ▼
+┌─────────────────┐  ┌──────────────────┐  ┌──────────────────┐
+│ compliance-     │  │ oscal-deep-diff  │  │ trestle-mcp      │
+│ trestle         │  │ (NIST, Node.js)  │  │ (MCP Server)     │
+│ (Python)        │  │                  │  │                  │
+│ - Import        │  │ - JSON diff      │  │ - AI Agent API   │
+│ - Validate      │  │ - JSON Pointers  │  │ - All trestle    │
+│ - Profile Res.  │  │ - Matcher config │  │   operations     │
+│ - Split/Merge   │  │                  │  │   via MCP        │
+│ - Plugin host   │  │                  │  │                  │
+└─────────────────┘  └──────────────────┘  └──────────────────┘
+         │
+         ▼
+┌─────────────────┐
+│ trestle-        │
+│ oscal4rail      │
+│ (Railway Plugin)│
+│                 │
+│ - cascade       │
+│ - semantic diff │
+│ - assess        │
+│ - rail-validate │
+└─────────────────┘
 ```
 
-### 5.2 Level 2 – Extraction Pipeline (Layer 1 tooling)
+### 5.2 Level 2 – Tooling Components
 
-| Component | Responsibility | Technology |
-|-----------|---------------|-----------|
-| `parse_matrix` | Parse Excel Bewertungsmatrix → applicability per rule | openpyxl |
-| `extract_pdf` | Extract verbatim text per chapter from regulation PDF | markitdown / pdfplumber |
-| `build_catalog` | Merge matrix + PDF texts into OSCAL Catalog YAML | PyYAML |
-| `validate` | Validate YAML against NIST OSCAL JSON Schema | jsonschema |
-| `diff_catalogs` | Compare two catalog versions, categorise changes | PyYAML + difflib |
+| Component | Responsibility | Technology | Status |
+|-----------|---------------|-----------|--------|
+| `compliance-trestle` | OSCAL workspace, validation, profile resolution | Python (pip) | ✅ Evaluated |
+| `oscal-deep-diff` | Structural diff between OSCAL documents | Node.js (GitHub) | ✅ Evaluated |
+| `trestle-mcp` | MCP Server for AI agent integration | Python | 🔜 To evaluate |
+| `trestle-oscal4rail` | Railway-specific plugin (cascade, semantic diff, assessment) | Python | 🔜 To build |
+| `parse_matrix` | Parse Excel Bewertungsmatrix → applicability per rule | openpyxl | ✅ Exists |
+| `extract_pdf` | Extract verbatim text per chapter from regulation PDF | markitdown / pdfplumber | ✅ Exists |
+| `build_catalog` | Merge matrix + PDF texts into OSCAL Catalog YAML | PyYAML | ✅ Exists |
 
-### 5.3 Catalog Structure
+### 5.3 Level 2 – Agentic Assessment Flow
+
+```
+┌──────────┐    ┌───────────────┐    ┌──────────────┐    ┌─────────────────┐
+│ AI Agent │───▶│ trestle-mcp   │───▶│ compliance-  │───▶│ OSCAL Workspace │
+│ (Claude, │    │ (MCP Server)  │    │ trestle      │    │                 │
+│  GPT,    │    │               │    │              │    │ catalogs/       │
+│  custom) │    │ resolve_prof  │    │ profile-     │    │ profiles/       │
+│          │◀───│ assess        │◀───│ resolve      │◀───│ assessment-     │
+│          │    │ validate      │    │ validate     │    │   results/      │
+└──────────┘    └───────────────┘    └──────────────┘    └─────────────────┘
+     │                                                           │
+     │  Agent produces:                                          │
+     │  - Assessment Results (findings per control)              │
+     │  - Evidence references                                    │
+     │  - Railway scale (vollständig/teilweise/nicht erfüllt)    │
+     └───────────────────────────────────────────────────────────┘
+```
+
+### 5.4 Catalog Structure
 
 ```
 catalog:
@@ -247,26 +298,74 @@ catalog:
 ```
 1. Download new PDF + XLSX from standards body
 2. run: python3 extract.py --pdf BS-KI_DE.pdf --matrix Matrix_BS-KI_DE.xlsx
-3. Output: rules/bs-ki-de.yaml
-4. run: python3 validate.py rules/bs-ki-de.yaml  →  ✅ Valid OSCAL Catalog
+3. Output: catalogs/bs-ki/de/bs-ki-de.yaml
+4. run: trestle validate -a  →  ✅ VALID
 5. git diff  →  shows changed rules at control level
-6. run: python3 changelog.py  →  CHANGELOG.md
+6. run: oscal-deep-diff --config diff-config.yaml  →  structured change notification
 7. git commit -m "feat(bs-ki): update to v2.0"
 8. git tag bs-ki/v2.0
 ```
 
-### 6.2 Change Diff
+### 6.2 Agentic Assessment (primary use case)
 
 ```
-old_catalog = load("history/bs-ki-de_v1.0.yaml")
-new_catalog = load("rules/bs-ki-de.yaml")
+Agent receives task: "Assess system X against BS-KI"
 
-for each control in new_catalog:
-    old = find_by_id(old_catalog, control.id)
-    if not old:           → NEW control
-    elif old deleted:     → REMOVED control
-    elif statement differs: → CHANGED (content)
-    elif applicability differs: → CHANGED (obligation)
+1. Agent calls MCP: trestle.import_profile("sbb-subset-bs-ki")
+2. Agent calls MCP: trestle.profile_resolve("sbb-subset") → resolved catalog (5 controls)
+3. For each control in resolved catalog:
+   a. Agent reads control statement + applicability props
+   b. Agent queries system evidence (config, docs, APIs)
+   c. Agent determines: vollständig | teilweise | nicht erfüllt | nicht relevant
+   d. Agent records finding with evidence reference
+4. Agent calls MCP: trestle.write_assessment_results(findings)
+5. Output: assessment-results/system-x-bs-ki.yaml (valid OSCAL Assessment Results)
+
+Human reviewer:
+- Reviews agent findings
+- Approves, adjusts, or rejects
+- Final assessment = human-approved + agent-assisted
+```
+
+### 6.3 Change Impact Detection (Layer 3)
+
+```
+Input: bs-ki-v1.yaml, bs-ki-v2.yaml
+
+1. oscal-deep-diff produces structural diff:
+   {
+     "changes": [
+       {"change": "property_changed", "leftPointer": ".../prose", "leftElement": "800", "rightElement": "500"},
+       {"change": "property_changed", "leftPointer": ".../props/2/value", "leftElement": "empfohlen", "rightElement": "verbindlich"},
+       {"change": "array_changed", "rightOnly": [{"id": "bs-ki-2.99", ...}]}
+     ]
+   }
+
+2. trestle-oscal4rail classifies each change:
+   - prose changed + threshold lowered → "tightened"
+   - applicability empfohlen → verbindlich → "tightened"
+   - new control → "added"
+
+3. Impact propagation:
+   - Which Profiles reference this Catalog? → resolve downstream
+   - Which systems have Assessment Results against affected controls? → notify
+
+4. Output: change-notification.yaml (Layer 3 format)
+```
+
+### 6.4 Profile Resolution (Cascade)
+
+```
+Input: EU TSI Catalog + National Profile
+
+1. trestle import -f tsi-tat-en.yaml -o tsi-tat
+2. trestle import -f ch-national-profile.yaml -o ch-national
+3. trestle author profile-resolve -n ch-national -o ch-resolved
+4. Result: catalogs/ch-resolved/catalog.json
+   - Contains only controls selected by CH national law
+   - Props from upstream preserved
+   - Link rel="resolution-source" to TSI catalog
+   - Railway props: cascade-level=national, conformance-constraint=specializes
 ```
 
 ---
@@ -395,6 +494,20 @@ Transport modes: `bahn`, `bus-tram-metro`, `schiff`, `seilbahn`
 **Decision:** Separate YAML files per language. Cross-language linking via OSCAL Control Mapping (future).
 
 **Consequences:** (+) Simple, independent validation per language. (-) No automatic cross-language consistency check yet.
+
+---
+
+### ADR-007: compliance-trestle + oscal-deep-diff as tooling foundation
+
+**Status:** Proposed
+
+**Context:** OSCAL4Rail needs tooling for validation, profile resolution, change detection, and AI agent integration. Building everything from scratch is expensive and duplicates existing work.
+
+**Decision:** Use compliance-trestle (Python, Apache 2.0) as primary tooling platform with plugin architecture. Use oscal-deep-diff (NIST, public domain) for structural diff. Railway-specific logic as trestle plugin (`trestle-oscal4rail`).
+
+**Consequences:** (+) Profile Resolution, Validation, MCP Server work out-of-the-box. Plugin architecture proven (FedRAMP). (-) Two runtimes (Python + Node.js). Dependency on external project governance.
+
+Full ADR: [docs/adr/ADR-007-tooling-foundation.md](adr/ADR-007-tooling-foundation.md)
 
 ---
 

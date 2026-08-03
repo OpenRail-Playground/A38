@@ -26,10 +26,103 @@ The broader vision: the same framework also works for upstream regulations (EU T
 # Clone the repository
 git clone https://github.com/OpenRail-Playground/OSCAL4Rail.git
 
-# Validate an existing catalog
-python3 tools/validate.py catalogs/bs-ki/de/bs-ki-de.yaml
-# ✅ catalogs/bs-ki/de/bs-ki-de.yaml: Valid OSCAL4Rail Catalog
+# Validate an existing catalog (using compliance-trestle)
+pip install compliance-trestle
+cd OSCAL4Rail
+trestle init
+trestle import -f catalogs/bs-ki/de/bs-ki-de.yaml -o bs-ki-de
+trestle validate -a
+# ✅ VALID: Model passed all registered validation tests.
 ```
+
+## The End Goal: Agentic Assessment
+
+The primary use case for OSCAL4Rail is **automated compliance verification by AI agents**:
+
+```
+┌──────────────┐     ┌─────────────────────┐     ┌──────────────────────┐
+│  OSCAL4Rail  │     │    AI Agent (MCP)    │     │   Railway System     │
+│  Catalog     │────▶│                     │◀────│   (IT, Vehicle, Infra)│
+│  + Profile   │     │  1. Load Profile     │     │                      │
+│  + Rules     │     │  2. Resolve Controls │     │  System properties,  │
+│              │     │  3. Check Evidence   │     │  configs, docs       │
+└──────────────┘     │  4. Produce Result   │     └──────────────────────┘
+                     └──────────┬────────────┘
+                                │
+                                ▼
+                     ┌──────────────────────┐
+                     │  OSCAL Assessment    │
+                     │  Results             │
+                     │                      │
+                     │  - Findings per ctrl │
+                     │  - Evidence refs     │
+                     │  - Railway scale:    │
+                     │    ✅ vollständig     │
+                     │    ⚠️  teilweise      │
+                     │    ❌ nicht erfüllt   │
+                     └──────────────────────┘
+```
+
+The agent:
+1. **Loads** the applicable Profile (which controls apply to THIS system?)
+2. **Resolves** it against the upstream Catalog (Profile Resolution → concrete control set)
+3. **Checks** each control against system evidence (configuration, documentation, APIs)
+4. **Produces** a machine-readable Assessment Result in OSCAL format
+
+This requires ALL four layers to work together:
+- **Catalog** provides the controls (what must be fulfilled)
+- **Profile** selects the applicable subset (what applies to MY context)
+- **Rules** determine applicability conditions (when does a control apply?)
+- **Assessment** captures the findings (is it actually fulfilled?)
+
+The [compliance-trestle-mcp](https://github.com/oscal-compass/compliance-trestle-mcp) server already provides the agent interface — OSCAL4Rail adds the railway-specific semantics on top.
+
+## Tooling Stack
+
+OSCAL4Rail builds on established OSCAL tooling rather than reinventing the wheel (→ [ADR-007](docs/adr/ADR-007-tooling-foundation.md)):
+
+| Tool | Role in OSCAL4Rail | Source |
+|------|-------------------|--------|
+| **[compliance-trestle](https://github.com/oscal-compass/compliance-trestle)** | Validation, Profile Resolution, Workspace, Plugin Host | OSCAL-Compass (IBM) |
+| **[oscal-deep-diff](https://github.com/usnistgov/oscal-deep-diff)** | Structural diff between catalog versions (Layer 3 basis) | NIST |
+| **[compliance-trestle-mcp](https://github.com/oscal-compass/compliance-trestle-mcp)** | AI agent integration via Model Context Protocol | OSCAL-Compass |
+| **trestle-oscal4rail** (planned) | Railway plugin: cascade, semantic diff, assessment scales | OSCAL4Rail |
+
+### NIST OSCAL Models – Implementation Status
+
+| Model | OSCAL Layer | OSCAL4Rail Status | Agent Relevance |
+|-------|-------------|-------------------|-----------------|
+| Catalog | Control | ✅ Implemented | Agent reads controls from here |
+| Profile | Control | 🔜 Planned | Agent resolves "what applies to me" |
+| Control Mapping | Control | 🔜 Planned | Cross-framework traceability |
+| Component Definition | Implementation | 🔜 Planned | Agent identifies system-under-test |
+| Assessment Plan | Assessment | 🔜 Planned | Agent follows this as test plan |
+| Assessment Results | Assessment | 🔜 Planned | **Agent writes findings here** |
+| POA&M | Assessment | ⏳ Later | Remediation tracking |
+
+## Key Insight: The Regulatory Cascade IS a Profile Chain
+
+The defining railway innovation — the multi-level regulatory cascade — maps directly to existing NIST OSCAL mechanisms:
+
+```
+EU TSI Catalog        → OSCAL Catalog
+    ↓ specializes
+National Profile      → OSCAL Profile (selects + constrains from EU)
+    ↓ specializes
+Industry Standard     → OSCAL Catalog (resolved from profile)
+    ↓ specializes
+Company Profile       → OSCAL Profile (selects subset for own systems)
+    ↓ operationalizes
+System Assessment     → OSCAL Assessment Results (agent-produced)
+```
+
+Each cascade level is a **Profile** that selects controls from an upstream Catalog. Profile Resolution produces a new Catalog. The agent consumes the final resolved Catalog and produces Assessment Results.
+
+Railway-specific extensions are modeled as OSCAL `props` with namespace `ns="https://github.com/OpenRailAssociation/oscal4rail/ns"`:
+- `cascade-level`: International | EU | National | Agency | Industry | Company | System
+- `conformance-constraint`: must-not-contradict | specializes | implements
+- `assessment-scale`: vollständig | teilweise | nicht-erfüllt | nicht-relevant
+- `assessor-type`: human | agent | hybrid
 
 ## Documentation
 
@@ -37,13 +130,16 @@ python3 tools/validate.py catalogs/bs-ki/de/bs-ki-de.yaml
 |------|----------|-------------|
 | **Architecture** | [docs/arc42.md](docs/arc42.md) | Full arc42 architecture documentation |
 | **Motivation** | [docs/motivation.md](docs/motivation.md) | Why OSCAL4Rail exists and what problem it solves |
+| **Issue Plan** | [docs/ISSUES-PLAN.md](docs/ISSUES-PLAN.md) | Roadmap, Gap-Analyse, planned GitHub Issues |
+| **ADR-005** | [docs/adr/ADR-005](docs/adr/ADR-005-law-as-code-relationship.md) | Relationship to Law-as-Code / SPRIND |
+| **ADR-006** | [docs/adr/ADR-006](docs/adr/ADR-006-oscal4rail-vs-rulemapping.md) | OSCAL4Rail vs. Rulemapping positioning |
+| **ADR-007** | [docs/adr/ADR-007](docs/adr/ADR-007-tooling-foundation.md) | compliance-trestle + oscal-deep-diff as tooling foundation |
 | **OSS Structure** | [docs/oss-structure.md](docs/oss-structure.md) | Future project structure and governance |
 | **Tutorial** | [docs/tutorials/getting-started.md](docs/tutorials/getting-started.md) | Extract your first regulation catalog |
-| **How-To** | [docs/how-to/migrate-existing-governance.md](docs/how-to/migrate-existing-governance.md) | Migrate existing governance to OSCAL4Rail |
 | **How-To** | [docs/how-to/integrate-agents.md](docs/how-to/integrate-agents.md) | Integrate OSCAL4Rail into AI agents and skills |
 | **How-To** | [docs/how-to/verify-it-systems.md](docs/how-to/verify-it-systems.md) | Verify your IT systems against OSCAL4Rail catalogs |
+| **How-To** | [docs/how-to/migrate-existing-governance.md](docs/how-to/migrate-existing-governance.md) | Migrate existing governance to OSCAL4Rail |
 | **Examples** | [docs/examples/](docs/examples/) | Example catalogs and use cases |
-| **Reference** | [docs/reference/format.md](docs/reference/format.md) | OSCAL4Rail format specification |
 | **Contributing** | [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute |
 
 ## Example Implementations
