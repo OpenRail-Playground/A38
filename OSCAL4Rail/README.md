@@ -155,6 +155,30 @@ Railway-specific extensions are modeled as OSCAL `props` with namespace `ns="htt
 
 ## Relationship to Law-as-Code / Rulemapping
 
+### OSCAL Control Mapping vs. Rulemapping – different concerns
+
+These two sound similar but solve fundamentally different problems:
+
+| | **OSCAL Control Mapping** (Layer 1) | **Rulemapping** (Layer 2) |
+|---|---|---|
+| **Question** | "Which controls from Framework A correspond to which in Framework B?" | "Under which conditions does a control APPLY?" |
+| **Type** | Static relationship between frameworks | Dynamic decision logic within a framework |
+| **Example** | BS-KI 2.1 (CH) ↔ TSI TAT 4.2.1 (EU) = equivalent | BS-KI 2.1 applies IF station AND ≥800 passengers AND rail |
+| **Output** | "A covers B at 85%" (coverage + gaps) | "For YOUR system: yes/no/not relevant" |
+| **Actor** | Compliance team (once, when mapping frameworks) | Agent/system (at every assessment) |
+
+They complement each other in the assessment flow:
+
+```
+1. Profile selects controls (what's in scope?)        ← Layer 1 (Profile)
+2. Rulemapping checks applicability (does it apply?)  ← Layer 2 (Rules)
+3. Agent assesses compliance (is it fulfilled?)       ← Layer 4 (Assessment)
+4. Control Mapping shows implication                  ← Layer 1 (Mapping)
+   ("fulfilling BS-KI 2.1 also covers TSI TAT 4.2.1")
+```
+
+### Positioning in the Law-as-Code ecosystem
+
 OSCAL4Rail is positioned within the emerging Law-as-Code ecosystem:
 
 | Actor | Role |
