@@ -92,13 +92,15 @@ OSCAL4Rail builds on established OSCAL tooling rather than reinventing the wheel
 
 | Model | OSCAL Layer | OSCAL4Rail Status | Agent Relevance |
 |-------|-------------|-------------------|-----------------|
-| Catalog | Control | ✅ Implemented | Agent reads controls from here |
-| Profile | Control | 🔜 Planned | Agent resolves "what applies to me" |
-| Control Mapping | Control | 🔜 Planned | Cross-framework traceability |
-| Component Definition | Implementation | 🔜 Planned | Agent identifies system-under-test |
+| Catalog | Control | ✅ Implemented (BS-KI, 42 controls) | Agent reads controls from here |
+| Profile | Control | 🟡 Schema imported, Profile Resolution validated | Agent resolves "what applies to me" |
+| Control Mapping | Control | 🟡 Schema imported | Cross-framework traceability |
+| Component Definition | Implementation | 🟡 Schema imported | Agent identifies system-under-test |
 | Assessment Plan | Assessment | 🔜 Planned | Agent follows this as test plan |
-| Assessment Results | Assessment | 🔜 Planned | **Agent writes findings here** |
+| Assessment Results | Assessment | 🟡 Schema imported | **Agent writes findings here** |
 | POA&M | Assessment | ⏳ Later | Remediation tracking |
+
+> 🟡 = Schema available + validator supports it, no railway-specific example yet
 
 ## Key Insight: The Regulatory Cascade IS a Profile Chain
 
