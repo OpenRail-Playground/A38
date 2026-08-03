@@ -521,6 +521,30 @@ Formal architecture decision: What is part of the OSCAL4Rail framework (schemas,
 
 ---
 
+### Issue #32: OSCAL Version Upgrade Strategy
+
+**Title:** `spec: Define strategy for handling NIST OSCAL schema version upgrades`
+**Labels:** `type:spec`, `type:tooling`
+
+**Description:**
+
+NIST releases new OSCAL versions (1.2.0, 1.2.1, ...) with schema changes. OSCAL4Rail needs a defined process for:
+- When to upgrade (every minor? only major?)
+- How to migrate existing catalogs/profiles/assessments
+- How to handle `oscal-version` field in metadata
+- Backward compatibility: can old artifacts validate against new schema?
+
+NIST provides: `oscal-version` metadata field, `link rel="latest-version/predecessor-version/successor-version"` (RFC 5829), compliance-trestle has schema migration built in.
+
+**Acceptance Criteria:**
+- [ ] `docs/reference/version-upgrade-strategy.md`
+- [ ] Policy: which OSCAL version does OSCAL4Rail target (pinned or rolling?)
+- [ ] Migration path documented (trestle convert or manual)
+- [ ] CI validates against pinned schema version
+- [ ] Changelog documents which OSCAL version each OSCAL4Rail release targets
+
+---
+
 ## Zusammenfassung: Reihenfolge
 
 ```
