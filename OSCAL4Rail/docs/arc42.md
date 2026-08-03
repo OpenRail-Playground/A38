@@ -104,7 +104,7 @@ Layers 2 (Rules) and 3 (Change Impact) are generic and reusable for other sector
 
 | ID | Constraint | Rationale |
 |----|-----------|-----------|
-| TC-1 | Output must be valid NIST OSCAL Catalog (JSON Schema v1.1.3) | Interoperability with existing OSCAL tooling |
+| TC-1 | Output must be valid NIST OSCAL (JSON Schema v1.2.1) | Interoperability with existing OSCAL tooling |
 | TC-2 | Rule text must be verbatim from source document | Auditability, no paraphrasing |
 | TC-3 | Rule IDs derived from chapter numbers, not page numbers | Stability across document versions |
 | TC-4 | No LLM required for extraction pipeline | Deterministic, reproducible results |
@@ -162,7 +162,7 @@ Cross-border: A train operating DE↔CH↔AT must comply with all three national
 | OSCAL Catalog | Output | YAML | Machine-readable regulation catalog |
 | Change Notification | Output | YAML | Structured diff between versions |
 | Assessment Results | Output | YAML | Compliance findings per system |
-| NIST JSON Schema | Validation | JSON Schema | Official OSCAL schema v1.1.3 + OSCAL4Rail constraints |
+| NIST JSON Schema | Validation | JSON Schema | Official OSCAL schema v1.2.1 + OSCAL4Rail constraints |
 | Git repository | Storage | Git | Version control, cascade hierarchy, diff |
 
 ---
@@ -209,7 +209,7 @@ Cross-border: A train operating DE↔CH↔AT must comply with all three national
 │  NIST OSCAL     │  Rulemapping     │  oscal-deep-   │  NIST OSCAL           │
 │  Catalog +      │  format          │  diff + railway│  Assessment Results   │
 │  Profile +      │  (not in NIST)   │  semantics     │  + Railway Profile    │
-│  Mapping        │                  │  (not in NIST) │                       │
+│  Mapping        │                  │  (NIST + own)  │                       │
 ├─────────────────┼──────────────────┼────────────────┼───────────────────────┤
 │  Catalog Model  │  Applicability   │  Structural    │  Assessment Plan      │
 │  Profile Model  │  Rules           │  Diff (NIST)   │  Assessment Results   │
@@ -376,9 +376,10 @@ Input: EU TSI Catalog + National Profile
 
 ```
 Developer machine
-├── rules/bs-ki-de.yaml     (OSCAL4Rail Catalog)
-├── validate.py             (local validation)
-└── GitHub repository       (version control + collaboration)
+├── catalogs/bs-ki/de/bs-ki-de.yaml  (OSCAL4Rail Catalog)
+├── schemas/*.json                   (NIST OSCAL v1.2.1 Schemas)
+├── tools/validate.py                (multi-model validator)
+└── GitHub repository                (version control + collaboration)
 ```
 
 ### 7.2 Target (OSS project)

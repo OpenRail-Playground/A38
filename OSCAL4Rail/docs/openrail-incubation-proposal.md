@@ -226,7 +226,7 @@ No direct competitors for an open, railway-specific, OSCAL-based standard. Adjac
 
 | Standard | Role |
 |----------|------|
-| NIST OSCAL 1.1.3 | Base schema — Layer 1 (Catalog/Profile) and Layer 4 (Assessment Plan/Results/POA&M) are railway profiles over existing NIST models |
+| NIST OSCAL 1.2.1 | Base schema — Layer 1 (Catalog/Profile/Mapping) and Layer 4 (Assessment Plan/Results/POA&M) are railway profiles over existing NIST models |
 | Rulemapping (RUML) | Adopted rules format for Layer 2 (applicability logic) — **not part of NIST OSCAL** |
 | JSON Schema (Draft 7) | Validation (NIST schema + OSCAL4Rail constraints) |
 | Semantic Versioning | Catalog releases |
